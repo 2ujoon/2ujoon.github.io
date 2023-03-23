@@ -1,59 +1,60 @@
-# ìžë°” ORM í‘œì¤€ JPA í”„ë¡œê·¸ëž˜ë° - ê¸°ë³¸íŽ¸
-[ê°•ì˜ ë§í¬](https://www.inflearn.com/course/ORM-JPA-Basic)
+<!-- euk-kr -->
+# ÀÚ¹Ù ORM Ç¥ÁØ JPA ÇÁ·Î±×·¡¹Ö - ±âº»Æí
+[°­ÀÇ ¸µÅ©](https://www.inflearn.com/course/ORM-JPA-Basic)
 
 ---
-## **ê°•ì¢Œ ì†Œê°œ**
+## **°­ÁÂ ¼Ò°³**
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
-- ì™œ JPAë¥¼ ì‚¬ìš©í•˜ëŠ”ê°€
-  - ê¸°ì¡´ì—ëŠ” ê°œë°œìžê°€ SQL mapper ì—­í• ì„ í•¨
-  - JPAëŠ” SQLì„ ìžë™ìœ¼ë¡œ ìƒì„±í•´ ì¤Œ
-    - DBì— ì¢…ì†ë˜ì§€ ì•Šê²Œ ê°œë°œí•  ìˆ˜ ìžˆìŒ
-      âˆµ ì‚¬ìš©í•˜ëŠ” DBì— ë§žê²Œ ì¿¼ë¦¬ë¥¼ ìžë™ìœ¼ë¡œ ìƒì„±(dialect)
+- ¿Ö JPA¸¦ »ç¿ëÇÏ´Â°¡
+  - ±âÁ¸¿¡´Â °³¹ßÀÚ°¡ SQL mapper ¿ªÇÒÀ» ÇÔ
+  - JPA´Â SQLÀ» ÀÚµ¿À¸·Î »ý¼ºÇØ ÁÜ
+    - DB¿¡ Á¾¼ÓµÇÁö ¾Ê°Ô °³¹ßÇÒ ¼ö ÀÖÀ½
+      ¡ñ »ç¿ëÇÏ´Â DB¿¡ ¸Â°Ô Äõ¸®¸¦ ÀÚµ¿À¸·Î »ý¼º(dialect)
 <br>
 
-- ì‹¤ë¬´ì—ì„œëŠ” í…Œì´ë¸”ì˜ ê°¯ìˆ˜ê°€ ë§Žê³ , ì‚¬ìš©í•˜ëŠ” ê°ì²´ê°€ ë³µìž¡í•´ ì–´ë ¤ìš¸ ìˆ˜ ìžˆìŒ; ì•„ëž˜ì˜ ì—°ìŠµì´ í•„ìš”
-  - ê°ì²´ì™€ í…Œì´ë¸” ì„¤ê³„ ë§¤í•‘
-    - ê°ì²´, í…Œì´ë¸” ì„¤ê³„ ë° ë§¤í•‘
-    - PK, FK ë§¤í•‘
-    - 1:N, N:1, 1:1, N:M ë§¤í•‘
+- ½Ç¹«¿¡¼­´Â Å×ÀÌºíÀÇ °¹¼ö°¡ ¸¹°í, »ç¿ëÇÏ´Â °´Ã¼°¡ º¹ÀâÇØ ¾î·Á¿ï ¼ö ÀÖÀ½; ¾Æ·¡ÀÇ ¿¬½ÀÀÌ ÇÊ¿ä
+  - °´Ã¼¿Í Å×ÀÌºí ¼³°è ¸ÅÇÎ
+    - °´Ã¼, Å×ÀÌºí ¼³°è ¹× ¸ÅÇÎ
+    - PK, FK ¸ÅÇÎ
+    - 1:N, N:1, 1:1, N:M ¸ÅÇÎ
   <br>
   
-  - JPA ë‚´ë¶€ ë™ìž‘ ë°©ì‹ ì´í•´
-    - JPAê°€ ì–´ë–¤ SQLì„ ìƒì„±í•˜ëŠ”ê°€
-    - JPAê°€ ì–¸ì œ SQLì„ ì‹¤í–‰í•˜ëŠ”ê°€
+  - JPA ³»ºÎ µ¿ÀÛ ¹æ½Ä ÀÌÇØ
+    - JPA°¡ ¾î¶² SQLÀ» »ý¼ºÇÏ´Â°¡
+    - JPA°¡ ¾ðÁ¦ SQLÀ» ½ÇÇàÇÏ´Â°¡
 </details>
 <br>
 
 ---
-## **JPA ì†Œê°œ**
-### SQL ì¤‘ì‹¬ì ì¸ ê°œë°œì˜ ë¬¸ì œì 
+## **JPA ¼Ò°³**
+### SQL Áß½ÉÀûÀÎ °³¹ßÀÇ ¹®Á¦Á¡
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
-- RDB : í˜„ DBì˜ í—¤ê²Œëª¨ë‹ˆ
-  - RDBì— ì •ë³´ë¥¼ ì €ìž¥í•  ë•Œ ê°ì²´ê°€ ê°€ì§„ ì •ë³´ë¥¼ SQLë¡œ ë³€í™˜í•˜ì—¬ RDBì— ì €ìž¥
-  - ê°œë°œìžê°€ ê°ì²´ì™€ DB entityë¥¼ ë§¤í•‘ì‹œí‚´
-  - ê°ì²´ë¥¼ RDBì— ì €ìž¥í•¨ì— ìžˆì–´ SQL ì˜ì¡´ì  ê°œë°œì„ í”¼í•˜ê¸° ì–´ë ¤ì›€
+- RDB : Çö DBÀÇ Çì°Ô¸ð´Ï
+  - RDB¿¡ Á¤º¸¸¦ ÀúÀåÇÒ ¶§ °´Ã¼°¡ °¡Áø Á¤º¸¸¦ SQL·Î º¯È¯ÇÏ¿© RDB¿¡ ÀúÀå
+  - °³¹ßÀÚ°¡ °´Ã¼¿Í DB entity¸¦ ¸ÅÇÎ½ÃÅ´
+  - °´Ã¼¸¦ RDB¿¡ ÀúÀåÇÔ¿¡ ÀÖ¾î SQL ÀÇÁ¸Àû °³¹ßÀ» ÇÇÇÏ±â ¾î·Á¿ò
   <br>
 
-- ê°ì²´ì™€ RDBì˜ ì°¨ì´
-  1. ìƒì†
+- °´Ã¼¿Í RDBÀÇ Â÷ÀÌ
+  1. »ó¼Ó
     ![](../../../../attachments/2023-03-13-14-40-43.png)
-     - ê°ì²´ì˜ ìƒì† ê´€ê³„ë¥¼ RBDëŠ” ìŠˆí¼íƒ€ìž… - ì„œë¸Œíƒ€ìž… ê´€ê³„ë¡œ í’€ì–´ëƒ„
-     - insert : DBì˜ ë‘ í…Œì´ë¸”ì— ê°ê° insert
-     - select : join í•´ì„œ ì¡°íšŒ í›„ ê°ê°ì˜ ê°ì²´ë¥¼ ìƒì„±í•˜ê²Œ ë  ìˆ˜ë„ðŸ¤¬
+     - °´Ã¼ÀÇ »ó¼Ó °ü°è¸¦ RBD´Â ½´ÆÛÅ¸ÀÔ - ¼­ºêÅ¸ÀÔ °ü°è·Î Ç®¾î³¿
+     - insert : DBÀÇ µÎ Å×ÀÌºí¿¡ °¢°¢ insert
+     - select : join ÇØ¼­ Á¶È¸ ÈÄ °¢°¢ÀÇ °´Ã¼¸¦ »ý¼ºÇÏ°Ô µÉ ¼öµµ?
   <br>
 
-  2. ì—°ê´€ê´€ê³„
-     - ê°ì²´ëŠ” ì°¸ì¡°, í…Œì´ë¸”ì€ FKë¥¼ ì‚¬ìš©
-     - ê°ì²´ë¥¼ DB í…Œì´ë¸”ì— ë§žì¶° ëª¨ë¸ë§í•œë‹¤ë©´, FKë¡œ ì‚¬ìš©ë˜ëŠ” ê°’ì„ ë³€ìˆ˜ë¡œ ê°€ì§€ê³  ìžˆì–´ì•¼ í•¨
-       -> ê°ì²´ë¥¼ ë‹¤ë£° ë•ŒëŠ” ë¶€ì ì ˆí•¨
+  2. ¿¬°ü°ü°è
+     - °´Ã¼´Â ÂüÁ¶, Å×ÀÌºíÀº FK¸¦ »ç¿ë
+     - °´Ã¼¸¦ DB Å×ÀÌºí¿¡ ¸ÂÃç ¸ðµ¨¸µÇÑ´Ù¸é, FK·Î »ç¿ëµÇ´Â °ªÀ» º¯¼ö·Î °¡Áö°í ÀÖ¾î¾ß ÇÔ
+       -> °´Ã¼¸¦ ´Ù·ê ¶§´Â ºÎÀûÀýÇÔ
          ```
          class Member {
             String id;
-            Long teamId;  // TEAM_ID FKì»¬ëŸ¼
+            Long teamId;  // TEAM_ID FKÄÃ·³
             String username;
          }
          class Team {
@@ -63,11 +64,11 @@
          ``` 
          <br>
 
-     - ì°¸ì¡° í˜•ì‹ìœ¼ë¡œ ëª¨ë¸ë§í•œë‹¤ë©´, ì¿¼ë¦¬ ì‹œ íŒŒë¼ë¯¸í„° ë§¤í•‘ ë“±ì—ì„œ êµ‰ìž¥ížˆ ë²ˆê±°ë¡œì›Œì§ˆ ìˆ˜ë„ ìžˆìŒ
+     - ÂüÁ¶ Çü½ÄÀ¸·Î ¸ðµ¨¸µÇÑ´Ù¸é, Äõ¸® ½Ã ÆÄ¶ó¹ÌÅÍ ¸ÅÇÎ µî¿¡¼­ ±²ÀåÈ÷ ¹ø°Å·Î¿öÁú ¼öµµ ÀÖÀ½
          ```
          class Member {
             String id;
-            Team team;  // ì°¸ì¡°ë¥¼ í†µí•œ ì—°ê´€ê´€ê³„
+            Team team;  // ÂüÁ¶¸¦ ÅëÇÑ ¿¬°ü°ü°è
             String username;
          }
          class Team {
@@ -76,9 +77,9 @@
          ``` 
         <br>
 
-     - ì—”í‹°í‹° ì‹ ë¢° ë¬¸ì œ
-       - ê°ì²´ëŠ” ìžìœ ë¡­ê²Œ ë‚´/ì™¸ë¶€ì˜ ê°ì²´ ë“±ìœ¼ë¡œ íƒìƒ‰í•  ìˆ˜ ìžˆì–´ì•¼ í•¨
-       - ì²˜ìŒ ì‹¤í–‰í•˜ëŠ” SQLì— ë”°ë¼ íƒìƒ‰ ë²”ìœ„ê°€ ê²°ì •ë¨
+     - ¿£Æ¼Æ¼ ½Å·Ú ¹®Á¦
+       - °´Ã¼´Â ÀÚÀ¯·Ó°Ô ³»/¿ÜºÎÀÇ °´Ã¼ µîÀ¸·Î Å½»öÇÒ ¼ö ÀÖ¾î¾ß ÇÔ
+       - Ã³À½ ½ÇÇàÇÏ´Â SQL¿¡ µû¶ó Å½»ö ¹üÀ§°¡ °áÁ¤µÊ
          ```
          SELECT M.*, T.*
            FROM MEMBER M
@@ -88,14 +89,14 @@
          member.getTeam();  // ok
          member.getOrder(); // NPE
          ```
-       - ë‹¤ìŒ ê³„ì¸µì˜ ë°ì´í„°ë¥¼ ë¯¿ì„ ìˆ˜ ì—†ìœ¼ë©´ ì§ì ‘ ë“¤ì–´ê°€ì„œ í™•ì¸í•´ ë´ì•¼ í•¨
-       - ê·¸ë ‡ë‹¤ê³  ëª¨ë“  ê°ì²´ë¥¼ ë¯¸ë¦¬ ë¡œë”©í•  ìˆ˜ëŠ” ì—†ìŒ
-         âˆµ ë¶ˆí•„ìš”í•œ ë°ì´í„°ë¥¼ ì¡°íšŒí•˜ë©° ì¿¼ë¦¬ ì„±ëŠ¥ì„ í¬ê²Œ ë–¨ì–´ëœ¨ë¦¼
-       - ìƒí™©ì— ë”°ë¥¸ ì¡°íšŒ ë©”ì„œë“œë¥¼ ì—¬ëŸ¬ ë²Œ ë§Œë“¤ê²Œ ë¨
+       - ´ÙÀ½ °èÃþÀÇ µ¥ÀÌÅÍ¸¦ ¹ÏÀ» ¼ö ¾øÀ¸¸é Á÷Á¢ µé¾î°¡¼­ È®ÀÎÇØ ºÁ¾ß ÇÔ
+       - ±×·¸´Ù°í ¸ðµç °´Ã¼¸¦ ¹Ì¸® ·ÎµùÇÒ ¼ö´Â ¾øÀ½
+         ¡ñ ºÒÇÊ¿äÇÑ µ¥ÀÌÅÍ¸¦ Á¶È¸ÇÏ¸ç Äõ¸® ¼º´ÉÀ» Å©°Ô ¶³¾î¶ß¸²
+       - »óÈ²¿¡ µû¸¥ Á¶È¸ ¸Þ¼­µå¸¦ ¿©·¯ ¹ú ¸¸µé°Ô µÊ
   <br>
 
-  3. ë°ì´í„° íƒ€ìž…
-  4. ë°ì´í„° ì‹ë³„ ë°©ë²•
+  3. µ¥ÀÌÅÍ Å¸ÀÔ
+  4. µ¥ÀÌÅÍ ½Äº° ¹æ¹ý
       ```
       Long memberId = 1;
       Member member1 = dao.getMember(memberId);
@@ -104,347 +105,347 @@
       ```
     <br>
 
-- ê°ì²´ë‹µê²Œ ëª¨ë¸ë§ í• ìˆ˜ë¡ ë§¤í•‘ ìž‘ì—…ì´ ëŠ˜ì–´ë‚¨
-- ê°ì²´ë¥¼ JAVA ì»¬ë ‰ì…˜ì— ì €ìž¥í•˜ë“¯ì´ DBì— ì €ìž¥í•˜ë©´ í•´ê²°í•  ìˆ˜ ìžˆìŒ => JPA
+- °´Ã¼´ä°Ô ¸ðµ¨¸µ ÇÒ¼ö·Ï ¸ÅÇÎ ÀÛ¾÷ÀÌ ´Ã¾î³²
+- °´Ã¼¸¦ JAVA ÄÃ·º¼Ç¿¡ ÀúÀåÇÏµíÀÌ DB¿¡ ÀúÀåÇÏ¸é ÇØ°áÇÒ ¼ö ÀÖÀ½ => JPA
 </details>
 <br>
 
 
-### JPA ì†Œê°œ
+### JPA ¼Ò°³
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
-- JAVAì˜ ORM(Object-Relational Mapping) ê¸°ìˆ  í‘œì¤€
-  - ê°ì²´ëŠ” ê°ì²´ëŒ€ë¡œ, RDBëŠ” RDB ëŒ€ë¡œ ì„¤ê³„ í›„ ORMìœ¼ë¡œ ì¤‘ê°„ì—ì„œ ë§¤í•‘
+- JAVAÀÇ ORM(Object-Relational Mapping) ±â¼ú Ç¥ÁØ
+  - °´Ã¼´Â °´Ã¼´ë·Î, RDB´Â RDB ´ë·Î ¼³°è ÈÄ ORMÀ¸·Î Áß°£¿¡¼­ ¸ÅÇÎ
 <br>
 
-- ì• í”Œë¦¬ì¼€ì´ì…˜ê³¼ JDBC ì‚¬ì´ì—ì„œ ë™ìž‘
+- ¾ÖÇÃ¸®ÄÉÀÌ¼Ç°ú JDBC »çÀÌ¿¡¼­ µ¿ÀÛ
   |      |                                                      |
   | - | - |
-  | ë™ìž‘ | ![](../../../../attachments/2023-03-13-15-58-18.png) |
-  | ì €ìž¥ | ![](../../../../attachments/2023-03-13-15-58-39.png) |
-  | ì¡°íšŒ | ![](../../../../attachments/2023-03-13-15-58-57.png) |
+  | µ¿ÀÛ | ![](../../../../attachments/2023-03-13-15-58-18.png) |
+  | ÀúÀå | ![](../../../../attachments/2023-03-13-15-58-39.png) |
+  | Á¶È¸ | ![](../../../../attachments/2023-03-13-15-58-57.png) |
 <br>
 
-- SQL ì¤‘ì‹¬ì˜ ê°œë°œì—ì„œ ê°ì²´ ì¤‘ì‹¬ìœ¼ë¡œ ê°œë°œ ê°€ëŠ¥
-  - ë²¤ë” ë…ë¦½ì„±
-  - ê°ì²´ RDBì˜ íŒ¨ëŸ¬ë‹¤ìž„ ë¶ˆì¼ì¹˜ í•´ì†Œ
-    - ìƒì†, ì—°ê´€ê´€ê³„, ê°ì²´ ê·¸ëž˜í”„ íƒìƒ‰, ë¹„êµ ë“±
-    âˆµ ê°œë°œìžê°€ jpa ë©”ì„œë“œë¥¼ ì‚¬ìš©í•˜ë©´, ê·¸ì— ë§žê²Œ JPAê°€ SQLì„ ìž‘ì„±í•˜ê¸° ë•Œë¬¸
+- SQL Áß½ÉÀÇ °³¹ß¿¡¼­ °´Ã¼ Áß½ÉÀ¸·Î °³¹ß °¡´É
+  - º¥´õ µ¶¸³¼º
+  - °´Ã¼ RDBÀÇ ÆÐ·¯´ÙÀÓ ºÒÀÏÄ¡ ÇØ¼Ò
+    - »ó¼Ó, ¿¬°ü°ü°è, °´Ã¼ ±×·¡ÇÁ Å½»ö, ºñ±³ µî
+    ¡ñ °³¹ßÀÚ°¡ jpa ¸Þ¼­µå¸¦ »ç¿ëÇÏ¸é, ±×¿¡ ¸Â°Ô JPA°¡ SQLÀ» ÀÛ¼ºÇÏ±â ¶§¹®
 <br>
 
 - CRUD
-  - ì €ìž¥ : em.**persist**(member);
-  - ì¡°íšŒ : Member member = em.**find**(memberId);
-  - ìˆ˜ì • : member.**setName**("memberA");
-  - ì‚­ì œ : em.**remove**(member);
+  - ÀúÀå : em.**persist**(member);
+  - Á¶È¸ : Member member = em.**find**(memberId);
+  - ¼öÁ¤ : member.**setName**("memberA");
+  - »èÁ¦ : em.**remove**(member);
 <br>
 
-- ìœ ì§€ë³´ìˆ˜ì— ìš©ì´
-  - ì»¬ëŸ¼ì´ ë³€ê²½ë˜ë”ë¼ë„ ê°ì²´ì˜ í•„ë“œë§Œ ìˆ˜ì •í•˜ë©´ ë˜ê³ , SQLì€ ë”°ë¡œ ì²˜ë¦¬ê°€ í•„ìš”í•˜ì§€ ì•ŠìŒ
+- À¯Áöº¸¼ö¿¡ ¿ëÀÌ
+  - ÄÃ·³ÀÌ º¯°æµÇ´õ¶óµµ °´Ã¼ÀÇ ÇÊµå¸¸ ¼öÁ¤ÇÏ¸é µÇ°í, SQLÀº µû·Î Ã³¸®°¡ ÇÊ¿äÇÏÁö ¾ÊÀ½
 <br>
 
-- ì‹ ë¢°í•  ìˆ˜ ìžˆëŠ” ë°ì´í„° ê³„ì¸µ
-  - **ì§€ì—° ë¡œë”©**ì„ ì´ìš©í•œ ìžìœ ë¡œìš´ ê°ì²´ ê·¸ëž˜í”„ íƒìƒ‰ì´ ê°€ëŠ¥
+- ½Å·ÚÇÒ ¼ö ÀÖ´Â µ¥ÀÌÅÍ °èÃþ
+  - **Áö¿¬ ·Îµù**À» ÀÌ¿ëÇÑ ÀÚÀ¯·Î¿î °´Ã¼ ±×·¡ÇÁ Å½»öÀÌ °¡´É
 <br>
 
-- ë™ì¼ íŠ¸ëžœìž­ì…˜ ë‚´ì—ì„œ ì¡°íšŒí•œ ì—”í‹°í‹°ëŠ” ê°™ìŒì„ ë³´ìž¥ (â‰’ Java ì»¬ë ‰ì…˜)
-- ì„±ëŠ¥ ìµœì í™”
-  - 1ì°¨ ìºì‹œ ë™ì¼ì„± ë³´ìž¥
-    - ê°™ì€ íŠ¸ëžœìž­ì…˜ ë‚´ì—ì„œ ê°™ì€ ê°ì²´ ë°˜í™˜(ìºì‹±)
-    - 1ë²ˆì§¸ ì¡°íšŒëŠ” ì¿¼ë¦¬ë¥¼ ë‚ ë¦¬ê³ , ë‹¤ìŒë¶€í„°ëŠ” ë©”ëª¨ë¦¬ì—ì„œ ê°€ì ¸ì˜´
+- µ¿ÀÏ Æ®·£Àè¼Ç ³»¿¡¼­ Á¶È¸ÇÑ ¿£Æ¼Æ¼´Â °°À½À» º¸Àå (¡Ö Java ÄÃ·º¼Ç)
+- ¼º´É ÃÖÀûÈ­
+  - 1Â÷ Ä³½Ã µ¿ÀÏ¼º º¸Àå
+    - °°Àº Æ®·£Àè¼Ç ³»¿¡¼­ °°Àº °´Ã¼ ¹ÝÈ¯(Ä³½Ì)
+    - 1¹øÂ° Á¶È¸´Â Äõ¸®¸¦ ³¯¸®°í, ´ÙÀ½ºÎÅÍ´Â ¸Þ¸ð¸®¿¡¼­ °¡Á®¿È
   <br>
 
-  - íŠ¸ëžœìž­ì…˜ì„ ì§€ì›í•˜ëŠ” ì“°ê¸° ì§€ì—°(transactional write-behind)
-    - **íŠ¸ëžœìž­ì…˜ ì»¤ë°‹ ì‹œì **ê¹Œì§€ INSERT SQLì„ ëª¨ì•„ë‘ 
-    - JDBC Batch SQL ê¸°ëŠ¥ì„ ì‚¬ìš©í•´ **í•œ ë²ˆì— ì „ì†¡**
-    - UPDATE, DELETEì˜ ê²½ìš°, íŠ¸ëžœìž­ì…˜ ì»¤ë°‹ ì‹œ SQLì„ ì‹¤í–‰í•˜ê³  ì»¤ë°‹
-    - ì´ ë•Œ, íŠ¸ëžœìž­ì…˜ ì»¤ë°‹ ì „ê¹Œì§€ DBì— **Row Lockì´ ê±¸ë¦¬ì§€ ì•ŠìŒ**
+  - Æ®·£Àè¼ÇÀ» Áö¿øÇÏ´Â ¾²±â Áö¿¬(transactional write-behind)
+    - **Æ®·£Àè¼Ç Ä¿¹Ô ½ÃÁ¡**±îÁö INSERT SQLÀ» ¸ð¾ÆµÒ
+    - JDBC Batch SQL ±â´ÉÀ» »ç¿ëÇØ **ÇÑ ¹ø¿¡ Àü¼Û**
+    - UPDATE, DELETEÀÇ °æ¿ì, Æ®·£Àè¼Ç Ä¿¹Ô ½Ã SQLÀ» ½ÇÇàÇÏ°í Ä¿¹Ô
+    - ÀÌ ¶§, Æ®·£Àè¼Ç Ä¿¹Ô Àü±îÁö DB¿¡ **Row LockÀÌ °É¸®Áö ¾ÊÀ½**
   <br>
 
-  - ì§€ì—° ë¡œë”©(Lazy)ê³¼ ì¦‰ì‹œ ë¡œë”©(Eager)
+  - Áö¿¬ ·Îµù(Lazy)°ú Áï½Ã ·Îµù(Eager)
     ![](../../../../attachments/-%20.png)
-    - ì§€ì—° ë¡œë”© : ê°ì²´ê°€ **ì‹¤ì œ ì‚¬ìš©ë  ë•Œ** ë¡œë”©
-    - ì¦‰ì‹œ ë¡œë”© : JOIN SQLë¡œ ì—°ê´€ëœ ê°ì²´ê¹Œì§€ í•œ ë²ˆì— **ë¯¸ë¦¬ ì¡°íšŒ**
-    - ì—°ê´€ëœ ê°ì²´ì˜ ì‚¬ìš©ë¹ˆë„ë¥¼ ê³ ë ¤í•˜ì—¬ ì„ íƒ
+    - Áö¿¬ ·Îµù : °´Ã¼°¡ **½ÇÁ¦ »ç¿ëµÉ ¶§** ·Îµù
+    - Áï½Ã ·Îµù : JOIN SQL·Î ¿¬°üµÈ °´Ã¼±îÁö ÇÑ ¹ø¿¡ **¹Ì¸® Á¶È¸**
+    - ¿¬°üµÈ °´Ã¼ÀÇ »ç¿ëºóµµ¸¦ °í·ÁÇÏ¿© ¼±ÅÃ
 
 </details>
 <br>
 
 ---
-## **JPA ì‹œìž‘í•˜ê¸°**
-### Hello JPA - í”„ë¡œì íŠ¸ ìƒì„±
+## **JPA ½ÃÀÛÇÏ±â**
+### Hello JPA - ÇÁ·ÎÁ§Æ® »ý¼º
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
 - DB : H2
-- JPA ì„¤ì •
-  - persistentce.xmlì— JPA ì„¤ì • ì •ë³´ ìž…ë ¥
-  - /META-INF/persistentce.xmlë¡œ ìœ„ì¹˜ê°€ ì§€ì •ë˜ì–´ ìžˆìŒ
-  - ë³´í†µ DB í•˜ë‚˜ ë‹¹ persistence-unit í•˜ë‚˜ë¥¼ ì§€ì •í•´ì„œ ì‚¬ìš©
-  - í•„ìˆ˜ ì†ì„± : DB ì •ë³´(driver, user, pw, url, dialect ë“±)
+- JPA ¼³Á¤
+  - persistentce.xml¿¡ JPA ¼³Á¤ Á¤º¸ ÀÔ·Â
+  - /META-INF/persistentce.xml·Î À§Ä¡°¡ ÁöÁ¤µÇ¾î ÀÖÀ½
+  - º¸Åë DB ÇÏ³ª ´ç persistence-unit ÇÏ³ª¸¦ ÁöÁ¤ÇØ¼­ »ç¿ë
+  - ÇÊ¼ö ¼Ó¼º : DB Á¤º¸(driver, user, pw, url, dialect µî)
 
 </details>
 <br>
 
 
-### Hello JPA - ì• í”Œë¦¬ì¼€ì´ì…˜ ê°œë°œ
+### Hello JPA - ¾ÖÇÃ¸®ÄÉÀÌ¼Ç °³¹ß
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
 #### EntityManagerFactory, EntityManager
-- EntityManagerFactory(ì´í•˜ emf) ë¡œë¶€í„° EntityManager(ì´í•˜ em) ë¥¼ íšë“í•˜ì—¬ ì‚¬ìš©
-- ì‚¬ìš©í•œ emf, em ëŠ” `close()`ë¡œ ë°˜í™˜í•´ì•¼ í•¨
+- EntityManagerFactory(ÀÌÇÏ emf) ·ÎºÎÅÍ EntityManager(ÀÌÇÏ em) ¸¦ È¹µæÇÏ¿© »ç¿ë
+- »ç¿ëÇÑ emf, em ´Â `close()`·Î ¹ÝÈ¯ÇØ¾ß ÇÔ
   ![](../../../../attachments/2023-03-13-17-28-29.png)
-- `em.getTransaction()`ìœ¼ë¡œ íŠ¸ëžœìž­ì…˜ ê°ì²´ íšë“ í›„ `begin()`ìœ¼ë¡œ íŠ¸ëžœìž­ì…˜ ì‹œìž‘
-  - `commit()` ë˜ëŠ” `rollback()`ìœ¼ë¡œ íŠ¸ëžœìž­ì…˜ì„ ì¢…ë£Œí•´ì•¼ í•¨
+- `em.getTransaction()`À¸·Î Æ®·£Àè¼Ç °´Ã¼ È¹µæ ÈÄ `begin()`À¸·Î Æ®·£Àè¼Ç ½ÃÀÛ
+  - `commit()` ¶Ç´Â `rollback()`À¸·Î Æ®·£Àè¼ÇÀ» Á¾·áÇØ¾ß ÇÔ
 <br>
 
-- **!ì£¼ì˜**
-  - emfëŠ” **í•˜ë‚˜ë§Œ ìƒì„±**í•´ì„œ ì•± ì „ì²´ì—ì„œ ê³µìœ 
-  - emì€ **ì“°ë ˆë“œê°„ ê³µìœ í•˜ë©´ ì•ˆë¨**(ë°˜ë“œì‹œ ë°˜í™˜)
-  - JPAì˜ ëª¨ë“  ë°ì´í„° ë³€ê²½ì€ **íŠ¸ëžœìž­ì…˜ ì•ˆ**ì—ì„œ ì‹¤í–‰
+- **!ÁÖÀÇ**
+  - emf´Â **ÇÏ³ª¸¸ »ý¼º**ÇØ¼­ ¾Û ÀüÃ¼¿¡¼­ °øÀ¯
+  - emÀº **¾²·¹µå°£ °øÀ¯ÇÏ¸é ¾ÈµÊ**(¹Ýµå½Ã ¹ÝÈ¯)
+  - JPAÀÇ ¸ðµç µ¥ÀÌÅÍ º¯°æÀº **Æ®·£Àè¼Ç ¾È**¿¡¼­ ½ÇÇà
 <br>
   
 #### Entity
-- í´ëž˜ìŠ¤ì— `@Entity` ì• ë…¸í…Œì´ì…˜ìœ¼ë¡œ JPAê°€ ê´€ë¦¬í•  ê°ì²´ìž„ì„ ëª…ì‹œ
-- í•„ë“œì— `@Id` ì• ë…¸í…Œì´ì…˜ìœ¼ë¡œ í•´ë‹¹ í•„ë“œë¥¼ DBì˜ PKì™€ ë§¤í•‘
-- `@Table`, `@Column` ë“±ì˜ ì• ë…¸í…Œì´ì…˜ì€ ê°ì²´ì˜ í•„ë“œëª…ê³¼ DBì˜ ì»¬ëŸ¼ëª…ì´ ë‹¤ë¥¼ ê²½ìš° name ì—˜ë¦¬ë¨¼íŠ¸ë¡œ ëª…ì‹œ
+- Å¬·¡½º¿¡ `@Entity` ¾Ö³ëÅ×ÀÌ¼ÇÀ¸·Î JPA°¡ °ü¸®ÇÒ °´Ã¼ÀÓÀ» ¸í½Ã
+- ÇÊµå¿¡ `@Id` ¾Ö³ëÅ×ÀÌ¼ÇÀ¸·Î ÇØ´ç ÇÊµå¸¦ DBÀÇ PK¿Í ¸ÅÇÎ
+- `@Table`, `@Column` µîÀÇ ¾Ö³ëÅ×ÀÌ¼ÇÀº °´Ã¼ÀÇ ÇÊµå¸í°ú DBÀÇ ÄÃ·³¸íÀÌ ´Ù¸¦ °æ¿ì name ¿¤¸®¸ÕÆ®·Î ¸í½Ã
 <br>
 
 #### JPQL
-- JPAê°€ ì œê³µí•˜ëŠ” SQLì„ ì¶”ìƒí™”í•œ ì¿¼ë¦¬ ì–¸ì–´
-  âˆ´ íŠ¹ì • DB SQLì— ì˜ì¡´í•˜ì§€ ì•ŠìŒ
-- SELECT, FROM, WHERE, GROUP BY, HAVING, JOIN ì§€ì›
-- `em.createQuery()` íŒŒë¼ë¯¸í„°ë¡œ jpqlì„ ìž‘ì„±í•´ SQLì„ ìˆ˜í–‰í•  ìˆ˜ ìžˆìŒ
-- ê²€ìƒ‰ ì¿¼ë¦¬ ë“±ì—ì„œë„ í…Œì´ë¸”ì´ ì•„ë‹Œ **ì—”í‹°í‹° ê°ì²´ë¥¼ ëŒ€ìƒ**ìœ¼ë¡œ ê²€ìƒ‰
-  - ëª¨ë“  DB ë°ì´í„°ë¥¼ ê°ì²´ë¡œ ë³€í™˜í•  ìˆ˜ ì—†ìŒ
-  - ê²°êµ­ ê²€ìƒ‰ ì¡°ê±´ì´ í¬í•¨ëœ SQLì„ ì‚¬ìš©í•´ì•¼ í•˜ë¯€ë¡œ JPQLì„ ì‚¬ìš©
+- JPA°¡ Á¦°øÇÏ´Â SQLÀ» Ãß»óÈ­ÇÑ Äõ¸® ¾ð¾î
+  ¡Å Æ¯Á¤ DB SQL¿¡ ÀÇÁ¸ÇÏÁö ¾ÊÀ½
+- SELECT, FROM, WHERE, GROUP BY, HAVING, JOIN Áö¿ø
+- `em.createQuery()` ÆÄ¶ó¹ÌÅÍ·Î jpqlÀ» ÀÛ¼ºÇØ SQLÀ» ¼öÇàÇÒ ¼ö ÀÖÀ½
+- °Ë»ö Äõ¸® µî¿¡¼­µµ Å×ÀÌºíÀÌ ¾Æ´Ñ **¿£Æ¼Æ¼ °´Ã¼¸¦ ´ë»ó**À¸·Î °Ë»ö
+  - ¸ðµç DB µ¥ÀÌÅÍ¸¦ °´Ã¼·Î º¯È¯ÇÒ ¼ö ¾øÀ½
+  - °á±¹ °Ë»ö Á¶°ÇÀÌ Æ÷ÇÔµÈ SQLÀ» »ç¿ëÇØ¾ß ÇÏ¹Ç·Î JPQLÀ» »ç¿ë
 
 </details>
 <br>
 
 ---
-## **ì˜ì†ì„± ê´€ë¦¬ - ë‚´ë¶€ ë™ìž‘ ë°©ì‹**
-### ì˜ì†ì„± ì»¨í…ìŠ¤íŠ¸ 1
+## **¿µ¼Ó¼º °ü¸® - ³»ºÎ µ¿ÀÛ ¹æ½Ä**
+### ¿µ¼Ó¼º ÄÁÅØ½ºÆ® 1
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
-#### **ì˜ì†ì„± ì»¨í…ìŠ¤íŠ¸**
-  - ì—”í‹°í‹°ë¥¼ ì˜êµ¬ ì €ìž¥í•˜ëŠ” í™˜ê²½(ë…¼ë¦¬ì  ê°œë…)
-  - emì„ í†µí•´ì„œ ì˜ì†ì„± ì»¨í…ìŠ¤íŠ¸ì— ì ‘ê·¼
+#### **¿µ¼Ó¼º ÄÁÅØ½ºÆ®**
+  - ¿£Æ¼Æ¼¸¦ ¿µ±¸ ÀúÀåÇÏ´Â È¯°æ(³í¸®Àû °³³ä)
+  - emÀ» ÅëÇØ¼­ ¿µ¼Ó¼º ÄÁÅØ½ºÆ®¿¡ Á¢±Ù
   - `em.persist(entity);`
 <br>
 
-#### ì—”í‹°í‹°ì˜ ìƒëª…ì£¼ê¸°
+#### ¿£Æ¼Æ¼ÀÇ »ý¸íÁÖ±â
   ```
   Member member = new Member();
   member.setId("member1");
-  member.setName("memberA");    // ë¹„ì˜ì†
+  member.setName("memberA");    // ºñ¿µ¼Ó
 
   em.getTransaction().begin();
-  em.persist(member);           // ì˜ì†
-  em.detach(member);            // ì¤€ì˜ì†
+  em.persist(member);           // ¿µ¼Ó
+  em.detach(member);            // ÁØ¿µ¼Ó
   ```
-   - ë¹„ì˜ì† (new / transient)
-  - ì˜ì† (managed)
-  - ì¤€ì˜ì† (detached)
-  - ì‚­ì œ (removed)
+   - ºñ¿µ¼Ó (new / transient)
+  - ¿µ¼Ó (managed)
+  - ÁØ¿µ¼Ó (detached)
+  - »èÁ¦ (removed)
 
 </details>
 <br>
 
 
-### ì˜ì†ì„± ì»¨í…ìŠ¤íŠ¸ 2
+### ¿µ¼Ó¼º ÄÁÅØ½ºÆ® 2
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
-#### ì—”í‹°í‹° ì¡°íšŒ, 1ì°¨ ìºì‹œ
-  - 1ì°¨ ìºì‹œ
+#### ¿£Æ¼Æ¼ Á¶È¸, 1Â÷ Ä³½Ã
+  - 1Â÷ Ä³½Ã
 
     |    @Id    | Entity |
     | :-: | :-: |
     | "member1" | member |
 
   - `em.find(Member.class, "member1");`
-    1. 1ì°¨ ìºì‹œì—ì„œ ì¡°íšŒ -> ì¡°íšŒ ê²°ê³¼ ì¡´ìž¬
-    2. ì¡°íšŒ ê²°ê³¼ë¥¼ ë°˜í™˜
+    1. 1Â÷ Ä³½Ã¿¡¼­ Á¶È¸ -> Á¶È¸ °á°ú Á¸Àç
+    2. Á¶È¸ °á°ú¸¦ ¹ÝÈ¯
     <br>
     
   - `em.find(Member.class, "member2");`
-    1. 1ì°¨ ìºì‹œì—ì„œ ì¡°íšŒ -> ì¡°íšŒ ê²°ê³¼ ì—†ìŒ
-    2. DB ì¡°íšŒ
-    3. DB ì¡°íšŒ ê²°ê³¼ë¥¼ 1ì°¨ ìºì‹œì— ì €ìž¥
-    4. ì¡°íšŒ ê²°ê³¼ë¥¼ ë°˜í™˜
+    1. 1Â÷ Ä³½Ã¿¡¼­ Á¶È¸ -> Á¶È¸ °á°ú ¾øÀ½
+    2. DB Á¶È¸
+    3. DB Á¶È¸ °á°ú¸¦ 1Â÷ Ä³½Ã¿¡ ÀúÀå
+    4. Á¶È¸ °á°ú¸¦ ¹ÝÈ¯
     <br>
 
-  - 1ì°¨ ìºì‹œì˜ ì„±ëŠ¥ì  ì´ìµì€ í¬ì§€ ì•ŠìŒ
-    - emì€ ë³´í†µ íŠ¸ëžœìž­ì…˜ ë‹¨ìœ„ë¡œ ì¡´ìž¬í•˜ê³ , ìš”ì²­ì´ ì¢…ë£Œ ë  ë•Œ ê°™ì´ ì¢…ë£Œ; 1ì°¨ ìºì‹œë„ ì‚­ì œ
-    - í•˜ë‚˜ì˜ íŠ¸ëžœìž­ì…˜ ì•ˆì—ì„œë§Œ ì´ìµì„ ë³¼ ìˆ˜ ìžˆëŠ” êµ¬ì¡°
-    - JPA(ë˜ëŠ” Hibernate)ì—ì„œ ì• í”Œë¦¬ì¼€ì´ì…˜ ì „ì³‰ì—ì„œ ê³µìœ í•˜ëŠ” ìºì‹œëŠ” 2ì°¨ ìºì‹œë¼ í•¨
+  - 1Â÷ Ä³½ÃÀÇ ¼º´ÉÀû ÀÌÀÍÀº Å©Áö ¾ÊÀ½
+    - emÀº º¸Åë Æ®·£Àè¼Ç ´ÜÀ§·Î Á¸ÀçÇÏ°í, ¿äÃ»ÀÌ Á¾·á µÉ ¶§ °°ÀÌ Á¾·á; 1Â÷ Ä³½Ãµµ »èÁ¦
+    - ÇÏ³ªÀÇ Æ®·£Àè¼Ç ¾È¿¡¼­¸¸ ÀÌÀÍÀ» º¼ ¼ö ÀÖ´Â ±¸Á¶
+    - JPA(¶Ç´Â Hibernate)¿¡¼­ ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ÀüÃÃ¿¡¼­ °øÀ¯ÇÏ´Â Ä³½Ã´Â 2Â÷ Ä³½Ã¶ó ÇÔ
 <br>
 
-#### ì˜ì† ì—”í‹°í‹°ì˜ ë™ì¼ì„± ë³´ìž¥
+#### ¿µ¼Ó ¿£Æ¼Æ¼ÀÇ µ¿ÀÏ¼º º¸Àå
 ```
 Member a = em.find(Member.class, "member1");
 Member b = em.find(Member.class, "member1");
 
 System.out.println(a == b); // true
 ```
-- 1ì°¨ ìºì‹œë¥¼ ì´ìš©í•˜ì—¬ ê°™ì€ ì°¸ì¡°ë¥¼ ê°€ì§„ ê°ì²´ì²˜ëŸ¼ ë¹„êµ
-- ë°˜ë³µ ê°€ëŠ¥í•œ ì½ê¸°(REPEATABLE READ) ë“±ê¸‰ì˜ íŠ¸ëžœìž­ì…˜ ê²©ë¦¬ ìˆ˜ì¤€ì„ DBê°€ ì•„ë‹Œ ì• í”Œë¦¬ì¼€ì´ì…˜ì—ì„œ ì œê³µ
+- 1Â÷ Ä³½Ã¸¦ ÀÌ¿ëÇÏ¿© °°Àº ÂüÁ¶¸¦ °¡Áø °´Ã¼Ã³·³ ºñ±³
+- ¹Ýº¹ °¡´ÉÇÑ ÀÐ±â(REPEATABLE READ) µî±ÞÀÇ Æ®·£Àè¼Ç °Ý¸® ¼öÁØÀ» DB°¡ ¾Æ´Ñ ¾ÖÇÃ¸®ÄÉÀÌ¼Ç¿¡¼­ Á¦°ø
 <br>
 
-#### ì—”í‹°í‹° ë“±ë¡
-- íŠ¸ëžœìž­ì…˜ì„ ì§€ì›í•˜ëŠ” ì“°ê¸° ì§€ì—°
+#### ¿£Æ¼Æ¼ µî·Ï
+- Æ®·£Àè¼ÇÀ» Áö¿øÇÏ´Â ¾²±â Áö¿¬
   |                    `em.persist()`                    |                    `tx.commit()`                     |
   | :--: | :--: |
   | ![](../../../../attachments/2023-03-18-00-29-40.png) | ![](../../../../attachments/2023-03-18-00-31-04.png) |
-    - `em.persist()` ë•Œ SQLì„ ìƒì„±í•´ì„œ ì“°ê¸° ì§€ì—° SQL ì €ìž¥ì†Œì— ë³´ê´€
-    - íŠ¸ëžœìž­ì…˜ commit ì§ì „ì— SQLì„ flush(DBë¡œ ì „ì†¡)í•˜ê³  DBì—ì„œ commit
-    - ì˜ˆì™¸ì˜ ê²½ìš°ê°€ ì¡´ìž¬í•¨ (`GenerationType.SEQUENCE)`
-    - ë²„í¼ë§ ê°€ëŠ¥ : Hibernateì˜ ê²½ìš° hibernate.jdbc.batch.size ì˜µì…˜ì—ì„œ ì„¤ì •í•œ ë§Œí¼ ì¿¼ë¦¬ë¥¼ ë³´ë‚´ê³  DB commit
+    - `em.persist()` ¶§ SQLÀ» »ý¼ºÇØ¼­ ¾²±â Áö¿¬ SQL ÀúÀå¼Ò¿¡ º¸°ü
+    - Æ®·£Àè¼Ç commit Á÷Àü¿¡ SQLÀ» flush(DB·Î Àü¼Û)ÇÏ°í DB¿¡¼­ commit
+    - ¿¹¿ÜÀÇ °æ¿ì°¡ Á¸ÀçÇÔ (`GenerationType.SEQUENCE)`
+    - ¹öÆÛ¸µ °¡´É : HibernateÀÇ °æ¿ì hibernate.jdbc.batch.size ¿É¼Ç¿¡¼­ ¼³Á¤ÇÑ ¸¸Å­ Äõ¸®¸¦ º¸³»°í DB commit
 <br>
 
-#### ì—”í‹°í‹° ìˆ˜ì •
-- ë³€ê²½ ê°ì§€(dirty checking)
+#### ¿£Æ¼Æ¼ ¼öÁ¤
+- º¯°æ °¨Áö(dirty checking)
   ![](../../../../attachments/2023-03-18-00-43-08.png)
-  - ìŠ¤ëƒ…ìƒ· : ì—”í‹°í‹°ë¥¼ ì½ì–´ì˜¨ ìµœì´ˆ ì‹œì ì˜ ìƒíƒœë¥¼ ë³´ê´€í•œ ê²ƒ
-  - `em.flush()` í•  ë•Œ(íŠ¸ëžœìž­ì…˜ ì»¤ë°‹ ì‹œì ) ì—”í‹°í‹°ì™€ ìŠ¤ëƒ…ìƒ·ì„ ë¹„êµ
-  - ë§Œì•½ ì—”í‹°í‹°ì™€ ìŠ¤ëƒ…ìƒ·ì— ì°¨ì´ê°€ ìžˆë‹¤ë©´ ì“°ê¸° ì§€ì—° SQL ì €ìž¥ì†Œì— UPDATE ì¿¼ë¦¬ ì¶”ê°€
+  - ½º³À¼¦ : ¿£Æ¼Æ¼¸¦ ÀÐ¾î¿Â ÃÖÃÊ ½ÃÁ¡ÀÇ »óÅÂ¸¦ º¸°üÇÑ °Í
+  - `em.flush()` ÇÒ ¶§(Æ®·£Àè¼Ç Ä¿¹Ô ½ÃÁ¡) ¿£Æ¼Æ¼¿Í ½º³À¼¦À» ºñ±³
+  - ¸¸¾à ¿£Æ¼Æ¼¿Í ½º³À¼¦¿¡ Â÷ÀÌ°¡ ÀÖ´Ù¸é ¾²±â Áö¿¬ SQL ÀúÀå¼Ò¿¡ UPDATE Äõ¸® Ãß°¡
 <br>
 
-#### ì—”í‹°í‹° ì‚­ì œ
-- `em.remove(entity)`ë¡œ ì‚­ì œ 
-- ê°™ì€ ë°©ì‹ìœ¼ë¡œ ì“°ê¸° ì§€ì—° SQL ì €ìž¥ì†Œì— DELETE ì¿¼ë¦¬ ìƒì„± í›„ flush
+#### ¿£Æ¼Æ¼ »èÁ¦
+- `em.remove(entity)`·Î »èÁ¦ 
+- °°Àº ¹æ½ÄÀ¸·Î ¾²±â Áö¿¬ SQL ÀúÀå¼Ò¿¡ DELETE Äõ¸® »ý¼º ÈÄ flush
 
 </details>
 <br>
 
 
-### í”ŒëŸ¬ì‹œ
+### ÇÃ·¯½Ã
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
-#### ì •ì˜ : ì˜ì†ì„± ì»¨í…ìŠ¤íŠ¸ì˜ ë³€ê²½ ë‚´ìš©ì„ DBì— ë°˜ì˜í•˜ëŠ” ê²ƒ
+#### Á¤ÀÇ : ¿µ¼Ó¼º ÄÁÅØ½ºÆ®ÀÇ º¯°æ ³»¿ëÀ» DB¿¡ ¹Ý¿µÇÏ´Â °Í
 <br>
 
-#### íŠ¸ëžœìž­ì…˜ commit ì‹œ í”ŒëŸ¬ì‹œ ë°œìƒ
-- ë³€ê²½ ê°ì§€
-- ë³€ê²½ ê°ì§€í•œ ê²°ê³¼ë¡œ ìˆ˜ì •ëœ ì—”í‹°í‹°ì— ëŒ€í•œ UPDATE ì¿¼ë¦¬ë¥¼ ì“°ê¸° ì§€ì—° SQL ì €ìž¥ì†Œì— ë“±ë¡
-- ì“°ê¸° ì§€ì—° SQL ì €ìž¥ì†Œì˜ ì¿¼ë¦¬(ë“±ë¡, ìˆ˜ì •, ì‚­ì œ)ë¥¼ DBì— ì „ì†¡
+#### Æ®·£Àè¼Ç commit ½Ã ÇÃ·¯½Ã ¹ß»ý
+- º¯°æ °¨Áö
+- º¯°æ °¨ÁöÇÑ °á°ú·Î ¼öÁ¤µÈ ¿£Æ¼Æ¼¿¡ ´ëÇÑ UPDATE Äõ¸®¸¦ ¾²±â Áö¿¬ SQL ÀúÀå¼Ò¿¡ µî·Ï
+- ¾²±â Áö¿¬ SQL ÀúÀå¼ÒÀÇ Äõ¸®(µî·Ï, ¼öÁ¤, »èÁ¦)¸¦ DB¿¡ Àü¼Û
 <br>
 
-#### í”ŒëŸ¬ì‹œ í•˜ëŠ” ë°©ë²•
+#### ÇÃ·¯½Ã ÇÏ´Â ¹æ¹ý
 - `em.flush()`
-  - ì§ì ‘ í˜¸ì¶œ
-  - ì»¤ë°‹ ì „ ë¯¸ë¦¬ DBì— ë°˜ì˜, ì „ì†¡ë˜ëŠ” ì¿¼ë¦¬ í™•ì¸, í…ŒìŠ¤íŠ¸ ìš©ë„ë¡œ ê°•ì œ í˜¸ì¶œí•´ì„œ ì‚¬ìš©
-  - í”ŒëŸ¬ì‹œ í•œë‹¤ê³  í•´ì„œ 1ì°¨ ìºì‹œê°€ ì§€ì›Œì§€ëŠ” ê²ƒì€ ì•„ë‹˜
-- íŠ¸ëžœìž­ì…˜ ì»¤ë°‹ : í”ŒëŸ¬ì‹œ ìžë™ í˜¸ì¶œ
-- JPQL ì¿¼ë¦¬ ì‹¤í–‰
-  - í”ŒëŸ¬ì‹œ ìžë™ í˜¸ì¶œ
-  - JPQLì€ ì¦‰ì‹œ DBì—ì„œ ì‹¤í–‰ë˜ê¸° ë•Œë¬¸ì— ì‹¤í–‰ ì „ ì˜ì†ì„± ì»¨í…ìŠ¤íŠ¸ì˜ ìƒíƒœë¥¼ DBì— ë™ê¸°í™”í•˜ê¸° ìœ„í•¨
-  - ex) `em.persist(memberC)` í˜¸ì¶œ í›„ JPQLë¡œ ì „ì²´ íšŒì›ì„ ì¡°íšŒí•œë‹¤ë©´, DBì—ì„œ INSERTê°€ ì‹¤í–‰ë˜ì–´ì•¼ memberCì˜ ì •ë³´ë„ ì¡°íšŒí•  ìˆ˜ ìžˆìŒ
+  - Á÷Á¢ È£Ãâ
+  - Ä¿¹Ô Àü ¹Ì¸® DB¿¡ ¹Ý¿µ, Àü¼ÛµÇ´Â Äõ¸® È®ÀÎ, Å×½ºÆ® ¿ëµµ·Î °­Á¦ È£ÃâÇØ¼­ »ç¿ë
+  - ÇÃ·¯½Ã ÇÑ´Ù°í ÇØ¼­ 1Â÷ Ä³½Ã°¡ Áö¿öÁö´Â °ÍÀº ¾Æ´Ô
+- Æ®·£Àè¼Ç Ä¿¹Ô : ÇÃ·¯½Ã ÀÚµ¿ È£Ãâ
+- JPQL Äõ¸® ½ÇÇà
+  - ÇÃ·¯½Ã ÀÚµ¿ È£Ãâ
+  - JPQLÀº Áï½Ã DB¿¡¼­ ½ÇÇàµÇ±â ¶§¹®¿¡ ½ÇÇà Àü ¿µ¼Ó¼º ÄÁÅØ½ºÆ®ÀÇ »óÅÂ¸¦ DB¿¡ µ¿±âÈ­ÇÏ±â À§ÇÔ
+  - ex) `em.persist(memberC)` È£Ãâ ÈÄ JPQL·Î ÀüÃ¼ È¸¿øÀ» Á¶È¸ÇÑ´Ù¸é, DB¿¡¼­ INSERT°¡ ½ÇÇàµÇ¾î¾ß memberCÀÇ Á¤º¸µµ Á¶È¸ÇÒ ¼ö ÀÖÀ½
 <br>
 
-#### í”ŒëŸ¬ì‹œ ëª¨ë“œ ì˜µì…˜ : `em.setFlushMode(FlushModeType flushModeType)`
-- FlushModeType.AUTO : ì»¤ë°‹ì´ë‚˜ ì¿¼ë¦¬ë¥¼ ì‹¤í–‰í•  ë•Œ í”ŒëŸ¬ì‹œ(default)
-- FlushModeType.COMMIT : ì»¤ë°‹í•  ë•Œë§Œ í”ŒëŸ¬ì‹œ
+#### ÇÃ·¯½Ã ¸ðµå ¿É¼Ç : `em.setFlushMode(FlushModeType flushModeType)`
+- FlushModeType.AUTO : Ä¿¹ÔÀÌ³ª Äõ¸®¸¦ ½ÇÇàÇÒ ¶§ ÇÃ·¯½Ã(default)
+- FlushModeType.COMMIT : Ä¿¹ÔÇÒ ¶§¸¸ ÇÃ·¯½Ã
 <br>
 
-#### **!ì£¼ì˜**
-- í”ŒëŸ¬ì‹œëŠ” ***ì˜ì†ì„± ì»¨í…ìŠ¤íŠ¸ë¥¼ ë¹„ìš°ì§€ ì•ŠìŒ***
-- ì˜ì†ì„± ì»¨í…ìŠ¤íŠ¸ì˜ **ë³€ê²½ë‚´ìš©ì„ DBì— ë™ê¸°í™”**
-- íŠ¸ëžœìž­ì…˜ì´ë¼ëŠ” ìž‘ì—… ë‹¨ìœ„ê°€ ì¤‘ìš”í•˜ë¯€ë¡œ, ì»¤ë°‹ ì§ì „ì—ë§Œ ë™ê¸°í™”í•˜ë©´ ë¨
+#### **!ÁÖÀÇ**
+- ÇÃ·¯½Ã´Â ***¿µ¼Ó¼º ÄÁÅØ½ºÆ®¸¦ ºñ¿ìÁö ¾ÊÀ½***
+- ¿µ¼Ó¼º ÄÁÅØ½ºÆ®ÀÇ **º¯°æ³»¿ëÀ» DB¿¡ µ¿±âÈ­**
+- Æ®·£Àè¼ÇÀÌ¶ó´Â ÀÛ¾÷ ´ÜÀ§°¡ Áß¿äÇÏ¹Ç·Î, Ä¿¹Ô Á÷Àü¿¡¸¸ µ¿±âÈ­ÇÏ¸é µÊ
 
 </details>
 <br>
 
 
-### ì¤€ì˜ì† ìƒíƒœ
+### ÁØ¿µ¼Ó »óÅÂ
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
-#### ì¤€ì˜ì† ìƒíƒœë¡œ ë§Œë“œëŠ” ë°©ë²•
-- `em.detach(entity)` : íŠ¹ì • ì—”í‹°í‹°ë¥¼ ì¤€ì˜ì† ìƒíƒœë¡œ ì „í™˜
-- `em.clear()` : ì˜ì†ì„± ì»¨í…ìŠ¤íŠ¸ë¥¼ ì´ˆê¸°í™”
-- `em.close()` : ì˜ì†ì„± ì»¨í…ìŠ¤íŠ¸ ì¢…ë£Œ
-- í…ŒìŠ¤íŠ¸ í™˜ê²½ì—ì„œ ì‚¬ìš©, ë‹¨ìˆœí•œ ë¡œì§ì—ì„œëŠ” ì‚¬ì‹¤ìƒ í•„ìš” ì—†ìŒ
+#### ÁØ¿µ¼Ó »óÅÂ·Î ¸¸µå´Â ¹æ¹ý
+- `em.detach(entity)` : Æ¯Á¤ ¿£Æ¼Æ¼¸¦ ÁØ¿µ¼Ó »óÅÂ·Î ÀüÈ¯
+- `em.clear()` : ¿µ¼Ó¼º ÄÁÅØ½ºÆ®¸¦ ÃÊ±âÈ­
+- `em.close()` : ¿µ¼Ó¼º ÄÁÅØ½ºÆ® Á¾·á
+- Å×½ºÆ® È¯°æ¿¡¼­ »ç¿ë, ´Ü¼øÇÑ ·ÎÁ÷¿¡¼­´Â »ç½Ç»ó ÇÊ¿ä ¾øÀ½
 
 </details>
 <br>
 
 
-### ì •ë¦¬
-#### ê± ì •ë¦¬ì˜€ìŒ
+### Á¤¸®
+#### °Á Á¤¸®¿´À½
 <br>
 
 ---
-## **ì—”í‹°í‹° ë§¤í•‘**
-### ê°ì²´ì™€ í…Œì´ë¸” ë§¤í•‘
+## **¿£Æ¼Æ¼ ¸ÅÇÎ**
+### °´Ã¼¿Í Å×ÀÌºí ¸ÅÇÎ
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
-#### ì—”í‹°í‹° ë§¤í•‘ ì†Œê°œ
-- ê°ì²´-í…Œì´ë¸” ë§¤í•‘ : `@Entity`, `@Table`
-- í•„ë“œ-ì»¬ëŸ¼ ë§¤í•‘ : `@Column`
-- ê¸°ë³¸ í‚¤ ë§¤í•‘ : `@Id`
-- ì—°ê´€ê´€ê³„ ë§¤í•‘ : `@ManyToOne`, `@JoinColumn` ë“±
+#### ¿£Æ¼Æ¼ ¸ÅÇÎ ¼Ò°³
+- °´Ã¼-Å×ÀÌºí ¸ÅÇÎ : `@Entity`, `@Table`
+- ÇÊµå-ÄÃ·³ ¸ÅÇÎ : `@Column`
+- ±âº» Å° ¸ÅÇÎ : `@Id`
+- ¿¬°ü°ü°è ¸ÅÇÎ : `@ManyToOne`, `@JoinColumn` µî
 <br>
 
 #### @Entity
-- í´ëž˜ìŠ¤ì— ë¶™ì´ë©°, JPAê°€ ì—”í‹°í‹°ë¡œ ê´€ë¦¬í•œë‹¤ëŠ” ì˜ë¯¸
-- JPAë¡œ í…Œì´ë¸”ê³¼ ë§¤í•‘í•  í´ëž˜ìŠ¤ì—ëŠ” **í•„ìˆ˜**
-- **!ì£¼ì˜**
-  - **ê¸°ë³¸ ìƒì„±ìž í•„ìˆ˜** (protectedê¹Œì§€ í—ˆìš©)
-  - fianl í´ëž˜ìŠ¤, enum, interface, inner í´ëž˜ìŠ¤ì—ëŠ” ì‚¬ìš©í•˜ì§€ ì•ŠìŒ
-  - ì €ìž¥í•  í•„ë“œì—ëŠ” final 
+- Å¬·¡½º¿¡ ºÙÀÌ¸ç, JPA°¡ ¿£Æ¼Æ¼·Î °ü¸®ÇÑ´Ù´Â ÀÇ¹Ì
+- JPA·Î Å×ÀÌºí°ú ¸ÅÇÎÇÒ Å¬·¡½º¿¡´Â **ÇÊ¼ö**
+- **!ÁÖÀÇ**
+  - **±âº» »ý¼ºÀÚ ÇÊ¼ö** (protected±îÁö Çã¿ë)
+  - fianl Å¬·¡½º, enum, interface, inner Å¬·¡½º¿¡´Â »ç¿ëÇÏÁö ¾ÊÀ½
+  - ÀúÀåÇÒ ÇÊµå¿¡´Â final 
 
 </details>
 <br>
 
 
-### ë°ì´í„°ë² ì´ìŠ¤ ìŠ¤í‚¤ë§ˆ ìžë™ ìƒì„±
+### µ¥ÀÌÅÍº£ÀÌ½º ½ºÅ°¸¶ ÀÚµ¿ »ý¼º
 <details>
-<summary>ë³´ê¸°</summary>
-
-
-</details>
-<br>
-
-
-### í•„ë“œì™€ ì»¬ëŸ¼ ë§¤í•‘
-<details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
 
 </details>
 <br>
 
 
-### ê¸°ë³¸ í‚¤ ë§¤í•‘
+### ÇÊµå¿Í ÄÃ·³ ¸ÅÇÎ
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
-#### ê¸°ë³¸ í‚¤ ë§¤í•‘ ì• ë…¸í…Œì´ì…˜
-- `@Id` : `@Id`ë§Œ ì‚¬ìš© ì‹œ ê°’ì„ ì§ì ‘ í• ë‹¹
-- `@GeneratedValue(strategy = GenerationType.AUTO)` : ê°’ ìžë™ ìƒì„±
-  - IDENTITY : DBì— ìœ„ìž„ / MySQL
-  - SEQUENCE : DB ì‹œí€€ìŠ¤ ì‚¬ìš©, `@SequenceGenerator` í•„ìš” / ORACLE
-  - TABLE : í‚¤ ìƒì„±ìš© í…Œì´ë¸” ì‚¬ìš©, `@TableGenerator` í•„ìš” / ëª¨ë“  DB ê°€ëŠ¥
-  - AUTO : ë°©ì–¸ì— ë”°ë¼ ìžë™ ì§€ì •, default
+
+</details>
+<br>
+
+
+### ±âº» Å° ¸ÅÇÎ
+<details>
+<summary>º¸±â</summary>
+
+#### ±âº» Å° ¸ÅÇÎ ¾Ö³ëÅ×ÀÌ¼Ç
+- `@Id` : `@Id`¸¸ »ç¿ë ½Ã °ªÀ» Á÷Á¢ ÇÒ´ç
+- `@GeneratedValue(strategy = GenerationType.AUTO)` : °ª ÀÚµ¿ »ý¼º
+  - IDENTITY : DB¿¡ À§ÀÓ / MySQL
+  - SEQUENCE : DB ½ÃÄö½º »ç¿ë, `@SequenceGenerator` ÇÊ¿ä / ORACLE
+  - TABLE : Å° »ý¼º¿ë Å×ÀÌºí »ç¿ë, `@TableGenerator` ÇÊ¿ä / ¸ðµç DB °¡´É
+  - AUTO : ¹æ¾ð¿¡ µû¶ó ÀÚµ¿ ÁöÁ¤, default
 
 #### GenerationType.IDENTITY
-- DBì— ê¸°ë³¸ í‚¤ ìƒì„± ìœ„ìž„
-- MySQL, PostgreSQL, SQL Server, DB2 ë“±
-  - ex) MySQLì˜ AUTO_INCREMENT ì†ì„±
-- ë‹¨, AUTO_INCREMENTëŠ” DBì—ì„œ INSERTê°€ ì‹¤í–‰ë˜ì–´ì•¼ IDë¥¼ ì–»ì„ ìˆ˜ ìžˆìŒ
-  - `em.persist()`  ì‹œì ì— ì¦‰ì‹œ INSERTë¥¼ ì‹¤í–‰ì‹œì¼œ PK ê°’ì„ íšë“
+- DB¿¡ ±âº» Å° »ý¼º À§ÀÓ
+- MySQL, PostgreSQL, SQL Server, DB2 µî
+  - ex) MySQLÀÇ AUTO_INCREMENT ¼Ó¼º
+- ´Ü, AUTO_INCREMENT´Â DB¿¡¼­ INSERT°¡ ½ÇÇàµÇ¾î¾ß ID¸¦ ¾òÀ» ¼ö ÀÖÀ½
+  - `em.persist()`  ½ÃÁ¡¿¡ Áï½Ã INSERT¸¦ ½ÇÇà½ÃÄÑ PK °ªÀ» È¹µæ
 
 #### GenerationType.SEQUENCE
-- DB ì˜¤ë¸Œì íŠ¸ì¸ ì‹œí€€ìŠ¤ ì‚¬ìš©
-- Oracle, PostgreSQL, DB2, H2 DB ë“±
-- í´ëž˜ìŠ¤ì— `@SequenceGenerator`ë¥¼ ì„ ì–¸í•´ ë§¤í•‘
+- DB ¿ÀºêÁ§Æ®ÀÎ ½ÃÄö½º »ç¿ë
+- Oracle, PostgreSQL, DB2, H2 DB µî
+- Å¬·¡½º¿¡ `@SequenceGenerator`¸¦ ¼±¾ðÇØ ¸ÅÇÎ
   - ```
     @Entity
     @SequenceGenerator(
@@ -464,165 +465,165 @@ System.out.println(a == b); // true
 <br>
 
 
-### ì‹¤ì „ ì˜ˆì œ 1 - ìš”êµ¬ì‚¬í•­ ë¶„ì„ê³¼ ê¸°ë³¸ ë§¤í•‘
+### ½ÇÀü ¿¹Á¦ 1 - ¿ä±¸»çÇ× ºÐ¼®°ú ±âº» ¸ÅÇÎ
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
-#### ê¸°ëŠ¥ ëª©ë¡
-- íšŒì› ê¸°ëŠ¥
-  - íšŒì› ë“±ë¡
-  - íšŒì› ì¡°íšŒ
+#### ±â´É ¸ñ·Ï
+- È¸¿ø ±â´É
+  - È¸¿ø µî·Ï
+  - È¸¿ø Á¶È¸
 <br>
 
-- ìƒí’ˆ ê¸°ëŠ¥
-  - ìƒí’ˆ ë“±ë¡
-  - ìƒí’ˆ ìˆ˜ì •
-  - ìƒí’ˆ ì¡°íšŒ
+- »óÇ° ±â´É
+  - »óÇ° µî·Ï
+  - »óÇ° ¼öÁ¤
+  - »óÇ° Á¶È¸
 <br>
 
-- ì£¼ë¬¸ ê¸°ëŠ¥
-  - ìƒí’ˆ ì£¼ë¬¸
-  - ì£¼ë¬¸ë‚´ì—­ ì¡°íšŒ
-  - ì£¼ë¬¸ ì·¨ì†Œ
+- ÁÖ¹® ±â´É
+  - »óÇ° ÁÖ¹®
+  - ÁÖ¹®³»¿ª Á¶È¸
+  - ÁÖ¹® Ãë¼Ò
 <br>
 
-#### í…Œì´ë¸” ì„¤ê³„
+#### Å×ÀÌºí ¼³°è
 ![](../../../../attachments/2023-03-17-12-59-57.png)
-- ORDERS - ITEM ì˜ ë‹¤ëŒ€ë‹¤ ê´€ê³„ë¥¼ ì¤‘ê°„ì— ORDER_ITEM í…Œì´ë¸”ì„ ì´ìš©í•´ ì¼ëŒ€ë‹¤ë¡œ ë§¤í•‘
+- ORDERS - ITEM ÀÇ ´Ù´ë´Ù °ü°è¸¦ Áß°£¿¡ ORDER_ITEM Å×ÀÌºíÀ» ÀÌ¿ëÇØ ÀÏ´ë´Ù·Î ¸ÅÇÎ
 <br>
 
-#### ì—”í‹°í‹° ì„¤ê³„ì™€ ë§¤í•‘
+#### ¿£Æ¼Æ¼ ¼³°è¿Í ¸ÅÇÎ
 ![](../../../../attachments/2023-03-17-13-00-23.png)
 <br>
 
-#### ì»¬ëŸ¼ëª… ë§¤í•‘
-- Spring legacy ì—ì„œëŠ” Camel caseë¥¼ Snake caseë¡œ ìžë™ ë³€í™˜í•˜ì§€ ì•ŠìŒ
-  - ë”°ë¡œ ì„¤ì •í•´ì•¼ í•¨
-  - `@Column(name="MEMBER_ID")` ë¡œ ì§ì ‘ ë§¤í•‘í•  DB ì»¬ëŸ¼ì„ ëª…ì‹œí•  ìˆ˜ ìžˆìŒ
+#### ÄÃ·³¸í ¸ÅÇÎ
+- Spring legacy ¿¡¼­´Â Camel case¸¦ Snake case·Î ÀÚµ¿ º¯È¯ÇÏÁö ¾ÊÀ½
+  - µû·Î ¼³Á¤ÇØ¾ß ÇÔ
+  - `@Column(name="MEMBER_ID")` ·Î Á÷Á¢ ¸ÅÇÎÇÒ DB ÄÃ·³À» ¸í½ÃÇÒ ¼ö ÀÖÀ½
 <br>
 
-#### ì—”í‹°í‹° ì •ë³´ ì„¤ì •
-- ì—”í‹°í‹° í´ëž˜ìŠ¤ì—ì„œ ì œì•½ì¡°ê±´, ì¸ë±ìŠ¤, ì»¬ëŸ¼ì˜ í¬ê¸° ë“±ì„ ì„¤ì •í•  ìˆ˜ ìžˆìŒ
-- DBë¥¼ ì¡°íšŒí•˜ì§€ ì•Šê³  íŒŒì•…í•  ìˆ˜ ìžˆë‹¤ëŠ” ìž¥ì 
-- ì˜ˆì‹œ
-  - ë°ì´í„° í¬ê¸° : `@Column(length=10)` ë“±
-  - ì œì•½ì¡°ê±´, ì¸ë±ìŠ¤ : `@Table`ì˜ uniqueConstraints, indexes element(`indexes = @Index()`) ë“±
+#### ¿£Æ¼Æ¼ Á¤º¸ ¼³Á¤
+- ¿£Æ¼Æ¼ Å¬·¡½º¿¡¼­ Á¦¾àÁ¶°Ç, ÀÎµ¦½º, ÄÃ·³ÀÇ Å©±â µîÀ» ¼³Á¤ÇÒ ¼ö ÀÖÀ½
+- DB¸¦ Á¶È¸ÇÏÁö ¾Ê°í ÆÄ¾ÇÇÒ ¼ö ÀÖ´Ù´Â ÀåÁ¡
+- ¿¹½Ã
+  - µ¥ÀÌÅÍ Å©±â : `@Column(length=10)` µî
+  - Á¦¾àÁ¶°Ç, ÀÎµ¦½º : `@Table`ÀÇ uniqueConstraints, indexes element(`indexes = @Index()`) µî
 <br>
 
-#### ë°ì´í„° ì¤‘ì‹¬ ì„¤ê³„
-- ê°ì²´ ì„¤ê³„ë¥¼ í…Œì´ë¸” ì„¤ê³„ì— ë§žì¶˜ ë°©ì‹
-  - ex) Order í´ëž˜ìŠ¤ì— memberIdë¥¼ í•„ë“œë¡œ ì„ ì–¸
-- ê°ì²´ì˜ ê·¸ëž˜í”„ íƒìƒ‰ì´ ë¶ˆê°€ëŠ¥
-- ì‚¬ì‹¤ìƒ ì°¸ì¡°ê°€ ì—†ìŒ
-- ì™¸ëž˜í‚¤ê°€ ì•„ë‹Œ ê°ì²´ë¥¼ í•„ë“œë¡œ ì„ ì–¸í•´ì•¼ í•¨
+#### µ¥ÀÌÅÍ Áß½É ¼³°è
+- °´Ã¼ ¼³°è¸¦ Å×ÀÌºí ¼³°è¿¡ ¸ÂÃá ¹æ½Ä
+  - ex) Order Å¬·¡½º¿¡ memberId¸¦ ÇÊµå·Î ¼±¾ð
+- °´Ã¼ÀÇ ±×·¡ÇÁ Å½»öÀÌ ºÒ°¡´É
+- »ç½Ç»ó ÂüÁ¶°¡ ¾øÀ½
+- ¿Ü·¡Å°°¡ ¾Æ´Ñ °´Ã¼¸¦ ÇÊµå·Î ¼±¾ðÇØ¾ß ÇÔ
 <br>
 
 </details>
 <br>
 
 ---
-## ì—°ê´€ê´€ê³„ ë§¤í•‘ ê¸°ì´ˆ
-### ë‹¨ë°©í–¥ ì—°ê´€ê´€ê³„
+## ¿¬°ü°ü°è ¸ÅÇÎ ±âÃÊ
+### ´Ü¹æÇâ ¿¬°ü°ü°è
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
-#### ìš©ì–´ ì´í•´
-- ë°©í–¥(dirction) : ë‹¨ë°©í–¥, ì–‘ë°©í–¥
-- ë‹¤ì¤‘ì„±(multiplicity) : ë‹¤ëŒ€ì¼, ì¼ëŒ€ë‹¤, ì¼ëŒ€ì¼, ë‹¤ëŒ€ë‹¤
-- **ì—°ê´€ê´€ê³„ì˜ ì£¼ì¸(owner)** : ê°ì²´ ì–‘ë°©í–¥ ê´€ê³„ëŠ” ê´€ë¦¬ ì£¼ì¸ì´ í•„ìš”
+#### ¿ë¾î ÀÌÇØ
+- ¹æÇâ(dirction) : ´Ü¹æÇâ, ¾ç¹æÇâ
+- ´ÙÁß¼º(multiplicity) : ´Ù´ëÀÏ, ÀÏ´ë´Ù, ÀÏ´ëÀÏ, ´Ù´ë´Ù
+- **¿¬°ü°ü°èÀÇ ÁÖÀÎ(owner)** : °´Ã¼ ¾ç¹æÇâ °ü°è´Â °ü¸® ÁÖÀÎÀÌ ÇÊ¿ä
 <br>
 
-#### ì˜ˆì œ ì‹œë‚˜ë¦¬ì˜¤
-- íšŒì›ê³¼ íŒ€ì´ ìžˆìŒ
-- íšŒì›ì€ í•˜ë‚˜ì˜ íŒ€ì—ë§Œ ì†Œì†ë¨
-- íšŒì›ê³¼ íŒ€ì€ ë‹¤ëŒ€ì¼
+#### ¿¹Á¦ ½Ã³ª¸®¿À
+- È¸¿ø°ú ÆÀÀÌ ÀÖÀ½
+- È¸¿øÀº ÇÏ³ªÀÇ ÆÀ¿¡¸¸ ¼Ò¼ÓµÊ
+- È¸¿ø°ú ÆÀÀº ´Ù´ëÀÏ
 <br>
 
-#### ê°ì²´ë¥¼ í…Œì´ë¸”ì— ë§žì¶”ì–´ ëª¨ë¸ë§(ë°ì´í„° ì¤‘ì‹¬)
+#### °´Ã¼¸¦ Å×ÀÌºí¿¡ ¸ÂÃß¾î ¸ðµ¨¸µ(µ¥ÀÌÅÍ Áß½É)
 ![](../../../../attachments/2023-03-23-05-45-52.png)
-- ê°ì²´ì— ì—°ê´€ê´€ê³„ê°€ ì—†ìŒ
-- Member ê°ì²´ì— ì™¸ëž˜ í‚¤ ê°’ì„ ê·¸ëŒ€ë¡œ ê°€ì ¸ì˜´
-- ë¬¸ì œì 
-  - memberë¥¼ persist í•˜ê¸° ìœ„í•´ì„œëŠ” teamì„ ì¡°íšŒí•´ì„œ idë¥¼ ê°€ì ¸ì˜¨ ë’¤ memberì— set í•´ì¤˜ì•¼ í•¨
-  - memberì˜ teamì„ ì¡°íšŒí•˜ê¸° ìœ„í•´ì„œëŠ” memberì˜ teamIdë¥¼ ê°€ì ¸ì™€ì„œ ë‹¤ì‹œ teamì„ ì¡°íšŒí•´ì•¼ í•¨
-  - í…Œì´ë¸”ì€ ì™¸ëž˜ í‚¤ë¡œ ì¡°ì¸í•´ì„œ ì—°ê´€ í…Œì´ë¸”ì„ ì°¾ê³ , ê°ì²´ëŠ” ì°¸ì¡°ë¥¼ ì‚¬ìš©í•´ì„œ ì—°ê´€ëœ ê°ì²´ë¥¼ ì°¾ëŠ” ì°¨ì´ê°€ ìžˆê¸° ë•Œë¬¸
+- °´Ã¼¿¡ ¿¬°ü°ü°è°¡ ¾øÀ½
+- Member °´Ã¼¿¡ ¿Ü·¡ Å° °ªÀ» ±×´ë·Î °¡Á®¿È
+- ¹®Á¦Á¡
+  - member¸¦ persist ÇÏ±â À§ÇØ¼­´Â teamÀ» Á¶È¸ÇØ¼­ id¸¦ °¡Á®¿Â µÚ member¿¡ set ÇØÁà¾ß ÇÔ
+  - memberÀÇ teamÀ» Á¶È¸ÇÏ±â À§ÇØ¼­´Â memberÀÇ teamId¸¦ °¡Á®¿Í¼­ ´Ù½Ã teamÀ» Á¶È¸ÇØ¾ß ÇÔ
+  - Å×ÀÌºíÀº ¿Ü·¡ Å°·Î Á¶ÀÎÇØ¼­ ¿¬°ü Å×ÀÌºíÀ» Ã£°í, °´Ã¼´Â ÂüÁ¶¸¦ »ç¿ëÇØ¼­ ¿¬°üµÈ °´Ã¼¸¦ Ã£´Â Â÷ÀÌ°¡ ÀÖ±â ¶§¹®
 <br>
 
-#### ê°ì²´ ì§€í–¥ ëª¨ë¸ë§(ë‹¨ë°©í–¥ ì—°ê´€ê´€ê³„)
+#### °´Ã¼ ÁöÇâ ¸ðµ¨¸µ(´Ü¹æÇâ ¿¬°ü°ü°è)
 ![](../../../../attachments/2023-03-23-06-32-56.png)
-- member ê°ì²´ì—ì„œ teamì„ ë°”ë¡œ ê°€ì ¸ì˜¬ ìˆ˜ ìžˆìŒ
+- member °´Ã¼¿¡¼­ teamÀ» ¹Ù·Î °¡Á®¿Ã ¼ö ÀÖÀ½
 
 </details>
 <br>
 
 
-### ì–‘ë°©í–¥ ì—°ê´€ê´€ê³„ì™€ ì—°ê´€ê´€ê³„ì˜ ì£¼ì¸ 1 - ê¸°ë³¸
+### ¾ç¹æÇâ ¿¬°ü°ü°è¿Í ¿¬°ü°ü°èÀÇ ÁÖÀÎ 1 - ±âº»
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
-#### ì–‘ë°©í–¥ ë§¤í•‘
+#### ¾ç¹æÇâ ¸ÅÇÎ
 ![](../../../../attachments/2023-03-23-07-13-17.png)
-- Team <-> Member(List) ì–‘ë°©í–¥ìœ¼ë¡œ ê°ì²´ ê·¸ëž˜í”„ íƒìƒ‰ ê°€ëŠ¥
-- MemberëŠ” ë‹¨ë°©í–¥ ë§¤í•‘ê³¼ ë™ì¼í•˜ê²Œ ìž‘ì„±
-- Teamì— `List<Member> members` í•„ë“œë¥¼ ì¶”ê°€
-  - `@OneToMany(mappedBy = "team")` ì• ë…¸í…Œì´ì…˜ í•„ìš”
+- Team <-> Member(List) ¾ç¹æÇâÀ¸·Î °´Ã¼ ±×·¡ÇÁ Å½»ö °¡´É
+- Member´Â ´Ü¹æÇâ ¸ÅÇÎ°ú µ¿ÀÏÇÏ°Ô ÀÛ¼º
+- Team¿¡ `List<Member> members` ÇÊµå¸¦ Ãß°¡
+  - `@OneToMany(mappedBy = "team")` ¾Ö³ëÅ×ÀÌ¼Ç ÇÊ¿ä
 <br>
 
-#### ê°ì²´ì™€ í…Œì´ë¸”ì´ ê´€ê³„ë¥¼ ë§ºëŠ” ì°¨ì´
-- ê°ì²´ ì—°ê´€ê´€ê³„ : 2ê°œ
-  - íšŒì› -> íŒ€ (ë‹¨ë°©í–¥)
-  - íŒ€ -> íšŒì› (ë‹¨ë°©í–¥)
-  - ê°ì²´ì˜ ì–‘ë°©í–¥ ì—°ê´€ê´€ê³„ëŠ” **ì‚¬ì‹¤ìƒ 2ê°œì˜ ë‹¨ë°©í–¥ ê´€ê³„**
-    - ë‹¨ë°©í–¥ ë§¤í•‘ì—ì„œ ë°˜ëŒ€ë°©í–¥ìœ¼ë¡œ ì¡°íšŒ(ê°ì²´ ê·¸ëž˜í”„ íƒìƒ‰))í•˜ëŠ” ê¸°ëŠ¥ë§Œ ì¶”ê°€
-  - ê°ì²´ë¥¼ ì–‘ë°©í–¥ìœ¼ë¡œ ì°¸ì¡°í•˜ë ¤ë©´ **ë‹¨ë°©í–¥ ì—°ê´€ê´€ê³„ 2ê°œ**ê°€ í•„ìš”
+#### °´Ã¼¿Í Å×ÀÌºíÀÌ °ü°è¸¦ ¸Î´Â Â÷ÀÌ
+- °´Ã¼ ¿¬°ü°ü°è : 2°³
+  - È¸¿ø -> ÆÀ (´Ü¹æÇâ)
+  - ÆÀ -> È¸¿ø (´Ü¹æÇâ)
+  - °´Ã¼ÀÇ ¾ç¹æÇâ ¿¬°ü°ü°è´Â **»ç½Ç»ó 2°³ÀÇ ´Ü¹æÇâ °ü°è**
+    - ´Ü¹æÇâ ¸ÅÇÎ¿¡¼­ ¹Ý´ë¹æÇâÀ¸·Î Á¶È¸(°´Ã¼ ±×·¡ÇÁ Å½»ö))ÇÏ´Â ±â´É¸¸ Ãß°¡
+  - °´Ã¼¸¦ ¾ç¹æÇâÀ¸·Î ÂüÁ¶ÇÏ·Á¸é **´Ü¹æÇâ ¿¬°ü°ü°è 2°³**°¡ ÇÊ¿ä
 <br>
 
-- í…Œì´ë¸” ì—°ê´€ê´€ê³„ : 1ê°œ
-  - íšŒì› <-> íŒ€ (ì–‘ë°©í–¥)
-  - **ì™¸ëž˜ í‚¤ í•˜ë‚˜**ë¡œ ì–‘ë°©í–¥ ì—°ê´€ê´€ê³„ë¥¼ ê°€ì§
+- Å×ÀÌºí ¿¬°ü°ü°è : 1°³
+  - È¸¿ø <-> ÆÀ (¾ç¹æÇâ)
+  - **¿Ü·¡ Å° ÇÏ³ª**·Î ¾ç¹æÇâ ¿¬°ü°ü°è¸¦ °¡Áü
 <br>
 
-#### ë”œë ˆë§ˆ : ë‘˜ ì¤‘ í•˜ë‚˜ë¡œ ì™¸ëž˜í‚¤ë¥¼ ê´€ë¦¬í•´ì•¼ í•œë‹¤
+#### µô·¹¸¶ : µÑ Áß ÇÏ³ª·Î ¿Ü·¡Å°¸¦ °ü¸®ÇØ¾ß ÇÑ´Ù
 ![](../../../../attachments/2023-03-23-07-30-12.png)
-- íšŒì›ì˜ íŒ€ ì •ë³´ê°€ ë³€ê²½ë  ë•Œ (= íŒ€ì˜ íšŒì›ëª©ë¡ì´ ë°”ë€” ë•Œ)
-- DBì—ì„œ MEMBER í…Œì´ë¸”ì˜ ì™¸ëž˜ í‚¤(TEAM_ID)ëŠ” ì–´ë–¤ ê¸°ì¤€ìœ¼ë¡œ UPDATE í•´ì•¼ í•˜ëŠ”ê°€? 
-  = Member, Team ê°ì²´ ì¤‘ ì–´ë””ì—ì„œ ì™¸ëž˜ í‚¤ë¥¼ ê´€ë¦¬í•´ì•¼ í•˜ëŠ”ê°€?
-    1. Memberì˜ teamì„ ë³€ê²½
-    2. Teamì˜ membersë¥¼ ë³€ê²½
-  - ì‚¬ì‹¤ ë‘˜ ë‹¤ ê°€ëŠ¥
+- È¸¿øÀÇ ÆÀ Á¤º¸°¡ º¯°æµÉ ¶§ (= ÆÀÀÇ È¸¿ø¸ñ·ÏÀÌ ¹Ù²ð ¶§)
+- DB¿¡¼­ MEMBER Å×ÀÌºíÀÇ ¿Ü·¡ Å°(TEAM_ID)´Â ¾î¶² ±âÁØÀ¸·Î UPDATE ÇØ¾ß ÇÏ´Â°¡? 
+  = Member, Team °´Ã¼ Áß ¾îµð¿¡¼­ ¿Ü·¡ Å°¸¦ °ü¸®ÇØ¾ß ÇÏ´Â°¡?
+    1. MemberÀÇ teamÀ» º¯°æ
+    2. TeamÀÇ members¸¦ º¯°æ
+  - »ç½Ç µÑ ´Ù °¡´É
 <br>
 
-#### ì—°ê´€ê´€ê³„ì˜ ì£¼ì¸(Owner)
-- ì–‘ë°©í–¥ ë§¤í•‘ ê·œì¹™
-  - ê°ì²´ì˜ ë‘ ê´€ê³„ ì¤‘ í•˜ë‚˜ë¥¼ ì—°ê´€ê´€ê³„ì˜ ì£¼ì¸ìœ¼ë¡œ ì§€ì •
-  - ì—°ê´€ê´€ê³„ì˜ ì£¼ì¸ë§Œ ì™¸ëž˜ í‚¤ë¥¼ ê´€ë¦¬(ë“±ë¡, ìˆ˜ì •)
-  - ì£¼ì¸ì´ ì•„ë‹Œ ìª½ì€ ì½ê¸°ë§Œ ê°€ëŠ¥
-  - ì£¼ì¸ì€ mappedBy ì†ì„± ì§€ì • ì•ˆí•¨
-  - ì£¼ì¸ì´ ì•„ë‹Œ ê°ì²´ëŠ” mappedBy ì†ì„±ìœ¼ë¡œ ì£¼ì¸ì„ ì§€ì •
+#### ¿¬°ü°ü°èÀÇ ÁÖÀÎ(Owner)
+- ¾ç¹æÇâ ¸ÅÇÎ ±ÔÄ¢
+  - °´Ã¼ÀÇ µÎ °ü°è Áß ÇÏ³ª¸¦ ¿¬°ü°ü°èÀÇ ÁÖÀÎÀ¸·Î ÁöÁ¤
+  - ¿¬°ü°ü°èÀÇ ÁÖÀÎ¸¸ ¿Ü·¡ Å°¸¦ °ü¸®(µî·Ï, ¼öÁ¤)
+  - ÁÖÀÎÀÌ ¾Æ´Ñ ÂÊÀº ÀÐ±â¸¸ °¡´É
+  - ÁÖÀÎÀº mappedBy ¼Ó¼º ÁöÁ¤ ¾ÈÇÔ
+  - ÁÖÀÎÀÌ ¾Æ´Ñ °´Ã¼´Â mappedBy ¼Ó¼ºÀ¸·Î ÁÖÀÎÀ» ÁöÁ¤
   <br>
 
-#### ëˆ„êµ¬ë¥¼ ì£¼ì¸ìœ¼ë¡œ? (ê°€ì´ë“œ)
-- ì™¸ëž˜ í‚¤ê°€ ìžˆëŠ” ê³³ì„ ì£¼ì¸ìœ¼ë¡œ ì •í•´ë¼(= N:1 ê´€ê³„ì—ì„œ N ìª½)
-- ì˜ˆì‹œ
-  - ìžë™ì°¨(Car.wheels) - ë°”í€´ ê´€ê³„ì—ì„œ ë°”í€´(Wheel.car)ì— ì£¼ì¸ì„ ì„¤ì •
-  - ì´ ê²½ìš°ì—ëŠ” Member.teamì´ ì—°ê´€ê´€ê³„ì˜ ì£¼ì¸ì´ ë¨
-  - Team.membersë¥¼ ì£¼ì¸ìœ¼ë¡œ ì„¤ì •í•œë‹¤ë©´?
-    - ê°€ëŠ¥(JPA ì§¬í‚¹ í•œì •)
-    - Teamì„ ë‹¤ë¤˜ëŠ”ë° MEMBER í…Œì´ë¸”ì˜ UPDATE ì¿¼ë¦¬ê°€ ë‚˜ê°€ëŠ” ë“±ì˜ ë¬¸ì œì˜ ì†Œì§€ê°€ ìžˆìŒ(ì„±ëŠ¥ ì´ìŠˆ)
+#### ´©±¸¸¦ ÁÖÀÎÀ¸·Î? (°¡ÀÌµå)
+- ¿Ü·¡ Å°°¡ ÀÖ´Â °÷À» ÁÖÀÎÀ¸·Î Á¤ÇØ¶ó(= N:1 °ü°è¿¡¼­ N ÂÊ)
+- ¿¹½Ã
+  - ÀÚµ¿Â÷(Car.wheels) - ¹ÙÄû °ü°è¿¡¼­ ¹ÙÄû(Wheel.car)¿¡ ÁÖÀÎÀ» ¼³Á¤
+  - ÀÌ °æ¿ì¿¡´Â Member.teamÀÌ ¿¬°ü°ü°èÀÇ ÁÖÀÎÀÌ µÊ
+  - Team.members¸¦ ÁÖÀÎÀ¸·Î ¼³Á¤ÇÑ´Ù¸é?
+    - °¡´É(JPA Â«Å· ÇÑÁ¤)
+    - TeamÀ» ´Ù·ð´Âµ¥ MEMBER Å×ÀÌºíÀÇ UPDATE Äõ¸®°¡ ³ª°¡´Â µîÀÇ ¹®Á¦ÀÇ ¼ÒÁö°¡ ÀÖÀ½(¼º´É ÀÌ½´)
   <br>
 
-- ì—°ê´€ê´€ê³„ì˜ ì£¼ì¸ì€ ë¹„ì¦ˆë‹ˆìŠ¤ì ìœ¼ë¡œ ì¤‘ìš”í•œ ê°œë…ì€ ì•„ë‹˜
+- ¿¬°ü°ü°èÀÇ ÁÖÀÎÀº ºñÁî´Ï½ºÀûÀ¸·Î Áß¿äÇÑ °³³äÀº ¾Æ´Ô
 <br>
 
 </details>
 <br>
 
 
-### ì–‘ë°©í–¥ ì—°ê´€ê´€ê³„ì™€ ì—°ê´€ê´€ê³„ì˜ ì£¼ì¸ 2 - ì£¼ì˜ì , ì •ë¦¬
+### ¾ç¹æÇâ ¿¬°ü°ü°è¿Í ¿¬°ü°ü°èÀÇ ÁÖÀÎ 2 - ÁÖÀÇÁ¡, Á¤¸®
 <details>
-<summary>ë³´ê¸°</summary>
+<summary>º¸±â</summary>
 
-#### ì—°ê´€ê´€ê³„ì˜ ì£¼ì¸ì— ê°’ì„ ìž…ë ¥í•˜ì§€ ì•ŠìŒ
+#### ¿¬°ü°ü°èÀÇ ÁÖÀÎ¿¡ °ªÀ» ÀÔ·ÂÇÏÁö ¾ÊÀ½
 ```
 Team team = new Team();
 team.setName("teamA");
@@ -638,25 +639,25 @@ em.clear();
 
 tx.commit();
 ```
-- `team.getMembers().add()` ë¡œ Memberë¥¼ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€í•´ë„ DBì—ëŠ” MEMBERì˜ TEAM_IDì— FKê°€ ë“¤ì–´ê°€ì§€ ì•ŠìŒ (1)
-- `member.setTeam()` ìœ¼ë¡œ Memberì—ì„œ Teamì„ ì°¸ì¡°í•´ì•¼ MEMBERí…Œì´ë¸”ì—ë„ ì •ìƒì ìœ¼ë¡œ ë°˜ì˜ë¨ (2)
-    âˆµ ì—°ê´€ê´€ê³„ì˜ ì£¼ì¸ì€ Memberì´ê¸° ë•Œë¬¸ì—, (1)ì€ DBì— ì˜í–¥ì„ ì£¼ì§€ ëª»í•¨ 
+- `team.getMembers().add()` ·Î Member¸¦ ¸®½ºÆ®¿¡ Ãß°¡ÇØµµ DB¿¡´Â MEMBERÀÇ TEAM_ID¿¡ FK°¡ µé¾î°¡Áö ¾ÊÀ½ (1)
+- `member.setTeam()` À¸·Î Member¿¡¼­ TeamÀ» ÂüÁ¶ÇØ¾ß MEMBERÅ×ÀÌºí¿¡µµ Á¤»óÀûÀ¸·Î ¹Ý¿µµÊ (2)
+    ¡ñ ¿¬°ü°ü°èÀÇ ÁÖÀÎÀº MemberÀÌ±â ¶§¹®¿¡, (1)Àº DB¿¡ ¿µÇâÀ» ÁÖÁö ¸øÇÔ 
   <br>
 
-- (1)ì„ í•˜ì§€ ì•Šë”ë¼ë„ JPAëŠ” ì§€ì—° ë¡œë”©ì„ í†µí•´ ì—°ê´€ëœ Memberì˜ ëª©ë¡ì„ ì¡°íšŒí•  ìˆ˜ ìžˆìŒ
-  - ë‹¨, **flush ë˜ì§€ ì•Šê³  1ì°¨ ìºì‹œì—ì„œ íŒ€ì„ ê°€ì ¸ì˜¬ ê²½ìš°** DBì—ì„œ ì¡°íšŒí•˜ì§€ ì•Šê¸° ë•Œë¬¸ì— ì¶”ê°€í•œ Memberê°€ `getMembers()`ì—ì„œ ì¡°íšŒë˜ì§€ ì•Šì„ ìˆ˜ ìžˆìŒ
+- (1)À» ÇÏÁö ¾Ê´õ¶óµµ JPA´Â Áö¿¬ ·ÎµùÀ» ÅëÇØ ¿¬°üµÈ MemberÀÇ ¸ñ·ÏÀ» Á¶È¸ÇÒ ¼ö ÀÖÀ½
+  - ´Ü, **flush µÇÁö ¾Ê°í 1Â÷ Ä³½Ã¿¡¼­ ÆÀÀ» °¡Á®¿Ã °æ¿ì** DB¿¡¼­ Á¶È¸ÇÏÁö ¾Ê±â ¶§¹®¿¡ Ãß°¡ÇÑ Member°¡ `getMembers()`¿¡¼­ Á¶È¸µÇÁö ¾ÊÀ» ¼ö ÀÖÀ½
 <br>
 
-- ê°ì²´ ê´€ê³„ë¥¼ ê³ ë ¤í•˜ë©´ (1), (2) ëª¨ë‘ í•´ì£¼ëŠ” ê²ƒì´ ë§žìŒ
-  - í•˜ë‚˜ë§Œ í•˜ê³  ê¹Œë¨¹ê¸° ì‰½ê¸° ë•Œë¬¸ì— **ì—°ê´€ê´€ê³„ íŽ¸ì˜ ë©”ì„œë“œ**ë¥¼ ë§Œë“¤ì–´ ì‚¬ìš© ê¶Œìž¥
-  - `Team.addMember(Member member)` ë˜ëŠ” `Member.changeTeam(Team team)` ë“± ìƒí™©ì— ë”°ë¼ íƒ1
+- °´Ã¼ °ü°è¸¦ °í·ÁÇÏ¸é (1), (2) ¸ðµÎ ÇØÁÖ´Â °ÍÀÌ ¸ÂÀ½
+  - ÇÏ³ª¸¸ ÇÏ°í ±î¸Ô±â ½±±â ¶§¹®¿¡ **¿¬°ü°ü°è ÆíÀÇ ¸Þ¼­µå**¸¦ ¸¸µé¾î »ç¿ë ±ÇÀå
+  - `Team.addMember(Member member)` ¶Ç´Â `Member.changeTeam(Team team)` µî »óÈ²¿¡ µû¶ó ÅÃ1
 <br>
 
-#### ì–‘ë°©í–¥ ë§¤í•‘ ì‹œ ë¬´í•œ ë£¨í”„ ì£¼ì˜
-- `toString()`, lombok, JSON ìƒì„± ë¼ì´ë¸ŒëŸ¬ë¦¬
-- ë‘ ê°ì²´ê°€ ì„œë¡œ ì°¸ì¡°í•  ë•Œ, `toString()`ì—ì„œ ì°¸ì¡°í•˜ëŠ” ê°ì²´ê°€ ë‹¤ì‹œ `toString()`ì„ í˜¸ì¶œí•˜ëŠ” ê²½ìš°
-- JSON ìƒì„± ë¼ì´ë¸ŒëŸ¬ë¦¬ì—ì„œëŠ” **ì—”í‹°í‹°ë¥¼ ë°˜í™˜í•˜ì§€ ë§ ê²ƒ**
-  - DTOë¡œ ë³€í™˜í•´ì„œ ë°˜í™˜í•˜ëŠ” ê²ƒì„ ê¶Œìž¥
+#### ¾ç¹æÇâ ¸ÅÇÎ ½Ã ¹«ÇÑ ·çÇÁ ÁÖÀÇ
+- `toString()`, lombok, JSON »ý¼º ¶óÀÌºê·¯¸®
+- µÎ °´Ã¼°¡ ¼­·Î ÂüÁ¶ÇÒ ¶§, `toString()`¿¡¼­ ÂüÁ¶ÇÏ´Â °´Ã¼°¡ ´Ù½Ã `toString()`À» È£ÃâÇÏ´Â °æ¿ì
+- JSON »ý¼º ¶óÀÌºê·¯¸®¿¡¼­´Â **¿£Æ¼Æ¼¸¦ ¹ÝÈ¯ÇÏÁö ¸» °Í**
+  - DTO·Î º¯È¯ÇØ¼­ ¹ÝÈ¯ÇÏ´Â °ÍÀ» ±ÇÀå
 <br>
 
 </details>
