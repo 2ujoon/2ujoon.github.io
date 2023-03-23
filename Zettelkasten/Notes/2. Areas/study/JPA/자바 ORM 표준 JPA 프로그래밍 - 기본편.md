@@ -1,5 +1,5 @@
 # 자바 ORM 표준 JPA 프로그래밍 - 기본편
-[강의](https://www.inflearn.com/course/ORM-JPA-Basic)
+[강의 링크](https://www.inflearn.com/course/ORM-JPA-Basic)
 
 ## **강좌 소개**
 <details>
@@ -620,75 +620,43 @@ System.out.println(a == b); // true
 <details>
 <summary>보기</summary>
 
+#### 연관관계의 주인에 값을 입력하지 않음
+```
+Team team = new Team();
+team.setName("teamA");
+team.getMembers().add(member);
+em.persist(team);
 
+Member member = new Member();
+member.setUsername("member1");
+em.persist(member);
 
-</details>
-<br>
+em.flush();
+em.clear();
 
----
-## 다양한 연관관계 매핑
-### 다대일 [N:1]
-<details>
-<summary>보기</summary>
-
-</details>
-<br>
-
----
-## **질문거리**
-<details>
-<summary>보기</summary>
-
-### Hello JPA - 애플리케이션 개발
-<details>
-<summary>보기</summary>
-
-- JPA는 INSERT, UPDATE 등의 쿼리를 트랜잭션의 commit 또는 rollback 시점에 한 번에 실행시킴
-- 아래 코드처럼 `em.persist()` 후 setter로 수정이 일어날 경우, SQL이 어떻게 전송될까?
-  ```
-  Member member = new Member();
-  member.setId(1L);
-  member.setName("HelloJPA");
-  em.persist(member);
-
-  member.setName("HelloVㅏJㅏ회");
-
-  tx.commit();
-  ```
-  - 예상
-    1. INSERT, UPDATE 쿼리를 전송
-    2. 또는 객체의 필드 값을 변경한 뒤 INSERT만 전송
-  - 결과
-    - commit 시점에 INSERT, UPDATE 쿼리를 전송
-      ∴ 엔티티가 영속 상태일 경우, setter는 commit 하기 전에 UPDATE 쿼리를 생성
-  <br>    
-
-  - 보완
-    1. `em.persist(member)` 시점에 1차 캐시에 등록되며 스냅샷 생성(1L, HelloJPA)
-    2. SQL 쓰기 지연 저장소에 INSERT 쿼리 추가
-    3. flush 시점에 변경 감지 - 1의 스냅샷과 현재 member 객체 비교
-    4. `member.setName("HelloVㅏJㅏ회")`에 의해 변경이 발생했으므로 SQL 쓰기 지연 저장소에 UPDATE 쿼리 추가
-    5. flush 되며 INSERT, UPDATE 쿼리 전송
+tx.commit();
+```
+- `team.getMembers().add()` 로 Member를 리스트에 추가해도 DB에는 MEMBER의 TEAM_ID에 FK가 들어가지 않음 (1)
+- `member.setTeam()` 으로 Member에서 Team을 참조해야 MEMBER테이블에도 정상적으로 반영됨 (2)
+    ∵ 연관관계의 주인은 Member이기 때문에, (1)은 DB에 영향을 주지 못함 
   <br>
 
+- (1)을 하지 않더라도 JPA는 지연 로딩을 통해 연관된 Member의 목록을 조회할 수 있음
+  - 단, **flush 되지 않고 1차 캐시에서 팀을 가져올 경우** DB에서 조회하지 않기 때문에 추가한 Member가 `getMembers()`에서 조회되지 않을 수 있음
+<br>
+
+- 객체 관계를 고려하면 (1), (2) 모두 해주는 것이 맞음
+  - 하나만 하고 까먹기 쉽기 때문에 **연관관계 편의 메서드**를 만들어 사용 권장
+  - `Team.addMember(Member member)` 또는 `Member.changeTeam(Team team)` 등 상황에 따라 택1
+<br>
+
+#### 양방향 매핑 시 무한 루프 주의
+- `toString()`, lombok, JSON 생성 라이브러리
+- 두 객체가 서로 참조할 때, `toString()`에서 참조하는 객체가 다시 `toString()`을 호출하는 경우
+- JSON 생성 라이브러리에서는 **엔티티를 반환하지 말 것**
+  - DTO로 변환해서 반환하는 것을 권장
+<br>
+
 </details>
 <br>
 
----
-### 실전 예제 1 - 요구사항 분석과 기본 매핑
-<details>
-<summary>보기</summary>
-
-1. `@GeneratedValue(strategy=GenerationType.SEQUENCE)`의 동작 방식
-   - 어떤 방식으로 새 시퀀스 뭉치를 가져올까?(allocationSize 관련)
-<br>
-
-2. Spring legacy 환경에서 컬럼명 매핑 시 Camel case -> Snake case로 자동 변환하여 매핑하는 방법? 
-<br>
-
-</details>
-<br>
-
-
----
-</details>
