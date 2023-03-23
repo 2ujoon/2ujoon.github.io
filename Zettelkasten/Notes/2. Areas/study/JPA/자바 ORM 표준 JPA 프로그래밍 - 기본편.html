@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>자바 ORM 표준 JPA 프로그래밍 - 기본편.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%EC%9E%90%EB%B0%94-orm-%ED%91%9C%EC%A4%80-jpa-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D---%EA%B8%B0%EB%B3%B8%ED%8E%B8">자바 ORM 표준 JPA 프로그래밍 - 기본편</h1>
+<p><a href="https://www.inflearn.com/course/ORM-JPA-Basic">강의</a></p>
+<h2 id="%EA%B0%95%EC%A2%8C-%EC%86%8C%EA%B0%9C"><strong>강좌 소개</strong></h2>
+<details>
+<summary>보기</summary>
+<ul>
+<li>
+<p>왜 JPA를 사용하는가</p>
+<ul>
+<li>기존에는 개발자가 SQL mapper 역할을 함</li>
+<li>JPA는 SQL을 자동으로 생성해 줌
+<ul>
+<li>DB에 종속되지 않게 개발할 수 있음
+∵ 사용하는 DB에 맞게 쿼리를 자동으로 생성(dialect)
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>실무에서는 테이블의 갯수가 많고, 사용하는 객체가 복잡해 어려울 수 있음; 아래의 연습이 필요</p>
+<ul>
+<li>
+<p>객체와 테이블 설계 매핑</p>
+<ul>
+<li>객체, 테이블 설계 및 매핑</li>
+<li>PK, FK 매핑</li>
+<li>1:N, N:1, 1:1, N:M 매핑
+<br></li>
+</ul>
+</li>
+<li>
+<p>JPA 내부 동작 방식 이해</p>
+<ul>
+<li>JPA가 어떤 SQL을 생성하는가</li>
+<li>JPA가 언제 SQL을 실행하는가</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<br>
+<hr>
+<h2 id="jpa-%EC%86%8C%EA%B0%9C"><strong>JPA 소개</strong></h2>
+<h3 id="sql-%EC%A4%91%EC%8B%AC%EC%A0%81%EC%9D%B8-%EA%B0%9C%EB%B0%9C%EC%9D%98-%EB%AC%B8%EC%A0%9C%EC%A0%90">SQL 중심적인 개발의 문제점</h3>
+<details>
+<summary>보기</summary>
+<ul>
+<li>
+<p>RDB : 현 DB의 헤게모니</p>
+<ul>
+<li>RDB에 정보를 저장할 때 객체가 가진 정보를 SQL로 변환하여 RDB에 저장</li>
+<li>개발자가 객체와 DB entity를 매핑시킴</li>
+<li>객체를 RDB에 저장함에 있어 SQL 의존적 개발을 피하기 어려움
+<br></li>
+</ul>
+</li>
+<li>
+<p>객체와 RDB의 차이</p>
+<ol>
+<li>
+<p>상속
+<img src="../../../../attachments/2023-03-13-14-40-43.png" alt=""></p>
+<ul>
+<li>객체의 상속 관계를 RBD는 슈퍼타입 - 서브타입 관계로 풀어냄</li>
+<li>insert : DB의 두 테이블에 각각 insert</li>
+<li>select : join 해서 조회 후 각각의 객체를 생성하게 될 수도🤬
+<br></li>
+</ul>
+</li>
+<li>
+<p>연관관계</p>
+<ul>
+<li>
+<p>객체는 참조, 테이블은 FK를 사용</p>
+</li>
+<li>
+<p>객체를 DB 테이블에 맞춰 모델링한다면, FK로 사용되는 값을 변수로 가지고 있어야 함
+-&gt; 객체를 다룰 때는 부적절함</p>
+<pre class="hljs"><code><div>class Member {
+   String id;
+   Long teamId;  // TEAM_ID FK컬럼
+   String username;
+}
+class Team {
+   Long id;
+}
+INSERT INTO MEMBER (MEMBER_ID, TEAM_ID, USERNAME) VALUES...
+</div></code></pre>
+  <br>
+</li>
+<li>
+<p>참조 형식으로 모델링한다면, 쿼리 시 파라미터 매핑 등에서 굉장히 번거로워질 수도 있음</p>
+<pre class="hljs"><code><div>class Member {
+   String id;
+   Team team;  // 참조를 통한 연관관계
+   String username;
+}
+class Team {
+   Long id;
+}
+</div></code></pre>
+ <br>
+</li>
+<li>
+<p>엔티티 신뢰 문제</p>
+<ul>
+<li>객체는 자유롭게 내/외부의 객체 등으로 탐색할 수 있어야 함</li>
+<li>처음 실행하는 SQL에 따라 탐색 범위가 결정됨<pre class="hljs"><code><div>SELECT M.*, T.*
+  FROM MEMBER M
+  JOIN TEAM T
+    ON M.TEAM_ID = T.TEAM_ID;
+
+member.getTeam();  // ok
+member.getOrder(); // NPE
+</div></code></pre>
+</li>
+<li>다음 계층의 데이터를 믿을 수 없으면 직접 들어가서 확인해 봐야 함</li>
+<li>그렇다고 모든 객체를 미리 로딩할 수는 없음
+∵ 불필요한 데이터를 조회하며 쿼리 성능을 크게 떨어뜨림</li>
+<li>상황에 따른 조회 메서드를 여러 벌 만들게 됨
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>데이터 타입</p>
+</li>
+<li>
+<p>데이터 식별 방법</p>
+<pre class="hljs"><code><div>Long memberId = 1;
+Member member1 = dao.getMember(memberId);
+Member member2 = dao.getMember(memberId);
+member1 == member2  // false
+</div></code></pre>
+</li>
+</ol>
+  <br>
+</li>
+<li>
+<p>객체답게 모델링 할수록 매핑 작업이 늘어남</p>
+</li>
+<li>
+<p>객체를 JAVA 컬렉션에 저장하듯이 DB에 저장하면 해결할 수 있음 =&gt; JPA</p>
+</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="jpa-%EC%86%8C%EA%B0%9C">JPA 소개</h3>
+<details>
+<summary>보기</summary>
+<ul>
+<li>
+<p>JAVA의 ORM(Object-Relational Mapping) 기술 표준</p>
+<ul>
+<li>객체는 객체대로, RDB는 RDB 대로 설계 후 ORM으로 중간에서 매핑
+<br></li>
+</ul>
+</li>
+<li>
+<p>애플리케이션과 JDBC 사이에서 동작</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>동작</td>
+<td><img src="../../../../attachments/2023-03-13-15-58-18.png" alt=""></td>
+</tr>
+<tr>
+<td>저장</td>
+<td><img src="../../../../attachments/2023-03-13-15-58-39.png" alt=""></td>
+</tr>
+<tr>
+<td>조회</td>
+<td><img src="../../../../attachments/2023-03-13-15-58-57.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<br>
+<ul>
+<li>
+<p>SQL 중심의 개발에서 객체 중심으로 개발 가능</p>
+<ul>
+<li>벤더 독립성</li>
+<li>객체 RDB의 패러다임 불일치 해소
+<ul>
+<li>상속, 연관관계, 객체 그래프 탐색, 비교 등
+∵ 개발자가 jpa 메서드를 사용하면, 그에 맞게 JPA가 SQL을 작성하기 때문
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>CRUD</p>
+<ul>
+<li>저장 : em.<strong>persist</strong>(member);</li>
+<li>조회 : Member member = em.<strong>find</strong>(memberId);</li>
+<li>수정 : member.<strong>setName</strong>(&quot;memberA&quot;);</li>
+<li>삭제 : em.<strong>remove</strong>(member);
+<br></li>
+</ul>
+</li>
+<li>
+<p>유지보수에 용이</p>
+<ul>
+<li>컬럼이 변경되더라도 객체의 필드만 수정하면 되고, SQL은 따로 처리가 필요하지 않음
+<br></li>
+</ul>
+</li>
+<li>
+<p>신뢰할 수 있는 데이터 계층</p>
+<ul>
+<li><strong>지연 로딩</strong>을 이용한 자유로운 객체 그래프 탐색이 가능
+<br></li>
+</ul>
+</li>
+<li>
+<p>동일 트랜잭션 내에서 조회한 엔티티는 같음을 보장 (≒ Java 컬렉션)</p>
+</li>
+<li>
+<p>성능 최적화</p>
+<ul>
+<li>
+<p>1차 캐시 동일성 보장</p>
+<ul>
+<li>같은 트랜잭션 내에서 같은 객체 반환(캐싱)</li>
+<li>1번째 조회는 쿼리를 날리고, 다음부터는 메모리에서 가져옴
+<br></li>
+</ul>
+</li>
+<li>
+<p>트랜잭션을 지원하는 쓰기 지연(transactional write-behind)</p>
+<ul>
+<li><strong>트랜잭션 커밋 시점</strong>까지 INSERT SQL을 모아둠</li>
+<li>JDBC Batch SQL 기능을 사용해 <strong>한 번에 전송</strong></li>
+<li>UPDATE, DELETE의 경우, 트랜잭션 커밋 시 SQL을 실행하고 커밋</li>
+<li>이 때, 트랜잭션 커밋 전까지 DB에 <strong>Row Lock이 걸리지 않음</strong>
+<br></li>
+</ul>
+</li>
+<li>
+<p>지연 로딩(Lazy)과 즉시 로딩(Eager)
+<img src="../../../../attachments/- .png" alt=""></p>
+<ul>
+<li>지연 로딩 : 객체가 <strong>실제 사용될 때</strong> 로딩</li>
+<li>즉시 로딩 : JOIN SQL로 연관된 객체까지 한 번에 <strong>미리 조회</strong></li>
+<li>연관된 객체의 사용빈도를 고려하여 선택</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<br>
+<hr>
+<h2 id="jpa-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0"><strong>JPA 시작하기</strong></h2>
+<h3 id="hello-jpa---%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%83%9D%EC%84%B1">Hello JPA - 프로젝트 생성</h3>
+<details>
+<summary>보기</summary>
+<ul>
+<li>DB : H2</li>
+<li>JPA 설정
+<ul>
+<li>persistentce.xml에 JPA 설정 정보 입력</li>
+<li>/META-INF/persistentce.xml로 위치가 지정되어 있음</li>
+<li>보통 DB 하나 당 persistence-unit 하나를 지정해서 사용</li>
+<li>필수 속성 : DB 정보(driver, user, pw, url, dialect 등)</li>
+</ul>
+</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="hello-jpa---%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98-%EA%B0%9C%EB%B0%9C">Hello JPA - 애플리케이션 개발</h3>
+<details>
+<summary>보기</summary>
+<h4 id="entitymanagerfactory-entitymanager">EntityManagerFactory, EntityManager</h4>
+<ul>
+<li>
+<p>EntityManagerFactory(이하 emf) 로부터 EntityManager(이하 em) 를 획득하여 사용</p>
+</li>
+<li>
+<p>사용한 emf, em 는 <code>close()</code>로 반환해야 함
+<img src="../../../../attachments/2023-03-13-17-28-29.png" alt=""></p>
+</li>
+<li>
+<p><code>em.getTransaction()</code>으로 트랜잭션 객체 획득 후 <code>begin()</code>으로 트랜잭션 시작</p>
+<ul>
+<li><code>commit()</code> 또는 <code>rollback()</code>으로 트랜잭션을 종료해야 함
+<br></li>
+</ul>
+</li>
+<li>
+<p><strong>!주의</strong></p>
+<ul>
+<li>emf는 <strong>하나만 생성</strong>해서 앱 전체에서 공유</li>
+<li>em은 <strong>쓰레드간 공유하면 안됨</strong>(반드시 반환)</li>
+<li>JPA의 모든 데이터 변경은 <strong>트랜잭션 안</strong>에서 실행
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="entity">Entity</h4>
+<ul>
+<li>클래스에 <code>@Entity</code> 애노테이션으로 JPA가 관리할 객체임을 명시</li>
+<li>필드에 <code>@Id</code> 애노테이션으로 해당 필드를 DB의 PK와 매핑</li>
+<li><code>@Table</code>, <code>@Column</code> 등의 애노테이션은 객체의 필드명과 DB의 컬럼명이 다를 경우 name 엘리먼트로 명시
+<br></li>
+</ul>
+<h4 id="jpql">JPQL</h4>
+<ul>
+<li>JPA가 제공하는 SQL을 추상화한 쿼리 언어
+∴ 특정 DB SQL에 의존하지 않음</li>
+<li>SELECT, FROM, WHERE, GROUP BY, HAVING, JOIN 지원</li>
+<li><code>em.createQuery()</code> 파라미터로 jpql을 작성해 SQL을 수행할 수 있음</li>
+<li>검색 쿼리 등에서도 테이블이 아닌 <strong>엔티티 객체를 대상</strong>으로 검색
+<ul>
+<li>모든 DB 데이터를 객체로 변환할 수 없음</li>
+<li>결국 검색 조건이 포함된 SQL을 사용해야 하므로 JPQL을 사용</li>
+</ul>
+</li>
+</ul>
+</details>
+<br>
+<hr>
+<h2 id="%EC%98%81%EC%86%8D%EC%84%B1-%EA%B4%80%EB%A6%AC---%EB%82%B4%EB%B6%80-%EB%8F%99%EC%9E%91-%EB%B0%A9%EC%8B%9D"><strong>영속성 관리 - 내부 동작 방식</strong></h2>
+<h3 id="%EC%98%81%EC%86%8D%EC%84%B1-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-1">영속성 컨텍스트 1</h3>
+<details>
+<summary>보기</summary>
+<h4 id="%EC%98%81%EC%86%8D%EC%84%B1-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8"><strong>영속성 컨텍스트</strong></h4>
+<ul>
+<li>엔티티를 영구 저장하는 환경(논리적 개념)</li>
+<li>em을 통해서 영속성 컨텍스트에 접근</li>
+<li><code>em.persist(entity);</code>
+<br></li>
+</ul>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0%EC%9D%98-%EC%83%9D%EB%AA%85%EC%A3%BC%EA%B8%B0">엔티티의 생명주기</h4>
+<pre class="hljs"><code><div>Member member = new Member();
+member.setId(&quot;member1&quot;);
+member.setName(&quot;memberA&quot;);    // 비영속
+
+em.getTransaction().begin();
+em.persist(member);           // 영속
+em.detach(member);            // 준영속
+</div></code></pre>
+<ul>
+<li>비영속 (new / transient)</li>
+<li>영속 (managed)</li>
+<li>준영속 (detached)</li>
+<li>삭제 (removed)</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="%EC%98%81%EC%86%8D%EC%84%B1-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-2">영속성 컨텍스트 2</h3>
+<details>
+<summary>보기</summary>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%A1%B0%ED%9A%8C-1%EC%B0%A8-%EC%BA%90%EC%8B%9C">엔티티 조회, 1차 캐시</h4>
+<ul>
+<li>
+<p>1차 캐시</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">@Id</th>
+<th style="text-align:center">Entity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">&quot;member1&quot;</td>
+<td style="text-align:center">member</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><code>em.find(Member.class, &quot;member1&quot;);</code></p>
+<ol>
+<li>1차 캐시에서 조회 -&gt; 조회 결과 존재</li>
+<li>조회 결과를 반환
+<br></li>
+</ol>
+</li>
+<li>
+<p><code>em.find(Member.class, &quot;member2&quot;);</code></p>
+<ol>
+<li>1차 캐시에서 조회 -&gt; 조회 결과 없음</li>
+<li>DB 조회</li>
+<li>DB 조회 결과를 1차 캐시에 저장</li>
+<li>조회 결과를 반환
+<br></li>
+</ol>
+</li>
+<li>
+<p>1차 캐시의 성능적 이익은 크지 않음</p>
+<ul>
+<li>em은 보통 트랜잭션 단위로 존재하고, 요청이 종료 될 때 같이 종료; 1차 캐시도 삭제</li>
+<li>하나의 트랜잭션 안에서만 이익을 볼 수 있는 구조</li>
+<li>JPA(또는 Hibernate)에서 애플리케이션 전쳉에서 공유하는 캐시는 2차 캐시라 함
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%98%81%EC%86%8D-%EC%97%94%ED%8B%B0%ED%8B%B0%EC%9D%98-%EB%8F%99%EC%9D%BC%EC%84%B1-%EB%B3%B4%EC%9E%A5">영속 엔티티의 동일성 보장</h4>
+<pre class="hljs"><code><div>Member a = em.find(Member.class, &quot;member1&quot;);
+Member b = em.find(Member.class, &quot;member1&quot;);
+
+System.out.println(a == b); // true
+</div></code></pre>
+<ul>
+<li>1차 캐시를 이용하여 같은 참조를 가진 객체처럼 비교</li>
+<li>반복 가능한 읽기(REPEATABLE READ) 등급의 트랜잭션 격리 수준을 DB가 아닌 애플리케이션에서 제공
+<br></li>
+</ul>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0-%EB%93%B1%EB%A1%9D">엔티티 등록</h4>
+<ul>
+<li>트랜잭션을 지원하는 쓰기 지연
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><code>em.persist()</code></th>
+<th style="text-align:center"><code>tx.commit()</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="../../../../attachments/2023-03-18-00-29-40.png" alt=""></td>
+<td style="text-align:center"><img src="../../../../attachments/2023-03-18-00-31-04.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>em.persist()</code> 때 SQL을 생성해서 쓰기 지연 SQL 저장소에 보관</li>
+<li>트랜잭션 commit 직전에 SQL을 flush(DB로 전송)하고 DB에서 commit</li>
+<li>예외의 경우가 존재함 (<code>GenerationType.SEQUENCE)</code></li>
+<li>버퍼링 가능 : Hibernate의 경우 hibernate.jdbc.batch.size 옵션에서 설정한 만큼 쿼리를 보내고 DB commit
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%88%98%EC%A0%95">엔티티 수정</h4>
+<ul>
+<li>변경 감지(dirty checking)
+<img src="../../../../attachments/2023-03-18-00-43-08.png" alt="">
+<ul>
+<li>스냅샷 : 엔티티를 읽어온 최초 시점의 상태를 보관한 것</li>
+<li><code>em.flush()</code> 할 때(트랜잭션 커밋 시점) 엔티티와 스냅샷을 비교</li>
+<li>만약 엔티티와 스냅샷에 차이가 있다면 쓰기 지연 SQL 저장소에 UPDATE 쿼리 추가
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%82%AD%EC%A0%9C">엔티티 삭제</h4>
+<ul>
+<li><code>em.remove(entity)</code>로 삭제</li>
+<li>같은 방식으로 쓰기 지연 SQL 저장소에 DELETE 쿼리 생성 후 flush</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="%ED%94%8C%EB%9F%AC%EC%8B%9C">플러시</h3>
+<details>
+<summary>보기</summary>
+#### 정의 : 영속성 컨텍스트의 변경 내용을 DB에 반영하는 것
+<br>
+<h4 id="%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-commit-%EC%8B%9C-%ED%94%8C%EB%9F%AC%EC%8B%9C-%EB%B0%9C%EC%83%9D">트랜잭션 commit 시 플러시 발생</h4>
+<ul>
+<li>변경 감지</li>
+<li>변경 감지한 결과로 수정된 엔티티에 대한 UPDATE 쿼리를 쓰기 지연 SQL 저장소에 등록</li>
+<li>쓰기 지연 SQL 저장소의 쿼리(등록, 수정, 삭제)를 DB에 전송
+<br></li>
+</ul>
+<h4 id="%ED%94%8C%EB%9F%AC%EC%8B%9C-%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95">플러시 하는 방법</h4>
+<ul>
+<li><code>em.flush()</code>
+<ul>
+<li>직접 호출</li>
+<li>커밋 전 미리 DB에 반영, 전송되는 쿼리 확인, 테스트 용도로 강제 호출해서 사용</li>
+<li>플러시 한다고 해서 1차 캐시가 지워지는 것은 아님</li>
+</ul>
+</li>
+<li>트랜잭션 커밋 : 플러시 자동 호출</li>
+<li>JPQL 쿼리 실행
+<ul>
+<li>플러시 자동 호출</li>
+<li>JPQL은 즉시 DB에서 실행되기 때문에 실행 전 영속성 컨텍스트의 상태를 DB에 동기화하기 위함</li>
+<li>ex) <code>em.persist(memberC)</code> 호출 후 JPQL로 전체 회원을 조회한다면, DB에서 INSERT가 실행되어야 memberC의 정보도 조회할 수 있음
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%ED%94%8C%EB%9F%AC%EC%8B%9C-%EB%AA%A8%EB%93%9C-%EC%98%B5%EC%85%98--emsetflushmodeflushmodetype-flushmodetype">플러시 모드 옵션 : <code>em.setFlushMode(FlushModeType flushModeType)</code></h4>
+<ul>
+<li>FlushModeType.AUTO : 커밋이나 쿼리를 실행할 때 플러시(default)</li>
+<li>FlushModeType.COMMIT : 커밋할 때만 플러시
+<br></li>
+</ul>
+<h4 id="%EC%A3%BC%EC%9D%98"><strong>!주의</strong></h4>
+<ul>
+<li>플러시는 <em><strong>영속성 컨텍스트를 비우지 않음</strong></em></li>
+<li>영속성 컨텍스트의 <strong>변경내용을 DB에 동기화</strong></li>
+<li>트랜잭션이라는 작업 단위가 중요하므로, 커밋 직전에만 동기화하면 됨</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="%EC%A4%80%EC%98%81%EC%86%8D-%EC%83%81%ED%83%9C">준영속 상태</h3>
+<details>
+<summary>보기</summary>
+<h4 id="%EC%A4%80%EC%98%81%EC%86%8D-%EC%83%81%ED%83%9C%EB%A1%9C-%EB%A7%8C%EB%93%9C%EB%8A%94-%EB%B0%A9%EB%B2%95">준영속 상태로 만드는 방법</h4>
+<ul>
+<li><code>em.detach(entity)</code> : 특정 엔티티를 준영속 상태로 전환</li>
+<li><code>em.clear()</code> : 영속성 컨텍스트를 초기화</li>
+<li><code>em.close()</code> : 영속성 컨텍스트 종료</li>
+<li>테스트 환경에서 사용, 단순한 로직에서는 사실상 필요 없음</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="%EC%A0%95%EB%A6%AC">정리</h3>
+<h4 id="%EA%B1%8D-%EC%A0%95%EB%A6%AC%EC%98%80%EC%9D%8C">걍 정리였음</h4>
+<br>
+<hr>
+<h2 id="%EC%97%94%ED%8B%B0%ED%8B%B0-%EB%A7%A4%ED%95%91"><strong>엔티티 매핑</strong></h2>
+<h3 id="%EA%B0%9D%EC%B2%B4%EC%99%80-%ED%85%8C%EC%9D%B4%EB%B8%94-%EB%A7%A4%ED%95%91">객체와 테이블 매핑</h3>
+<details>
+<summary>보기</summary>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0-%EB%A7%A4%ED%95%91-%EC%86%8C%EA%B0%9C">엔티티 매핑 소개</h4>
+<ul>
+<li>객체-테이블 매핑 : <code>@Entity</code>, <code>@Table</code></li>
+<li>필드-컬럼 매핑 : <code>@Column</code></li>
+<li>기본 키 매핑 : <code>@Id</code></li>
+<li>연관관계 매핑 : <code>@ManyToOne</code>, <code>@JoinColumn</code> 등
+<br></li>
+</ul>
+<h4 id="entity">@Entity</h4>
+<ul>
+<li>클래스에 붙이며, JPA가 엔티티로 관리한다는 의미</li>
+<li>JPA로 테이블과 매핑할 클래스에는 <strong>필수</strong></li>
+<li><strong>!주의</strong>
+<ul>
+<li><strong>기본 생성자 필수</strong> (protected까지 허용)</li>
+<li>fianl 클래스, enum, interface, inner 클래스에는 사용하지 않음</li>
+<li>저장할 필드에는 final</li>
+</ul>
+</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%8A%A4%ED%82%A4%EB%A7%88-%EC%9E%90%EB%8F%99-%EC%83%9D%EC%84%B1">데이터베이스 스키마 자동 생성</h3>
+<details>
+<summary>보기</summary>
+</details>
+<br>
+<hr>
+<h3 id="%ED%95%84%EB%93%9C%EC%99%80-%EC%BB%AC%EB%9F%BC-%EB%A7%A4%ED%95%91">필드와 컬럼 매핑</h3>
+<details>
+<summary>보기</summary>
+</details>
+<br>
+<hr>
+<h3 id="%EA%B8%B0%EB%B3%B8-%ED%82%A4-%EB%A7%A4%ED%95%91">기본 키 매핑</h3>
+<details>
+<summary>보기</summary>
+<h4 id="%EA%B8%B0%EB%B3%B8-%ED%82%A4-%EB%A7%A4%ED%95%91-%EC%95%A0%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98">기본 키 매핑 애노테이션</h4>
+<ul>
+<li><code>@Id</code> : <code>@Id</code>만 사용 시 값을 직접 할당</li>
+<li><code>@GeneratedValue(strategy = GenerationType.AUTO)</code> : 값 자동 생성
+<ul>
+<li>IDENTITY : DB에 위임 / MySQL</li>
+<li>SEQUENCE : DB 시퀀스 사용, <code>@SequenceGenerator</code> 필요 / ORACLE</li>
+<li>TABLE : 키 생성용 테이블 사용, <code>@TableGenerator</code> 필요 / 모든 DB 가능</li>
+<li>AUTO : 방언에 따라 자동 지정, default</li>
+</ul>
+</li>
+</ul>
+<h4 id="generationtypeidentity">GenerationType.IDENTITY</h4>
+<ul>
+<li>DB에 기본 키 생성 위임</li>
+<li>MySQL, PostgreSQL, SQL Server, DB2 등
+<ul>
+<li>ex) MySQL의 AUTO_INCREMENT 속성</li>
+</ul>
+</li>
+<li>단, AUTO_INCREMENT는 DB에서 INSERT가 실행되어야 ID를 얻을 수 있음
+<ul>
+<li><code>em.persist()</code>  시점에 즉시 INSERT를 실행시켜 PK 값을 획득</li>
+</ul>
+</li>
+</ul>
+<h4 id="generationtypesequence">GenerationType.SEQUENCE</h4>
+<ul>
+<li>DB 오브젝트인 시퀀스 사용</li>
+<li>Oracle, PostgreSQL, DB2, H2 DB 등</li>
+<li>클래스에 <code>@SequenceGenerator</code>를 선언해 매핑
+<ul>
+<li>
+<pre class="hljs"><code><div>@Entity
+@SequenceGenerator(
+      name = &quot;MEMBER_SEQ_GENERATOR&quot;,
+      sequenceName = &quot;SEQ_MEMBER&quot;,
+      intitialValue = 1,
+      allocationSize = 1)
+public class Member {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE,
+                  generator = &quot;MEMBER_SEQ_GENERATOR&quot;)
+  private Long id;
+}
+</div></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C-1---%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD-%EB%B6%84%EC%84%9D%EA%B3%BC-%EA%B8%B0%EB%B3%B8-%EB%A7%A4%ED%95%91">실전 예제 1 - 요구사항 분석과 기본 매핑</h3>
+<details>
+<summary>보기</summary>
+<h4 id="%EA%B8%B0%EB%8A%A5-%EB%AA%A9%EB%A1%9D">기능 목록</h4>
+<ul>
+<li>
+<p>회원 기능</p>
+<ul>
+<li>회원 등록</li>
+<li>회원 조회
+<br></li>
+</ul>
+</li>
+<li>
+<p>상품 기능</p>
+<ul>
+<li>상품 등록</li>
+<li>상품 수정</li>
+<li>상품 조회
+<br></li>
+</ul>
+</li>
+<li>
+<p>주문 기능</p>
+<ul>
+<li>상품 주문</li>
+<li>주문내역 조회</li>
+<li>주문 취소
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%84%A4%EA%B3%84">테이블 설계</h4>
+<p><img src="../../../../attachments/2023-03-17-12-59-57.png" alt=""></p>
+<ul>
+<li>ORDERS - ITEM 의 다대다 관계를 중간에 ORDER_ITEM 테이블을 이용해 일대다로 매핑
+<br></li>
+</ul>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%84%A4%EA%B3%84%EC%99%80-%EB%A7%A4%ED%95%91">엔티티 설계와 매핑</h4>
+<p><img src="../../../../attachments/2023-03-17-13-00-23.png" alt="">
+<br></p>
+<h4 id="%EC%BB%AC%EB%9F%BC%EB%AA%85-%EB%A7%A4%ED%95%91">컬럼명 매핑</h4>
+<ul>
+<li>Spring legacy 에서는 Camel case를 Snake case로 자동 변환하지 않음
+<ul>
+<li>따로 설정해야 함</li>
+<li><code>@Column(name=&quot;MEMBER_ID&quot;)</code> 로 직접 매핑할 DB 컬럼을 명시할 수 있음
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%A0%95%EB%B3%B4-%EC%84%A4%EC%A0%95">엔티티 정보 설정</h4>
+<ul>
+<li>엔티티 클래스에서 제약조건, 인덱스, 컬럼의 크기 등을 설정할 수 있음</li>
+<li>DB를 조회하지 않고 파악할 수 있다는 장점</li>
+<li>예시
+<ul>
+<li>데이터 크기 : <code>@Column(length=10)</code> 등</li>
+<li>제약조건, 인덱스 : <code>@Table</code>의 uniqueConstraints, indexes element(<code>indexes = @Index()</code>) 등
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A4%91%EC%8B%AC-%EC%84%A4%EA%B3%84">데이터 중심 설계</h4>
+<ul>
+<li>객체 설계를 테이블 설계에 맞춘 방식
+<ul>
+<li>ex) Order 클래스에 memberId를 필드로 선언</li>
+</ul>
+</li>
+<li>객체의 그래프 탐색이 불가능</li>
+<li>사실상 참조가 없음</li>
+<li>외래키가 아닌 객체를 필드로 선언해야 함
+<br></li>
+</ul>
+</details>
+<br>
+<hr>
+<h2 id="%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84-%EB%A7%A4%ED%95%91-%EA%B8%B0%EC%B4%88">연관관계 매핑 기초</h2>
+<h3 id="%EB%8B%A8%EB%B0%A9%ED%96%A5-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84">단방향 연관관계</h3>
+<details>
+<summary>보기</summary>
+<h4 id="%EC%9A%A9%EC%96%B4-%EC%9D%B4%ED%95%B4">용어 이해</h4>
+<ul>
+<li>방향(dirction) : 단방향, 양방향</li>
+<li>다중성(multiplicity) : 다대일, 일대다, 일대일, 다대다</li>
+<li><strong>연관관계의 주인(owner)</strong> : 객체 양방향 관계는 관리 주인이 필요
+<br></li>
+</ul>
+<h4 id="%EC%98%88%EC%A0%9C-%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4">예제 시나리오</h4>
+<ul>
+<li>회원과 팀이 있음</li>
+<li>회원은 하나의 팀에만 소속됨</li>
+<li>회원과 팀은 다대일
+<br></li>
+</ul>
+<h4 id="%EA%B0%9D%EC%B2%B4%EB%A5%BC-%ED%85%8C%EC%9D%B4%EB%B8%94%EC%97%90-%EB%A7%9E%EC%B6%94%EC%96%B4-%EB%AA%A8%EB%8D%B8%EB%A7%81%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A4%91%EC%8B%AC">객체를 테이블에 맞추어 모델링(데이터 중심)</h4>
+<p><img src="../../../../attachments/2023-03-23-05-45-52.png" alt=""></p>
+<ul>
+<li>객체에 연관관계가 없음</li>
+<li>Member 객체에 외래 키 값을 그대로 가져옴</li>
+<li>문제점
+<ul>
+<li>member를 persist 하기 위해서는 team을 조회해서 id를 가져온 뒤 member에 set 해줘야 함</li>
+<li>member의 team을 조회하기 위해서는 member의 teamId를 가져와서 다시 team을 조회해야 함</li>
+<li>테이블은 외래 키로 조인해서 연관 테이블을 찾고, 객체는 참조를 사용해서 연관된 객체를 찾는 차이가 있기 때문
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EA%B0%9D%EC%B2%B4-%EC%A7%80%ED%96%A5-%EB%AA%A8%EB%8D%B8%EB%A7%81%EB%8B%A8%EB%B0%A9%ED%96%A5-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84">객체 지향 모델링(단방향 연관관계)</h4>
+<p><img src="../../../../attachments/2023-03-23-06-32-56.png" alt=""></p>
+<ul>
+<li>member 객체에서 team을 바로 가져올 수 있음</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="%EC%96%91%EB%B0%A9%ED%96%A5-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84%EC%99%80-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84%EC%9D%98-%EC%A3%BC%EC%9D%B8-1---%EA%B8%B0%EB%B3%B8">양방향 연관관계와 연관관계의 주인 1 - 기본</h3>
+<h4 id="%EC%96%91%EB%B0%A9%ED%96%A5-%EB%A7%A4%ED%95%91">양방향 매핑</h4>
+<p><img src="../../../../attachments/2023-03-23-07-13-17.png" alt=""></p>
+<ul>
+<li>Team &lt;-&gt; Member(List) 양방향으로 객체 그래프 탐색 가능</li>
+<li>Member는 단방향 매핑과 동일하게 작성</li>
+<li>Team에 <code>List&lt;Member&gt; members</code> 필드를 추가
+<ul>
+<li><code>@OneToMany(mappedBy = &quot;team&quot;)</code> 애노테이션 필요
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EA%B0%9D%EC%B2%B4%EC%99%80-%ED%85%8C%EC%9D%B4%EB%B8%94%EC%9D%B4-%EA%B4%80%EA%B3%84%EB%A5%BC-%EB%A7%BA%EB%8A%94-%EC%B0%A8%EC%9D%B4">객체와 테이블이 관계를 맺는 차이</h4>
+<ul>
+<li>
+<p>객체 연관관계 : 2개</p>
+<ul>
+<li>회원 -&gt; 팀 (단방향)</li>
+<li>팀 -&gt; 회원 (단방향)</li>
+<li>객체의 양방향 연관관계는 <strong>사실상 2개의 단방향 관계</strong>
+<ul>
+<li>단방향 매핑에서 반대방향으로 조회(객체 그래프 탐색))하는 기능만 추가</li>
+</ul>
+</li>
+<li>객체를 양방향으로 참조하려면 <strong>단방향 연관관계 2개</strong>가 필요
+<br></li>
+</ul>
+</li>
+<li>
+<p>테이블 연관관계 : 1개</p>
+<ul>
+<li>회원 &lt;-&gt; 팀 (양방향)</li>
+<li><strong>외래 키 하나</strong>로 양방향 연관관계를 가짐
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EB%94%9C%EB%A0%88%EB%A7%88--%EB%91%98-%EC%A4%91-%ED%95%98%EB%82%98%EB%A1%9C-%EC%99%B8%EB%9E%98%ED%82%A4%EB%A5%BC-%EA%B4%80%EB%A6%AC%ED%95%B4%EC%95%BC-%ED%95%9C%EB%8B%A4">딜레마 : 둘 중 하나로 외래키를 관리해야 한다</h4>
+<p><img src="../../../../attachments/2023-03-23-07-30-12.png" alt=""></p>
+<ul>
+<li>회원의 팀 정보가 변경될 때 (= 팀의 회원목록이 바뀔 때)</li>
+<li>DB에서 MEMBER 테이블의 외래 키(TEAM_ID)는 어떤 기준으로 UPDATE 해야 하는가?
+= Member, Team 객체 중 어디에서 외래 키를 관리해야 하는가?
+<ol>
+<li>Member의 team을 변경</li>
+<li>Team의 members를 변경</li>
+</ol>
+<ul>
+<li>사실 둘 다 가능
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84%EC%9D%98-%EC%A3%BC%EC%9D%B8owner">연관관계의 주인(Owner)</h4>
+<ul>
+<li>양방향 매핑 규칙
+<ul>
+<li>객체의 두 관계 중 하나를 연관관계의 주인으로 지정</li>
+<li>연관관계의 주인만 외래 키를 관리(등록, 수정)</li>
+<li>주인이 아닌 쪽은 읽기만 가능</li>
+<li>주인은 mappedBy 속성 지정 안함</li>
+<li>주인이 아닌 객체는 mappedBy 속성으로 주인을 지정
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EB%88%84%EA%B5%AC%EB%A5%BC-%EC%A3%BC%EC%9D%B8%EC%9C%BC%EB%A1%9C-%EA%B0%80%EC%9D%B4%EB%93%9C">누구를 주인으로? (가이드)</h4>
+<ul>
+<li>
+<p>외래 키가 있는 곳을 주인으로 정해라(= N:1 관계에서 N 쪽)</p>
+</li>
+<li>
+<p>예시</p>
+<ul>
+<li>자동차(Car.wheels) - 바퀴 관계에서 바퀴(Wheel.car)에 주인을 설정</li>
+<li>이 경우에는 Member.team이 연관관계의 주인이 됨</li>
+<li>Team.members를 주인으로 설정한다면?
+<ul>
+<li>가능(JPA 짬킹 한정)</li>
+<li>Team을 다뤘는데 MEMBER 테이블의 UPDATE 쿼리가 나가는 등의 문제의 소지가 있음(성능 이슈)
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>연관관계의 주인은 비즈니스적으로 중요한 개념은 아님
+<br></p>
+</li>
+</ul>
+<hr>
+<h3 id="%EC%96%91%EB%B0%A9%ED%96%A5-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84%EC%99%80-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84%EC%9D%98-%EC%A3%BC%EC%9D%B8-2---%EC%A3%BC%EC%9D%98%EC%A0%90-%EC%A0%95%EB%A6%AC">양방향 연관관계와 연관관계의 주인 2 - 주의점, 정리</h3>
+<details>
+<summary>보기</summary>
+</details>
+<br>
+<hr>
+<h2 id="%EB%8B%A4%EC%96%91%ED%95%9C-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84-%EB%A7%A4%ED%95%91">다양한 연관관계 매핑</h2>
+<h3 id="%EB%8B%A4%EB%8C%80%EC%9D%BC-n1">다대일 [N:1]</h3>
+<details>
+<summary>보기</summary>
+</details>
+<br>
+<hr>
+<h2 id="%EC%A7%88%EB%AC%B8%EA%B1%B0%EB%A6%AC"><strong>질문거리</strong></h2>
+<details>
+<summary>보기</summary>
+<h3 id="hello-jpa---%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98-%EA%B0%9C%EB%B0%9C">Hello JPA - 애플리케이션 개발</h3>
+<details>
+<summary>보기</summary>
+<ul>
+<li>JPA는 INSERT, UPDATE 등의 쿼리를 트랜잭션의 commit 또는 rollback 시점에 한 번에 실행시킴</li>
+<li>아래 코드처럼 <code>em.persist()</code> 후 setter로 수정이 일어날 경우, SQL이 어떻게 전송될까?<pre class="hljs"><code><div>Member member = new Member();
+member.setId(1L);
+member.setName(&quot;HelloJPA&quot;);
+em.persist(member);
+
+member.setName(&quot;HelloVㅏJㅏ회&quot;);
+
+tx.commit();
+</div></code></pre>
+<ul>
+<li>
+<p>예상</p>
+<ol>
+<li>INSERT, UPDATE 쿼리를 전송</li>
+<li>또는 객체의 필드 값을 변경한 뒤 INSERT만 전송</li>
+</ol>
+</li>
+<li>
+<p>결과</p>
+<ul>
+<li>commit 시점에 INSERT, UPDATE 쿼리를 전송
+∴ 엔티티가 영속 상태일 경우, setter는 commit 하기 전에 UPDATE 쿼리를 생성
+<br></li>
+</ul>
+</li>
+<li>
+<p>보완</p>
+<ol>
+<li><code>em.persist(member)</code> 시점에 1차 캐시에 등록되며 스냅샷 생성(1L, HelloJPA)</li>
+<li>SQL 쓰기 지연 저장소에 INSERT 쿼리 추가</li>
+<li>flush 시점에 변경 감지 - 1의 스냅샷과 현재 member 객체 비교</li>
+<li><code>member.setName(&quot;HelloVㅏJㅏ회&quot;)</code>에 의해 변경이 발생했으므로 SQL 쓰기 지연 저장소에 UPDATE 쿼리 추가</li>
+<li>flush 되며 INSERT, UPDATE 쿼리 전송
+<br></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C-1---%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD-%EB%B6%84%EC%84%9D%EA%B3%BC-%EA%B8%B0%EB%B3%B8-%EB%A7%A4%ED%95%91">실전 예제 1 - 요구사항 분석과 기본 매핑</h3>
+<details>
+<summary>보기</summary>
+<ol>
+<li>
+<p><code>@GeneratedValue(strategy=GenerationType.SEQUENCE)</code>의 동작 방식</p>
+<ul>
+<li>어떤 방식으로 새 시퀀스 뭉치를 가져올까?(allocationSize 관련)
+<br></li>
+</ul>
+</li>
+<li>
+<p>Spring legacy 환경에서 컬럼명 매핑 시 Camel case -&gt; Snake case로 자동 변환하여 매핑하는 방법?
+<br></p>
+</li>
+</ol>
+</details>
+<br>
+<hr>
+</details>
+
+</body>
+</html>
