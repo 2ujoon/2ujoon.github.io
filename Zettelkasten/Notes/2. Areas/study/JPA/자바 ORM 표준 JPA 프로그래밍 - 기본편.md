@@ -1,6 +1,7 @@
 # 자바 ORM 표준 JPA 프로그래밍 - 기본편
 [강의 링크](https://www.inflearn.com/course/ORM-JPA-Basic)
 
+---
 ## **강좌 소개**
 <details>
 <summary>보기</summary>
@@ -108,7 +109,7 @@
 </details>
 <br>
 
----
+
 ### JPA 소개
 <details>
 <summary>보기</summary>
@@ -119,7 +120,7 @@
 
 - 애플리케이션과 JDBC 사이에서 동작
   |      |                                                      |
-  | ---- | ---------------------------------------------------- |
+  | - | - |
   | 동작 | ![](../../../../attachments/2023-03-13-15-58-18.png) |
   | 저장 | ![](../../../../attachments/2023-03-13-15-58-39.png) |
   | 조회 | ![](../../../../attachments/2023-03-13-15-58-57.png) |
@@ -186,7 +187,7 @@
 </details>
 <br>
 
----
+
 ### Hello JPA - 애플리케이션 개발
 <details>
 <summary>보기</summary>
@@ -253,7 +254,7 @@
 </details>
 <br>
 
----
+
 ### 영속성 컨텍스트 2
 <details>
 <summary>보기</summary>
@@ -262,7 +263,7 @@
   - 1차 캐시
 
     |    @Id    | Entity |
-    | :-------: | :----: |
+    | :-: | :-: |
     | "member1" | member |
 
   - `em.find(Member.class, "member1");`
@@ -297,7 +298,7 @@ System.out.println(a == b); // true
 #### 엔티티 등록
 - 트랜잭션을 지원하는 쓰기 지연
   |                    `em.persist()`                    |                    `tx.commit()`                     |
-  | :--------------------------------------------------: | :--------------------------------------------------: |
+  | :--: | :--: |
   | ![](../../../../attachments/2023-03-18-00-29-40.png) | ![](../../../../attachments/2023-03-18-00-31-04.png) |
     - `em.persist()` 때 SQL을 생성해서 쓰기 지연 SQL 저장소에 보관
     - 트랜잭션 commit 직전에 SQL을 flush(DB로 전송)하고 DB에서 commit
@@ -320,10 +321,11 @@ System.out.println(a == b); // true
 </details>
 <br>
 
----
+
 ### 플러시
 <details>
 <summary>보기</summary>
+
 #### 정의 : 영속성 컨텍스트의 변경 내용을 DB에 반영하는 것
 <br>
 
@@ -358,7 +360,7 @@ System.out.println(a == b); // true
 </details>
 <br>
 
----
+
 ### 준영속 상태
 <details>
 <summary>보기</summary>
@@ -372,7 +374,7 @@ System.out.println(a == b); // true
 </details>
 <br>
 
----
+
 ### 정리
 #### 걍 정리였음
 <br>
@@ -401,7 +403,7 @@ System.out.println(a == b); // true
 </details>
 <br>
 
----
+
 ### 데이터베이스 스키마 자동 생성
 <details>
 <summary>보기</summary>
@@ -410,7 +412,7 @@ System.out.println(a == b); // true
 </details>
 <br>
 
----
+
 ### 필드와 컬럼 매핑
 <details>
 <summary>보기</summary>
@@ -419,7 +421,7 @@ System.out.println(a == b); // true
 </details>
 <br>
 
----
+
 ### 기본 키 매핑
 <details>
 <summary>보기</summary>
@@ -461,7 +463,7 @@ System.out.println(a == b); // true
 </details>
 <br>
 
----
+
 ### 실전 예제 1 - 요구사항 분석과 기본 매핑
 <details>
 <summary>보기</summary>
@@ -553,7 +555,7 @@ System.out.println(a == b); // true
 </details>
 <br>
 
----
+
 ### 양방향 연관관계와 연관관계의 주인 1 - 기본
 <details>
 <summary>보기</summary>
@@ -615,7 +617,7 @@ System.out.println(a == b); // true
 </details>
 <br>
 
----
+
 ### 양방향 연관관계와 연관관계의 주인 2 - 주의점, 정리
 <details>
 <summary>보기</summary>
