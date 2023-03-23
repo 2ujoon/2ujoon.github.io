@@ -555,6 +555,9 @@ System.out.println(a == b); // true
 
 ---
 ### 양방향 연관관계와 연관관계의 주인 1 - 기본
+<details>
+<summary>보기</summary>
+
 #### 양방향 매핑
 ![](../../../../attachments/2023-03-23-07-13-17.png)
 - Team <-> Member(List) 양방향으로 객체 그래프 탐색 가능
@@ -607,6 +610,9 @@ System.out.println(a == b); // true
   <br>
 
 - 연관관계의 주인은 비즈니스적으로 중요한 개념은 아님
+<br>
+
+</details>
 <br>
 
 ---
