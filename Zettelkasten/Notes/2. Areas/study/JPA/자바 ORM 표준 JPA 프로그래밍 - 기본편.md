@@ -2,8 +2,8 @@
 [강의](https://www.inflearn.com/course/ORM-JPA-Basic)
 
 ## **강좌 소개**
-<!-- <details>
-<summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 - 왜 JPA를 사용하는가
   - 기존에는 개발자가 SQL mapper 역할을 함
@@ -28,8 +28,8 @@
 ---
 ## **JPA 소개**
 ### SQL 중심적인 개발의 문제점
-<!-- <details>
-<summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 - RDB : 현 DB의 헤게모니
   - RDB에 정보를 저장할 때 객체가 가진 정보를 SQL로 변환하여 RDB에 저장
@@ -110,8 +110,8 @@
 
 ---
 ### JPA 소개
-<!-- <details>
-<summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 - JAVA의 ORM(Object-Relational Mapping) 기술 표준
   - 객체는 객체대로, RDB는 RDB 대로 설계 후 ORM으로 중간에서 매핑
@@ -173,8 +173,8 @@
 ---
 ## **JPA 시작하기**
 ### Hello JPA - 프로젝트 생성
-<!-- <details>
-<summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 - DB : H2
 - JPA 설정
@@ -188,8 +188,8 @@
 
 ---
 ### Hello JPA - 애플리케이션 개발
-<!-- <details>
-<summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 #### EntityManagerFactory, EntityManager
 - EntityManagerFactory(이하 emf) 로부터 EntityManager(이하 em) 를 획득하여 사용
@@ -226,8 +226,8 @@
 ---
 ## **영속성 관리 - 내부 동작 방식**
 ### 영속성 컨텍스트 1
-<!-- <details>
-<summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 #### **영속성 컨텍스트**
   - 엔티티를 영구 저장하는 환경(논리적 개념)
@@ -255,8 +255,8 @@
 
 ---
 ### 영속성 컨텍스트 2
-<!-- <details>
-<summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 #### 엔티티 조회, 1차 캐시
   - 1차 캐시
@@ -322,8 +322,8 @@ System.out.println(a == b); // true
 
 ---
 ### 플러시
-<!-- <details>
-<summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 #### 정의 : 영속성 컨텍스트의 변경 내용을 DB에 반영하는 것
 <br>
 
@@ -421,8 +421,8 @@ System.out.println(a == b); // true
 
 ---
 ### 기본 키 매핑
-<!-- <details>
-<summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 #### 기본 키 매핑 애노테이션
 - `@Id` : `@Id`만 사용 시 값을 직접 할당
@@ -463,8 +463,8 @@ System.out.println(a == b); // true
 
 ---
 ### 실전 예제 1 - 요구사항 분석과 기본 매핑
-<!-- <details>
-<summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 #### 기능 목록
 - 회원 기능
