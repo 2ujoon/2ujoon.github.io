@@ -1,11 +1,9 @@
-<!-- euk-kr -->
 # 자바 ORM 표준 JPA 프로그래밍 - 기본편
-[강의 링크](https://www.inflearn.com/course/ORM-JPA-Basic)
+[강의](https://www.inflearn.com/course/ORM-JPA-Basic)
 
----
 ## **강좌 소개**
-<details>
-<summary>보기</summary>
+<!-- <details>
+<summary>보기</summary> -->
 
 - 왜 JPA를 사용하는가
   - 기존에는 개발자가 SQL mapper 역할을 함
@@ -30,8 +28,8 @@
 ---
 ## **JPA 소개**
 ### SQL 중심적인 개발의 문제점
-<details>
-<summary>보기</summary>
+<!-- <details>
+<summary>보기</summary> -->
 
 - RDB : 현 DB의 헤게모니
   - RDB에 정보를 저장할 때 객체가 가진 정보를 SQL로 변환하여 RDB에 저장
@@ -110,10 +108,10 @@
 </details>
 <br>
 
-
+---
 ### JPA 소개
-<details>
-<summary>보기</summary>
+<!-- <details>
+<summary>보기</summary> -->
 
 - JAVA의 ORM(Object-Relational Mapping) 기술 표준
   - 객체는 객체대로, RDB는 RDB 대로 설계 후 ORM으로 중간에서 매핑
@@ -121,7 +119,7 @@
 
 - 애플리케이션과 JDBC 사이에서 동작
   |      |                                                      |
-  | - | - |
+  | ---- | ---------------------------------------------------- |
   | 동작 | ![](../../../../attachments/2023-03-13-15-58-18.png) |
   | 저장 | ![](../../../../attachments/2023-03-13-15-58-39.png) |
   | 조회 | ![](../../../../attachments/2023-03-13-15-58-57.png) |
@@ -175,8 +173,8 @@
 ---
 ## **JPA 시작하기**
 ### Hello JPA - 프로젝트 생성
-<details>
-<summary>보기</summary>
+<!-- <details>
+<summary>보기</summary> -->
 
 - DB : H2
 - JPA 설정
@@ -188,10 +186,10 @@
 </details>
 <br>
 
-
+---
 ### Hello JPA - 애플리케이션 개발
-<details>
-<summary>보기</summary>
+<!-- <details>
+<summary>보기</summary> -->
 
 #### EntityManagerFactory, EntityManager
 - EntityManagerFactory(이하 emf) 로부터 EntityManager(이하 em) 를 획득하여 사용
@@ -228,8 +226,8 @@
 ---
 ## **영속성 관리 - 내부 동작 방식**
 ### 영속성 컨텍스트 1
-<details>
-<summary>보기</summary>
+<!-- <details>
+<summary>보기</summary> -->
 
 #### **영속성 컨텍스트**
   - 엔티티를 영구 저장하는 환경(논리적 개념)
@@ -255,16 +253,16 @@
 </details>
 <br>
 
-
+---
 ### 영속성 컨텍스트 2
-<details>
-<summary>보기</summary>
+<!-- <details>
+<summary>보기</summary> -->
 
 #### 엔티티 조회, 1차 캐시
   - 1차 캐시
 
     |    @Id    | Entity |
-    | :-: | :-: |
+    | :-------: | :----: |
     | "member1" | member |
 
   - `em.find(Member.class, "member1");`
@@ -299,7 +297,7 @@ System.out.println(a == b); // true
 #### 엔티티 등록
 - 트랜잭션을 지원하는 쓰기 지연
   |                    `em.persist()`                    |                    `tx.commit()`                     |
-  | :--: | :--: |
+  | :--------------------------------------------------: | :--------------------------------------------------: |
   | ![](../../../../attachments/2023-03-18-00-29-40.png) | ![](../../../../attachments/2023-03-18-00-31-04.png) |
     - `em.persist()` 때 SQL을 생성해서 쓰기 지연 SQL 저장소에 보관
     - 트랜잭션 commit 직전에 SQL을 flush(DB로 전송)하고 DB에서 commit
@@ -322,11 +320,10 @@ System.out.println(a == b); // true
 </details>
 <br>
 
-
+---
 ### 플러시
-<details>
-<summary>보기</summary>
-
+<!-- <details>
+<summary>보기</summary> -->
 #### 정의 : 영속성 컨텍스트의 변경 내용을 DB에 반영하는 것
 <br>
 
@@ -361,10 +358,10 @@ System.out.println(a == b); // true
 </details>
 <br>
 
-
+---
 ### 준영속 상태
-<details>
-<summary>보기</summary>
+<!-- <details> -->
+<!-- <summary>보기</summary> -->
 
 #### 준영속 상태로 만드는 방법
 - `em.detach(entity)` : 특정 엔티티를 준영속 상태로 전환
@@ -375,7 +372,7 @@ System.out.println(a == b); // true
 </details>
 <br>
 
-
+---
 ### 정리
 #### 걍 정리였음
 <br>
@@ -383,8 +380,8 @@ System.out.println(a == b); // true
 ---
 ## **엔티티 매핑**
 ### 객체와 테이블 매핑
-<details>
-<summary>보기</summary>
+<!-- <details> -->
+<!-- <summary>보기</summary> -->
 
 #### 엔티티 매핑 소개
 - 객체-테이블 매핑 : `@Entity`, `@Table`
@@ -404,28 +401,28 @@ System.out.println(a == b); // true
 </details>
 <br>
 
-
-### 데이터베이스 스키마 자동 생성
-<details>
-<summary>보기</summary>
-
-
-</details>
-<br>
-
-
-### 필드와 컬럼 매핑
-<details>
-<summary>보기</summary>
+---
+### 데이터베이스 스키마 자동 생성 TODO
+<!-- <details> -->
+<!-- <summary>보기</summary> -->
 
 
 </details>
 <br>
 
+---
+### 필드와 컬럼 매핑 TODO
+<!-- <details> -->
+<!-- <summary>보기</summary> -->
 
+
+</details>
+<br>
+
+---
 ### 기본 키 매핑
-<details>
-<summary>보기</summary>
+<!-- <details>
+<summary>보기</summary> -->
 
 #### 기본 키 매핑 애노테이션
 - `@Id` : `@Id`만 사용 시 값을 직접 할당
@@ -464,10 +461,10 @@ System.out.println(a == b); // true
 </details>
 <br>
 
-
+---
 ### 실전 예제 1 - 요구사항 분석과 기본 매핑
-<details>
-<summary>보기</summary>
+<!-- <details>
+<summary>보기</summary> -->
 
 #### 기능 목록
 - 회원 기능
@@ -515,7 +512,7 @@ System.out.println(a == b); // true
   - ex) Order 클래스에 memberId를 필드로 선언
 - 객체의 그래프 탐색이 불가능
 - 사실상 참조가 없음
-- 외래키가 아닌 객체를 필드로 선언해야 함
+- 외래 키가 아닌 객체를 필드로 선언해야 함
 <br>
 
 </details>
@@ -524,8 +521,8 @@ System.out.println(a == b); // true
 ---
 ## 연관관계 매핑 기초
 ### 단방향 연관관계
-<details>
-<summary>보기</summary>
+<!-- <details> -->
+<!-- <summary>보기</summary> -->
 
 #### 용어 이해
 - 방향(dirction) : 단방향, 양방향
@@ -556,11 +553,8 @@ System.out.println(a == b); // true
 </details>
 <br>
 
-
+---
 ### 양방향 연관관계와 연관관계의 주인 1 - 기본
-<details>
-<summary>보기</summary>
-
 #### 양방향 매핑
 ![](../../../../attachments/2023-03-23-07-13-17.png)
 - Team <-> Member(List) 양방향으로 객체 그래프 탐색 가능
@@ -574,7 +568,7 @@ System.out.println(a == b); // true
   - 회원 -> 팀 (단방향)
   - 팀 -> 회원 (단방향)
   - 객체의 양방향 연관관계는 **사실상 2개의 단방향 관계**
-    - 단방향 매핑에서 반대방향으로 조회(객체 그래프 탐색))하는 기능만 추가
+    - 던방향 매핑에서 반대방향으로 조회(객체 그래프 탐색))하는 기능만 추가
   - 객체를 양방향으로 참조하려면 **단방향 연관관계 2개**가 필요
 <br>
 
@@ -583,7 +577,7 @@ System.out.println(a == b); // true
   - **외래 키 하나**로 양방향 연관관계를 가짐
 <br>
 
-#### 딜레마 : 둘 중 하나로 외래키를 관리해야 한다
+#### 딜레마 : 둘 중 하나로 외래 키를 관리해야 한다
 ![](../../../../attachments/2023-03-23-07-30-12.png)
 - 회원의 팀 정보가 변경될 때 (= 팀의 회원목록이 바뀔 때)
 - DB에서 MEMBER 테이블의 외래 키(TEAM_ID)는 어떤 기준으로 UPDATE 해야 하는가? 
@@ -615,13 +609,10 @@ System.out.println(a == b); // true
 - 연관관계의 주인은 비즈니스적으로 중요한 개념은 아님
 <br>
 
-</details>
-<br>
-
-
+---
 ### 양방향 연관관계와 연관관계의 주인 2 - 주의점, 정리
-<details>
-<summary>보기</summary>
+<!-- <details> -->
+<!-- <summary>보기</summary> -->
 
 #### 연관관계의 주인에 값을 입력하지 않음
 ```
@@ -663,3 +654,175 @@ tx.commit();
 </details>
 <br>
 
+---
+### 실전 예제 2 - 연관관계 매핑 시작
+<!-- <details> -->
+<!-- <summary>보기</summary> -->
+
+#### 테이블 구조
+![](../../../../attachments/2023-03-27-03-13-42.png)
+<br>
+
+#### 객체 구조
+![](../../../../attachments/2023-03-27-03-14-54.png)
+- 참조를 사용하도록 변경
+<br>
+
+#### 매핑
+- 단방향 관계를 우선적으로 매핑, 이후 필요 시 양방향 매핑
+- 외래 키를 가진 객체에서 연관관계의 주인을 설정(`@JoinColumn`)
+- 외래 키를 필드로 가지지 않고, 객체를 필드로 가짐
+<br>
+
+#### 설계
+- 회원의 주문 목록을 가져올 경우
+  - ORDER에서 MEMBER_ID를 이용해 조회하는 것이 자연스러움
+  - Member에서  `List<Order>`로 주문 목록을 가asd져오고 있다면, 관심사를 제대로 끊어내지 못한 것일 수 있음
+  <br> 
+
+- 주문은 연관된 상품 목록을 필요로 할 확률이 높음
+  - 비즈니스적으로 의미가 클 수 있으므로 양방향 매핑
+  <br>
+
+- Member.orders, Order.orderItems는 없어도 문제 없음
+  - 단방향으로도 테이블 간 매핑은 완성되었기 때문
+  - 개발상의 편의, 일괄 조회 등이 필요할 때 사용(JPQL 등)
+<br>
+
+</details>
+<br>
+
+---
+## 다양한 연관관계 매핑
+### 다대일 [N:1]
+<!-- <details> -->
+<!-- <summary>보기</summary> -->
+
+#### 연관관계 매핑 시 고려사항 3가지
+- 다중성
+  - `@ManyToOne` / `@OneToMany` / `@OneToOne` / `@ManyToMany`
+  - `@ManyToMany`는 거의 쓰이지 않음
+<br>
+
+- 단방향, 양방향
+  |          테이블          |                     객체                     |
+  | :----------------------: | :------------------------------------------: |
+  | 외래 키 하나로 양쪽 join |       참조용 필드가 있는 쪽으로만 참조       |
+  |      방향 개념 없음      | 한쪽만 참조하면 단방향, 서로 참조하면 양방향 |
+<br>
+
+- 연관관계의 주인
+  - 외래 키를 관리하는 참조
+  - 테이블은 **외래 키 하나**로 두 테이블이 연관관계를 맺음
+  - 객체의 양방향 관계는 사실 **단방향 2개**
+  - 따라서 참조도 2군데가 있어 둘 중 ***테이블의 외래 키를 관리할 곳을 지정해야함***
+  - 주인의 반대편은 외래 키에 영향을 주지 않고, **단순 조회만** 가능
+<br>
+
+#### 다대일 단방향
+![](../../../../attachments/2023-03-27-04-31-29.png)
+- 가장 많이 사용
+- 다대일의 반대는 일대다
+<br>
+
+#### 다대일 양방향
+![](../../../../attachments/2023-03-27-04-33-35.png)
+- Team에 `List<Member>` 추가
+- 단, DB에는 전혀 영향을 주지 않고, 조회만 가능
+- 외래 키가 있는 쪽이 연관관계의 주인
+- 양쪽을 서로 참조하도록 개발
+<br>
+
+</details>
+<br>
+
+---
+### 일대다 [1:N]
+<!-- <details> -->
+<!-- <summary>보기</summary> -->
+
+#### 일대다 단방향
+![](../../../../attachments/2023-03-27-04-38-06.png)
+- DB에서는 무조건 Many 쪽(MEMBER)에 외래 키가 있음
+- Team(One 쪽)에 연관관계의 주인이 설정될 경우
+  ```
+  Team team = new Team();
+  team.getMembers().add(member);
+  em.persist(team);
+  ```
+  - member를 추가하기 위해서 MEMBER 테이블에 UPDATE 쿼리가 추가로 필요
+  - Team 엔티티를 다루는데 MEMBER 테이블에 SQL이 실행됨; 의도하지 않은 엔티티에서 변경이 일어날 수 있음
+  <br>
+
+- 객체와 테이블의 차이 때문에 반대편 테이블의 외래 키를 관리하는 특이한 구조
+- `@JoinColumn`을 반드시 사용해야 함
+  - 사용하지 않으면 조인 테이블 방식 사용(중간 테이블 추가)
+  <br>
+
+- 권장되지는 않음
+  - 엔티티가 관리하는 외래 키가 다른 테이블에 있음
+  - 연관관계 관리를 위해 추가로 UPDATE SQL 실행
+  - 일대다 단방향 보다는 **다대일 양방향 매핑** 권장
+<br>
+
+#### 일대다 양방향
+![](../../../../attachments/2023-03-27-06-46-11.png)
+- 야매 매핑
+- `@JoinColumn(insertable = false, updatable = false)`
+- **읽기 전용 필드**를 사용해서 양방향처럼 사용
+- **다대일 양방향 매핑** 권장
+<br>
+
+</details>
+<br>
+
+---
+### 일대일 [1:1]
+<!-- <details> -->
+<!-- <summary>보기</summary> -->
+
+#### 일대일 관계
+- 주 테이블이나 대상 테이블 중 택1하여 외래 키 관리
+- 외래 키에 데이터베이스 유니크 제약조건 추가 
+<br>
+
+#### 일대일 : 주 테이블에 외래 키 단방향
+![](../../../../attachments/2023-03-27-15-04-06.png)
+- 다대일 단방향 매핑과 유사
+<br>
+
+#### 일대일 : 주 테이블에 외래 키 양방향
+![](../../../../attachments/2023-03-27-15-05-59.png)
+- 다대일 양방향 매핑처럼 외래 키가 있는 곳이 연관관계의 주인
+- 반대편은 mappedBy 적용
+<br>
+
+#### 일대일 : 대상 테이블에 외래 키 단방향
+![](../../../../attachments/2023-03-27-15-08-34.png)
+- 단방향 관계는 지원하지 않음
+- 양방향 관계는 지원
+<br>
+
+#### 일대일 : 대상 테이블에 외래 키 양방향
+![](../../../../attachments/2023-03-27-15-09-39.png)
+- 일대일 주 테이블에 외래 키 양방향 매핑 방법과 동일
+<br>
+
+#### 정리
+- 주 테이블에 외래 키
+  - 주 객체가 대상 객체의 참조를 가짐 == 주 테이블에 외래 키를 두고 대상 테이블을 찾음
+  - 객체지향 개발자가 선호
+  - JPA 매핑 관리
+  - 장점 : 주 테이블만 조회해도 대상 테이블에 데이터가 있는지 확인 가능
+  - 단점 : 값이 없으면 외래 키에 null 허용
+<br>
+
+- 대상 테이블에 외래 키
+  - 대상 테이블에 외래 키가 존재
+  - 전통적인 DB 개발자가 선호
+  - 장점 : 주 테이블과 대상 테이블을 일대일에서 일대다 관계로 변경할 때 테이블 구조 유지
+  - 단점 : 프록시 기능의 한계로 **지연 로딩으로 설정해도 항상 즉시 로딩됨**
+<br>
+
+</details>
+<br>
