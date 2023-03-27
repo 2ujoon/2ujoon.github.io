@@ -360,8 +360,8 @@ System.out.println(a == b); // true
 
 ---
 ### 준영속 상태
-<!-- <details> -->
-<!-- <summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 #### 준영속 상태로 만드는 방법
 - `em.detach(entity)` : 특정 엔티티를 준영속 상태로 전환
@@ -380,8 +380,8 @@ System.out.println(a == b); // true
 ---
 ## **엔티티 매핑**
 ### 객체와 테이블 매핑
-<!-- <details> -->
-<!-- <summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 #### 엔티티 매핑 소개
 - 객체-테이블 매핑 : `@Entity`, `@Table`
@@ -403,8 +403,8 @@ System.out.println(a == b); // true
 
 ---
 ### 데이터베이스 스키마 자동 생성 TODO
-<!-- <details> -->
-<!-- <summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 
 </details>
@@ -412,8 +412,8 @@ System.out.println(a == b); // true
 
 ---
 ### 필드와 컬럼 매핑 TODO
-<!-- <details> -->
-<!-- <summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 
 </details>
@@ -521,8 +521,8 @@ System.out.println(a == b); // true
 ---
 ## 연관관계 매핑 기초
 ### 단방향 연관관계
-<!-- <details> -->
-<!-- <summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 #### 용어 이해
 - 방향(dirction) : 단방향, 양방향
@@ -611,8 +611,8 @@ System.out.println(a == b); // true
 
 ---
 ### 양방향 연관관계와 연관관계의 주인 2 - 주의점, 정리
-<!-- <details> -->
-<!-- <summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 #### 연관관계의 주인에 값을 입력하지 않음
 ```
@@ -656,8 +656,8 @@ tx.commit();
 
 ---
 ### 실전 예제 2 - 연관관계 매핑 시작
-<!-- <details> -->
-<!-- <summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 #### 테이블 구조
 ![](../../../../attachments/2023-03-27-03-13-42.png)
@@ -695,8 +695,8 @@ tx.commit();
 ---
 ## 다양한 연관관계 매핑
 ### 다대일 [N:1]
-<!-- <details> -->
-<!-- <summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 #### 연관관계 매핑 시 고려사항 3가지
 - 다중성
@@ -738,8 +738,8 @@ tx.commit();
 
 ---
 ### 일대다 [1:N]
-<!-- <details> -->
-<!-- <summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 #### 일대다 단방향
 ![](../../../../attachments/2023-03-27-04-38-06.png)
@@ -773,13 +773,13 @@ tx.commit();
 - **다대일 양방향 매핑** 권장
 <br>
 
-</details>
+</details>유사
 <br>
 
 ---
 ### 일대일 [1:1]
-<!-- <details> -->
-<!-- <summary>보기</summary> -->
+<details>
+<summary>보기</summary>
 
 #### 일대일 관계
 - 주 테이블이나 대상 테이블 중 택1하여 외래 키 관리
