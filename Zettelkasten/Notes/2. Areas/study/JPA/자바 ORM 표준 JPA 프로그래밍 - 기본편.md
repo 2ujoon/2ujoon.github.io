@@ -779,7 +779,7 @@ tx.commit();
 - **다대일 양방향 매핑** 권장
 <br>
 
-</details>유사
+</details>
 <br>
 
 ---
