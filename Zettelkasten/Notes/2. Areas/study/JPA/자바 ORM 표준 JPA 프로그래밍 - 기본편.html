@@ -365,7 +365,7 @@ code {
           : 'default'
     });
   </script>
-<h1 id="%EC%9E%90%EB%B0%94-orm-%ED%91%9C%EC%A4%80-jpa-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D---%EA%B8%B0%EB%B3%B8%ED%8E%B8">자바 ORM 표준 JPA 프로그래밍 - 기본편</h1>
+<h1 id="%EC%9E%90%EB%B0%94-orm-%ED%91%9C%EC%A4%80-jpa-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D---%EA%B8%B0%EB%B3%B8%ED%8E%B8-%EC%9D%B4%ED%95%B4">자바 ORM 표준 JPA 프로그래밍 - 기본편 이해</h1>
 <p><a href="https://www.inflearn.com/course/ORM-JPA-Basic">강의</a></p>
 <h2 id="%EA%B0%95%EC%A2%8C-%EC%86%8C%EA%B0%9C"><strong>강좌 소개</strong></h2>
 <details>
@@ -1494,6 +1494,477 @@ em.persist(team);
 <br></li>
 </ul>
 </li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="%EB%8B%A4%EB%8C%80%EB%8B%A4-nm">다대다 [N:M]</h3>
+<details>
+<summary>보기</summary>
+<h4 id="rdmbs%EC%9D%98-%EB%8B%A4%EB%8C%80%EB%8B%A4">RDMBS의 다대다</h4>
+<p><img src="../../../../attachments/2023-03-29-10-23-50.png" alt=""></p>
+<ul>
+<li>정규화된 테이블 2개로 다대다 관계를 표현할 수 없음</li>
+<li>연결 테이블을 추가해서 일대다, 다대일 관계로 풀어내야 함
+<br></li>
+</ul>
+<h4 id="%EA%B0%9D%EC%B2%B4%EC%9D%98-%EB%8B%A4%EB%8C%80%EB%8B%A4">객체의 다대다</h4>
+<p><img src="../../../../attachments/2023-03-29-10-24-04.png" alt=""></p>
+<ul>
+<li>객체는 컬렉션을 사용해서 객체 2개로 다대다 관계 가능
+<br></li>
+</ul>
+<h4 id="%EB%8B%A4%EB%8C%80%EB%8B%A4-%EB%A7%A4%ED%95%91">다대다 매핑</h4>
+<ul>
+<li><code>@ManyToMany</code> 사용</li>
+<li><code>@JoinTable</code>로 연결 테이블 지정<pre class="hljs"><code><div>// class Category(주 테이블)
+@ManyToMany
+@JoinTable(name = &quot;category_item&quot;,
+             joinColumns = @JoinColumn(name = &quot;category_id&quot;),
+             inverseJoinColumns = @JoinColumn(name = &quot;item_id&quot;))
+private List&lt;Category&gt; items;
+
+// class Item(대상 테이블)
+@ManyToMany(mappedBy = &quot;items&quot;)
+List&lt;Category&gt; categories = new ArrayList&lt;&gt;();
+</div></code></pre>
+</li>
+<li>단방향, 양방향 가능
+<br></li>
+</ul>
+<h4 id="%EB%8B%A4%EB%8C%80%EB%8B%A4-%EB%A7%A4%ED%95%91%EC%9D%98-%ED%95%9C%EA%B3%84">다대다 매핑의 한계</h4>
+<ul>
+<li>조회 시 연결 연결 테이블이 숨겨져 있기 때문에 쿼리를 예측하기 힘들어짐</li>
+<li>실제 비즈니스에서는 연결 테이블이 단순하게 연결만 하고 끝나지 않음
+<ul>
+<li>주문시간, 수량 같은 데이터가 들어올 수 있음</li>
+<li>매핑 정보만 들어오고 추가 정보를 사용할 수 없음
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%ED%95%9C%EA%B3%84-%EA%B7%B9%EB%B3%B5">한계 극복</h4>
+<p><img src="../../../../attachments/2023-03-29-10-39-11.png" alt=""></p>
+<ul>
+<li>연결 테이블용 엔티티 추가(= 연결 테이블을 엔티티로 승격)</li>
+<li><code>@ManyToMany</code> -&gt; <code>@OneToMany</code>, <code>@ManyToOne</code></li>
+<li>이 때, 연결 테이블의 기본 키는 각 테이블의 외래 키 2개의 복합 키로 사용하기보다는 <strong>인공 키를 사용</strong>할 것을 권장
+<ul>
+<li>차후 변경이 생길 경우 PK가 종속되어 있으면 테이블 수정의 규모가 커질 수 있기 때문
+<br></li>
+</ul>
+</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C-3---%EB%8B%A4%EC%96%91%ED%95%9C-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84-%EB%A7%A4%ED%95%91">실전 예제 3 - 다양한 연관관계 매핑</h3>
+<details>
+<summary>보기</summary>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0">엔티티</h4>
+<p><img src="../../../../attachments/2023-03-29-10-56-24.png" alt=""></p>
+<ul>
+<li>배송, 카테고리 추가</li>
+<li>주문과 배송은 1:1</li>
+<li>상품과 카테고리는 N:M
+<br></li>
+</ul>
+<h4 id="erd">ERD</h4>
+<p><img src="../../../../attachments/2023-03-29-10-57-20.png" alt=""></p>
+<ul>
+<li>주문(주 테이블) 에서 외래 키를 관리</li>
+<li>카테고리 - 상품의 다대다 관계는 권장하지 않지만 예시를 위해 다대다 매핑
+<ul>
+<li>필드를 추가할 수 없고, 엔티티와 테이블이 불일치함
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="joincolumn"><code>@JoinColumn</code></h4>
+<ul>
+<li>
+<p>외래 키를 매핑할 때 사용</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">속성</th>
+<th style="text-align:center">설명</th>
+<th style="text-align:center">기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">name</td>
+<td style="text-align:center">매핑할 외래 키 이름</td>
+<td style="text-align:center">필드명_참조하는 테이블의 기본 키 컬럼명</td>
+</tr>
+<tr>
+<td style="text-align:center">referencedColumnName</td>
+<td style="text-align:center">외래 키가 참조하는 대상 테이블의 컬럼명</td>
+<td style="text-align:center">참조하는 테이블의 기본 키 컬럼명</td>
+</tr>
+<tr>
+<td style="text-align:center">foreignKey(DDL)</td>
+<td style="text-align:center">외래 키 제약조건을 직접 지정<br>테이블 생성 시에만 사용</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">unique(DDL)</td>
+<td style="text-align:center">컬럼에 유니크 제약조건을 지정</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:center">nullable(DDL)</td>
+<td style="text-align:center">false로 설정 시 컬럼에 NOT NULL 제약조건을 지정</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:center">insertable</td>
+<td style="text-align:center">읽기 전용에서 사용<br>false 설정 시 이 필드를 DB에 저장하지 않음</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:center">updatable</td>
+<td style="text-align:center">읽기 전용에서 사용<br>false 설정 시 이 필드를 DB에서 수정하지 않음</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:center">columnDefinition(DDL)</td>
+<td style="text-align:center">데이터베이스 컬럼 정보를 직접 지정</td>
+<td style="text-align:center">자바 필드 타입, dialect 정보를 참고해 생성</td>
+</tr>
+<tr>
+<td style="text-align:center">table</td>
+<td style="text-align:center"><a href="https://www.objectdb.com/api/java/jpa/JoinColumn/table">링크 참고</a></td>
+<td style="text-align:center">현재 클래스가 매핑된 테이블</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><em><strong>!주의</strong></em> 외래 키 제약조건을 매핑하는 것이 아님
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="manytoone"><code>@ManyToOne</code></h4>
+<ul>
+<li>다대일 관계 매핑
+<table>
+<thead>
+<tr>
+<th style="text-align:center">속성</th>
+<th style="text-align:center">설명</th>
+<th style="text-align:center">기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">optional</td>
+<td style="text-align:center">false 설정 시 연관된 엔티티가 항상 있어야 함</td>
+<td style="text-align:center">true</td>
+</tr>
+<tr>
+<td style="text-align:center">fetch</td>
+<td style="text-align:center">글로벌 페치 전략을 설정</td>
+<td style="text-align:center"><code>@ManyToOne = FetchType.EAGER</code><br><code>@OneToMany = FetchType.LAZY</code></td>
+</tr>
+<tr>
+<td style="text-align:center">cascade</td>
+<td style="text-align:center">영속성 전이 기능을 사용</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">targetEntity</td>
+<td style="text-align:center">연관된 엔티티의 타입 정보를 설정<br>거의 사용하지 않음</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>다대일에는 mappedBy 속성이 없음; <strong>연관관계의 주인이 되야 함</strong>
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="onetomany"><code>@OneToMany</code></h4>
+<ul>
+<li>일대다 관계 매핑
+<table>
+<thead>
+<tr>
+<th style="text-align:center">속성</th>
+<th style="text-align:center">설명</th>
+<th style="text-align:center">기본값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">mappedBy</td>
+<td style="text-align:center">연관관계의 주인인 필드를 지정</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">fetch</td>
+<td style="text-align:center">글로벌 페치 전략을 설정</td>
+<td style="text-align:center"><code>@ManyToOne = FetchType.EAGER</code><br><code>@OneToMany = FetchType.LAZY</code></td>
+</tr>
+<tr>
+<td style="text-align:center">cascade</td>
+<td style="text-align:center">영속성 전이 기능을 사용</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">targetEntity</td>
+<td style="text-align:center">연관된 엔티티의 타입 정보를 설정<br>거의 사용하지 않음</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<br>
+</details>
+<br>
+<hr>
+<h2 id="%EA%B3%A0%EA%B8%89-%EB%A7%A4%ED%95%91">고급 매핑</h2>
+<h3 id="%EC%83%81%EC%86%8D%EA%B4%80%EA%B3%84-%EB%A7%A4%ED%95%91">상속관계 매핑</h3>
+<details>
+<summary>보기</summary>
+<h4 id="%EC%83%81%EC%86%8D%EA%B4%80%EA%B3%84-%EB%A7%A4%ED%95%91">상속관계 매핑</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">슈퍼타입-서브타입<br>논리 모델</th>
+<th style="text-align:center">상속관계 매핑 방법</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="../../../../attachments/2023-03-30-09-22-37.png" alt=""></td>
+<td style="text-align:center">조인 전략<br>단일 테이블 전략<br>구현 클래스마다 테이블 전략</td>
+</tr>
+</tbody>
+</table>
+<br>
+- 객체의 상속 구조와 DB의 슈퍼타입 - 서브타입 관계를 매핑하는 것
+- RDBMS는 상속관계를 나타낼 수 없음
+- 슈퍼타입 - 서브타입 관계라는 모델링 기법이 객체 상속과 유사
+- 슈퍼타입 - 서브타입 논리 모델을 실제 물리 모델로 구현하는 방법
+  - 조인 전략 : 각각의 테이블로 변환
+  - 단일 테이블 전략 : 하나의 통합 테이블로 변환
+  - 구현 클래스마다 테이블 전략 : 서브타입 테이블로 변환
+<br>
+<h4 id="%EC%A3%BC%EC%9A%94-%EC%95%A0%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98">주요 애노테이션</h4>
+<ul>
+<li>
+<p><code>@Inheritance(strategy = InheritanceType.XXX)</code></p>
+<ul>
+<li>JOINED : 조인 전략</li>
+<li>SINGLE_TABLE : 단일 테이블 전략</li>
+<li>TABLE_PER_CLASS : 구현 클래스마다 테이블 전략
+<br></li>
+</ul>
+</li>
+<li>
+<p><code>@DiscriminatorColumn(name = &quot;DTYPE&quot;)</code></p>
+</li>
+<li>
+<p><code>@DiscriminatorValue(&quot;XXX)</code>
+<br></p>
+</li>
+</ul>
+<h4 id="%EC%A1%B0%EC%9D%B8-%EC%A0%84%EB%9E%B5">조인 전략</h4>
+<p><img src="../../../../attachments/2023-03-29-15-49-29.png" alt=""></p>
+<ul>
+<li>
+<p>INSERT 시 각각의 테이블에 INSERT</p>
+</li>
+<li>
+<p>조회 시 두 테이블을 조인하여 SELECT</p>
+</li>
+<li>
+<p>비즈니스적으로 복잡하고 중요하거나, 변경 가능성이 있다면 채택</p>
+</li>
+<li>
+<p>슈퍼타입 클래스에 <code>@DiscriminatorColumn</code>를 사용할 것을 권장</p>
+<ul>
+<li>수행되는 작업이 어떤 서브타입 테이블에 관련된 작업인지 구분하기 위해 사용할 컬럼을 만듦</li>
+<li>서브타입 클래스에 <code>@DiscriminatorValue</code>로 들어갈 값을 설정할 수 있음
+<br></li>
+</ul>
+</li>
+<li>
+<p>장점</p>
+<ul>
+<li>정규화된 테이블, 저장공간의 효율화</li>
+<li>외래 키 참조 무결성 제약조건 사용 가능
+<ul>
+<li>다른 테이블에서 슈퍼타입 테이블의 기본 키를 외래 키로 사용하는 경우에 유리
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>단점</p>
+<ul>
+<li>조회 시 조인이 많아 성능이 저하</li>
+<li>조회 쿼리가 복잡함</li>
+<li>데이터 저장 시 INSERT SQL 2번 호출
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EB%8B%A8%EC%9D%BC-%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%A0%84%EB%9E%B5">단일 테이블 전략</h4>
+<p><img src="../../../../attachments/2023-03-30-02-33-46.png" alt=""></p>
+<ul>
+<li>
+<p>규모가 작은 프로젝트에서 사용</p>
+</li>
+<li>
+<p>단순하고 이후 확장 가능성이 적은 경우에 채택</p>
+</li>
+<li>
+<p>하나의 테이블에 모든 서브타입 테이블을 포함시키고, DTYPE으로 구분</p>
+<ul>
+<li><strong>DTYPE이 필수</strong>; <code>@DiscriminatorColumn</code>을 설정하지 않아도 DTYPE이 자동 생성됨
+<br></li>
+</ul>
+</li>
+<li>
+<p>성능상의 이점 : 한 테이블에만 INSERT하면 되고, 조회 시에도 조인할 필요가 없음
+<br></p>
+</li>
+<li>
+<p>장점</p>
+<ul>
+<li>조인이 필요 없으므로 일반적으로 조회 성능이 빠름</li>
+<li>조회 쿼리가 단순함
+<br></li>
+</ul>
+</li>
+<li>
+<p>단점</p>
+<ul>
+<li>자식 엔티티가 매핑한 컬럼은 모두 <strong>nullable</strong></li>
+<li>단일 테이블에 모든 데이터를 저장하므로 테이블이 커질 수 있음
+<ul>
+<li>상황에 따라 조회 성능이 저하되는 원인이 될 수 있음
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="%EA%B5%AC%ED%98%84-%ED%81%B4%EB%9E%98%EC%8A%A4%EB%A7%88%EB%8B%A4-%ED%85%8C%EC%9D%B4%EB%B8%94-%EC%A0%84%EB%9E%B5">구현 클래스마다 테이블 전략</h4>
+<p><img src="../../../../attachments/2023-03-30-02-42-02.png" alt=""></p>
+<ul>
+<li>
+<p><s><em><strong>쓰지마세요</strong></em></s></p>
+</li>
+<li>
+<p>서브타입 테이블을 구분할 필요가 없어, 엔티티 클래스에 <code>@DiscriminatorColumn</code>을 설정해도 무시됨</p>
+</li>
+<li>
+<p>만약 슈퍼타입 클래스로 조회를 시도하면, 모든 서브타입 테이블에서 확인해야 하므로 전부 UNION하여 조회하게 됨</p>
+</li>
+<li>
+<p>장점</p>
+<ul>
+<li>서브 타입을 명확하게 구분해서 처리할 때 효과적</li>
+<li>NOT NULL 제약조건 사용 가능
+<br></li>
+</ul>
+</li>
+<li>
+<p>단점</p>
+<ul>
+<li>여러 자식 테이블을 함께 조회할 때 성능이 느림(UNION)</li>
+<li>자식 테이블을 통합해서 쿼리하기 어려움</li>
+<li>시스템에 변경사항이 생길 때 조치하기 힘듦
+<br></li>
+</ul>
+</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="mapped-superclass---%EB%A7%A4%ED%95%91-%EC%A0%95%EB%B3%B4-%EC%83%81%EC%86%8D">Mapped Superclass - 매핑 정보 상속</h3>
+<details>
+<summary>보기</summary>
+<h4 id="mappedsuperclass">@MappedSuperClass</h4>
+<p><img src="../../../../attachments/2023-03-30-03-51-35.png" alt=""></p>
+<ul>
+<li>공통 매핑 정보가 필요할 때 사용
+<ul>
+<li>전체 엔티티에서 공통으로 적용하는 정보를 모을 때 사용(등록자, 등록일 등)</li>
+</ul>
+</li>
+<li><strong>DB 설계와는 무관</strong>하게, 사용 빈도가 높은 객체의 공통 속성을 상속해서 쓰고자 할 때 사용할 수 있음
+<ul>
+<li>단순히 엔티티가 공통으로 사용하는 매핑 정보를 모으는 역할
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%ED%8A%B9%EC%A7%95">특징</h4>
+<ul>
+<li><em><strong>상속관계 매핑이 아님</strong></em></li>
+<li><em><strong>엔티티가 아님</strong></em>. 따라서 테이블과 매핑되지 않음</li>
+<li>상속받는 자식 클래스에 컬럼 매핑 정보만 제공</li>
+<li>조회. 검색할 수 없음</li>
+<li>직접 생성해서 사용하는 클래스가 아니므로 <strong>abstract</strong> 권장
+<br></li>
+</ul>
+<h4 id="cf">cf.</h4>
+<ul>
+<li>JPA에서 엔티티 클래스가 상속할 수 있는 경우는 단 <strong>두 경우</strong>
+<ol>
+<li><code>@Entity</code> : 상속관계 매핑</li>
+<li><code>@MappedSuperClass</code> : 속성만 매핑
+<br></li>
+</ol>
+</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C-4---%EC%83%81%EC%86%8D%EA%B4%80%EA%B3%84-%EB%A7%A4%ED%95%91">실전 예제 4 - 상속관계 매핑</h3>
+<details>
+<summary>보기</summary>
+<h4 id="%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD-%EC%B6%94%EA%B0%80">요구사항 추가</h4>
+<ul>
+<li>상품의 종류는 음반, 도서, 영화가 있고, 이후 더 확장될 수 있음</li>
+<li>모든 데이터는 등록일과 수정일이 필수
+<br></li>
+</ul>
+<h4 id="%EC%84%A4%EA%B3%84">설계</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">도메인<br>모델</td>
+<td style="text-align:center"><img src="../../../../attachments/2023-03-30-05-06-25.png" alt=""></td>
+</tr>
+<tr>
+<td style="text-align:center">도메인<br>상세</td>
+<td style="text-align:center"><img src="../../../../attachments/2023-03-30-05-13-24.png" alt=""></td>
+</tr>
+<tr>
+<td style="text-align:center">테이블<br>설계</td>
+<td style="text-align:center"><img src="../../../../attachments/2023-03-30-05-17-40.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>단일 테이블 전략으로 음반, 도서, 영화 추가</li>
+<li>BaseEntity 클래스를 <code>@MappedSuperClass</code> 클래스로 공통 속성 매핑
+<br></li>
 </ul>
 </details>
 <br>
