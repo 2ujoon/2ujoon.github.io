@@ -2087,5 +2087,232 @@ List&lt;Category&gt; categories = new ArrayList&lt;&gt;();
 </ul>
 </details>
 <br>
+<hr>
+<h3 id="%EC%A6%89%EC%8B%9C-%EB%A1%9C%EB%94%A9%EA%B3%BC-%EC%A7%80%EC%97%B0-%EB%A1%9C%EB%94%A9">즉시 로딩과 지연 로딩</h3>
+<details>
+<summary>보기</summary>
+<h4 id="member%EB%A5%BC-%EC%A1%B0%ED%9A%8C%ED%95%A0-%EB%95%8C-team%EB%8F%84-%ED%95%A8%EA%BB%98-%EC%A1%B0%ED%9A%8C%ED%95%B4%EC%95%BC-%ED%95%A0%EA%B9%8C">Member를 조회할 때 Team도 함께 조회해야 할까?</h4>
+<ul>
+<li>Team은 지연 로딩(Lazy Loading)을 사용해서 프록시로 조회</li>
+<li><code>Team.getName()</code> 등으로 실제 team을 사용하는 시점에 초기화(DB조회)
+<ul>
+<li>단순히 <code>Member.getTeam()</code> 하는 것으로는 DB에서 조회하지 않음
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="member%EC%99%80-team%EC%9D%84-%EC%9E%90%EC%A3%BC-%ED%95%A8%EA%BB%98-%EC%82%AC%EC%9A%A9%ED%95%9C%EB%8B%A4%EB%A9%B4">Member와 Team을 자주 함께 사용한다면?</h4>
+<ul>
+<li>즉시 로딩(<code>FetchType.Eager</code>)를 사용해서 Member와 Team을 함께 조회
+<br></li>
+</ul>
+<h4 id="%EC%A3%BC%EC%9D%98"><em><strong>!주의</strong></em></h4>
+<ul>
+<li>
+<p><em><strong>가급적 지연 로딩만 사용할 것</strong></em></p>
+<ul>
+<li>특히 실무에서는 조인하는 테이블 갯수가 많을 수 있음
+<br></li>
+</ul>
+</li>
+<li>
+<p>즉시 로딩 적용 시 예상하지 못한 SQL이 발생할 수 있음</p>
+<ul>
+<li>JPQL은 그대로 SQL로 번역되어 실행됨</li>
+<li>Member만 조회해도 Member의 수 만큼 Team을 다시 조회 -&gt; N+1 문제
+<br></li>
+</ul>
+</li>
+<li>
+<p>즉시 로딩은 JPQL에서 N+1 문제를 발생시킴</p>
+<ul>
+<li>1 : 최초 쿼리 / N : 추가 쿼리</li>
+<li>fetch join, <code>@EntityGraph</code>, <code>@BatchSize</code> 등으로 해결
+<br></li>
+</ul>
+</li>
+<li>
+<p>일단 지연 로딩을 다 발라놓고 생각</p>
+<ul>
+<li><code>@ManyToOne</code>, <code>@OneToOne</code>은 즉시 로딩이 default이므로 지연로딩으로 설정</li>
+<li><code>@OneToMany</code>, <code>@ManyToMany</code>는 지연 로딩이 default
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%A7%80%EC%97%B0-%EB%A1%9C%EB%94%A9-%ED%99%9C%EC%9A%A9">지연 로딩 활용</h4>
+<p><img src="../../../../attachments/2023-04-11-06-23-26.png" alt=""></p>
+<ul>
+<li><s>실무에서는 다 지연 로딩으로 설정할 것</s></li>
+<li>Member와 Team은 자주 함께 사용 -&gt; 즉시 로딩</li>
+<li>Member와 Order는 가끔 사용 -&gt; 지연 로딩</li>
+<li>Order와 Product는 자주 함께 사용 -&gt; 즉시 로딩
+<br></li>
+</ul>
+<p><img src="../../../../attachments/2023-04-11-06-24-50.png" alt=""></p>
+<ul>
+<li>member1 조회 시 주문내역List는 프록시로 조회
+<br></li>
+</ul>
+<p><img src="../../../../attachments/2023-04-11-06-25-49.png" alt=""></p>
+<ul>
+<li>이후 member1에서 프록시를 건드릴 경우 주문과 상품을 함께 조회
+<br></li>
+</ul>
+<h4 id="%EC%A7%80%EC%97%B0-%EB%A1%9C%EB%94%A9-%ED%99%9C%EC%9A%A9---%EC%8B%A4%EB%AC%B4">지연 로딩 활용 - 실무</h4>
+<ul>
+<li>
+<p><em><strong>모든 연관관계에 지연 로딩을 사용</strong></em></p>
+<ul>
+<li>JPQL fetch join이나 엔티티 그래프 기능을 사용할 것
+<br></li>
+</ul>
+</li>
+<li>
+<p><em><strong>실무에서 즉시 로딩을 사용하지 말 것</strong></em></p>
+<ul>
+<li>즉시 로딩은 쿼리를 예측하기 힘들 수 있음
+<br></li>
+</ul>
+</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="%EC%98%81%EC%86%8D%EC%84%B1-%EC%A0%84%EC%9D%B4cascade%EC%99%80-%EA%B3%A0%EC%95%84-%EA%B0%9D%EC%B2%B4">영속성 전이(CASCADE)와 고아 객체</h3>
+<details>
+<summary>보기</summary>
+<h4 id="%EC%98%81%EC%86%8D%EC%84%B1-%EC%A0%84%EC%9D%B4--cascade">영속성 전이 : CASCADE</h4>
+<ul>
+<li>특정 엔티티를 영속 상태로 만들 때 연관된 엔티티도 함께 영속 상태로 만들고 싶을 때</li>
+<li>ex) 부모 엔티티를 저장할 때 자식 엔티티도 함께 저장
+<ul>
+<li>
+<pre class="hljs"><code><div>Child child1 = new Child();
+Child child2 = new Child();
+
+Parent parent = new Parent();
+parent.addChild(child1);
+parent.addChild(child2);
+
+em.persist(parent);
+// em.persist(child1);
+// em.persist(child2);
+</div></code></pre>
+</li>
+<li>Parent.childList에 <code>cascade = CascadeType.ALL</code>을 설정</li>
+<li>Parent 객체에 추가해 두는 것 만으로도 Child까지 INSERT 쿼리가 생성됨
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%98%81%EC%86%8D%EC%84%B1-%EC%A0%84%EC%9D%B4--%EC%A0%80%EC%9E%A5">영속성 전이 : 저장</h4>
+<p><img src="../../../../attachments/2023-04-11-06-44-09.png" alt=""></p>
+<ul>
+<li><code>em.persist(parent)</code> 할 때  Parent.children이 참조하고 있는 child1, child2도 함께 영속화 하겠다는 의미
+<br></li>
+</ul>
+<h4 id="casecade-%EC%A2%85%EB%A5%98">CASECADE 종류</h4>
+<ul>
+<li><strong>ALL : 모두 적용</strong></li>
+<li><strong>PERSIST : 영속</strong></li>
+<li><strong>REMOVE : 삭제</strong></li>
+<li>MERGE : 병합</li>
+<li>REFRESH : REFRESH</li>
+<li>DETACH : DETACH</li>
+</ul>
+<h4 id="%EC%A3%BC%EC%9D%98"><em><strong>!주의</strong></em></h4>
+<ul>
+<li>영속성 전이는 연관관계를 매핑하는 것과 아무 관련이 없음</li>
+<li>앤티티 영속화 시 연관된 엔티티도 함께 영속화하는 편의 기능</li>
+<li>사용할 수 있는 경우인지 판단해서 사용해야 함
+<ol>
+<li>두 엔티티의 생명주기가 같거나 거의 일치할 때</li>
+<li>하나의 엔티티가 연관된 엔티티의 단일 소유자 일 때
+<br></li>
+</ol>
+</li>
+</ul>
+<h4 id="%EA%B3%A0%EC%95%84-%EA%B0%9D%EC%B2%B4">고아 객체</h4>
+<ul>
+<li>
+<p>부모 엔티티와 연관관계가 끊어진 자식 엔티티</p>
+</li>
+<li>
+<p><strong><code>orpahRemoval = true</code></strong></p>
+<ul>
+<li>고아객체를 자동으로 삭제</li>
+<li>참조가 제거된 엔티티는 다른 곳에서 참조하지 않는다고 간주하고 삭제
+<br></li>
+</ul>
+</li>
+<li>
+<p><code>List.remove()</code> 등으로 연관관계가 끊어지면 DELETE 쿼리 생성
+<br></p>
+</li>
+</ul>
+<h4 id="%EC%A3%BC%EC%9D%98"><em><strong>!주의</strong></em></h4>
+<ul>
+<li>
+<p><strong>특정 엔티티가 개인 소유할 때 사용</strong></p>
+</li>
+<li>
+<p><strong>참조하는 곳이 하나일 때 사용해야 함</strong></p>
+<ul>
+<li>참조 제거 시 다른 곳에서 참조하지 않는다고 간주하기 때문
+<br></li>
+</ul>
+</li>
+<li>
+<p>참고</p>
+<ul>
+<li>부모가 제거되면 자식이 고아가 되므로 <strong>자식도 함께 제거</strong>됨</li>
+<li>마치 <code>CascadeType.REMOVE</code> 처럼 동작
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%98%81%EC%86%8D%EC%84%B1-%EC%A0%84%EC%9D%B4--%EA%B3%A0%EC%95%84-%EA%B0%9D%EC%B2%B4-%EC%83%9D%EB%AA%85%EC%A3%BC%EA%B8%B0">영속성 전이 + 고아 객체, 생명주기</h4>
+<ul>
+<li>
+<p><code>cascade = CascadeType.ALL, orpahnRemoval = true</code></p>
+</li>
+<li>
+<p>직접 생명주기를 관리하는 엔티티는 <code>em.persist()</code>로 영속화, <code>em.remove()</code>로 제거</p>
+<ul>
+<li>두 옵션을 모두 활성화 하면, <strong>부모 엔티티를 통해서 자식의 생명주기를 관리</strong>할 수 있음
+<br></li>
+</ul>
+</li>
+<li>
+<p>DDD의 Aggregate Root 개념 구현에 유용</p>
+<ul>
+<li><s>아 그렇구나</s>~
+<br></li>
+</ul>
+</li>
+</ul>
+</details>
+<br>
+<hr>
+<h3 id="%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C-5---%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84-%EA%B4%80%EB%A6%AC">실전 예제 5 - 연관관계 관리</h3>
+<details>
+<summary>보기</summary>
+<h4 id="%EA%B8%80%EB%A1%9C%EB%B2%8C-fetch-%EC%A0%84%EB%9E%B5-%EC%84%A4%EC%A0%95">글로벌 fetch 전략 설정</h4>
+<ul>
+<li>모든 연관관계를 지연 로딩으로 설정
+<ul>
+<li><code>@ManyToOne</code>, <code>@OneToOne</code>을 직접 지연 로딩으로 설정해야 함
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%98%81%EC%86%8D%EC%84%B1-%EC%A0%84%EC%9D%B4-%EC%84%A4%EC%A0%95">영속성 전이 설정</h4>
+<ul>
+<li>Order -&gt; Delivery : <code>CascadeType.ALL</code></li>
+<li>Order -&gt; OrderItem : <code>CascadeType.ALL</code></li>
+</ul>
+</details>
+<br>
 </body>
 </html>

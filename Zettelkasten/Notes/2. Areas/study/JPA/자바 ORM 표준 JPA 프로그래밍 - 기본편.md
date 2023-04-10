@@ -1169,3 +1169,162 @@ tx.commit();
 
 </details>
 <br>
+
+___
+### 즉시 로딩과 지연 로딩
+<details>
+<summary>보기</summary>
+
+#### Member를 조회할 때 Team도 함께 조회해야 할까?
+- Team은 지연 로딩(Lazy Loading)을 사용해서 프록시로 조회
+- `Team.getName()` 등으로 실제 team을 사용하는 시점에 초기화(DB조회)
+  - 단순히 `Member.getTeam()` 하는 것으로는 DB에서 조회하지 않음
+<br>
+
+#### Member와 Team을 자주 함께 사용한다면?
+- 즉시 로딩(`FetchType.Eager`)를 사용해서 Member와 Team을 함께 조회
+<br>
+
+#### ***!주의***
+- ***가급적 지연 로딩만 사용할 것***
+  - 특히 실무에서는 조인하는 테이블 갯수가 많을 수 있음
+  <br>
+
+- 즉시 로딩 적용 시 예상하지 못한 SQL이 발생할 수 있음
+  - JPQL은 그대로 SQL로 번역되어 실행됨
+  - Member만 조회해도 Member의 수 만큼 Team을 다시 조회 -> N+1 문제
+  <br>
+  
+- 즉시 로딩은 JPQL에서 N+1 문제를 발생시킴
+  - 1 : 최초 쿼리 / N : 추가 쿼리
+  - fetch join, `@EntityGraph`, `@BatchSize` 등으로 해결
+  <br>
+
+- 일단 지연 로딩을 다 발라놓고 생각
+  - `@ManyToOne`, `@OneToOne`은 즉시 로딩이 default이므로 지연로딩으로 설정
+  - `@OneToMany`, `@ManyToMany`는 지연 로딩이 default
+<br>
+
+#### 지연 로딩 활용
+![](../../../../attachments/2023-04-11-06-23-26.png)
+- ~~실무에서는 다 지연 로딩으로 설정할 것~~
+- Member와 Team은 자주 함께 사용 -> 즉시 로딩
+- Member와 Order는 가끔 사용 -> 지연 로딩
+- Order와 Product는 자주 함께 사용 -> 즉시 로딩
+<br>
+
+![](../../../../attachments/2023-04-11-06-24-50.png)
+- member1 조회 시 주문내역List는 프록시로 조회
+<br>
+
+![](../../../../attachments/2023-04-11-06-25-49.png)
+- 이후 member1에서 프록시를 건드릴 경우 주문과 상품을 함께 조회
+<br>
+
+#### 지연 로딩 활용 - 실무
+- ***모든 연관관계에 지연 로딩을 사용***
+  - JPQL fetch join이나 엔티티 그래프 기능을 사용할 것
+  <br>
+
+- ***실무에서 즉시 로딩을 사용하지 말 것***
+  - 즉시 로딩은 쿼리를 예측하기 힘들 수 있음
+<br>
+
+</details>
+<br>
+
+---
+### 영속성 전이(CASCADE)와 고아 객체
+<details>
+<summary>보기</summary>
+
+#### 영속성 전이 : CASCADE
+- 특정 엔티티를 영속 상태로 만들 때 연관된 엔티티도 함께 영속 상태로 만들고 싶을 때
+- ex) 부모 엔티티를 저장할 때 자식 엔티티도 함께 저장
+  - ```
+    Child child1 = new Child();
+    Child child2 = new Child();
+
+    Parent parent = new Parent();
+    parent.addChild(child1);
+    parent.addChild(child2);
+
+    em.persist(parent);
+    // em.persist(child1);
+    // em.persist(child2);
+    ```
+  - Parent.childList에 `cascade = CascadeType.ALL`을 설정
+  - Parent 객체에 추가해 두는 것 만으로도 Child까지 INSERT 쿼리가 생성됨
+<br>
+
+#### 영속성 전이 : 저장
+![](../../../../attachments/2023-04-11-06-44-09.png)
+- `em.persist(parent)` 할 때  Parent.children이 참조하고 있는 child1, child2도 함께 영속화 하겠다는 의미
+<br>
+
+#### CASECADE 종류
+- **ALL : 모두 적용**
+- **PERSIST : 영속**
+- **REMOVE : 삭제**
+- MERGE : 병합
+- REFRESH : REFRESH
+- DETACH : DETACH
+
+#### ***!주의***
+- 영속성 전이는 연관관계를 매핑하는 것과 아무 관련이 없음
+- 앤티티 영속화 시 연관된 엔티티도 함께 영속화하는 편의 기능
+- 사용할 수 있는 경우인지 판단해서 사용해야 함
+  1. 두 엔티티의 생명주기가 같거나 거의 일치할 때
+  2. 하나의 엔티티가 연관된 엔티티의 단일 소유자 일 때
+<br>
+
+#### 고아 객체
+- 부모 엔티티와 연관관계가 끊어진 자식 엔티티
+- **`orpahRemoval = true`**
+  - 고아객체를 자동으로 삭제
+  - 참조가 제거된 엔티티는 다른 곳에서 참조하지 않는다고 간주하고 삭제
+  <br>
+
+- `List.remove()` 등으로 연관관계가 끊어지면 DELETE 쿼리 생성
+<br>
+
+#### ***!주의***
+- **특정 엔티티가 개인 소유할 때 사용**
+- **참조하는 곳이 하나일 때 사용해야 함**
+  - 참조 제거 시 다른 곳에서 참조하지 않는다고 간주하기 때문
+  <br>
+
+- 참고
+  - 부모가 제거되면 자식이 고아가 되므로 **자식도 함께 제거**됨
+  - 마치 `CascadeType.REMOVE` 처럼 동작
+  <br>
+
+#### 영속성 전이 + 고아 객체, 생명주기
+- `cascade = CascadeType.ALL, orpahnRemoval = true`
+- 직접 생명주기를 관리하는 엔티티는 `em.persist()`로 영속화, `em.remove()`로 제거
+  - 두 옵션을 모두 활성화 하면, **부모 엔티티를 통해서 자식의 생명주기를 관리**할 수 있음
+  <br>
+
+- DDD의 Aggregate Root 개념 구현에 유용
+  - ~~아 그렇구나~~~
+<br>
+
+</details>
+<br>
+
+___
+### 실전 예제 5 - 연관관계 관리
+<details>
+<summary>보기</summary>
+
+#### 글로벌 fetch 전략 설정
+- 모든 연관관계를 지연 로딩으로 설정
+  - `@ManyToOne`, `@OneToOne`을 직접 지연 로딩으로 설정해야 함
+<br>
+
+#### 영속성 전이 설정
+- Order -> Delivery : `CascadeType.ALL`
+- Order -> OrderItem : `CascadeType.ALL`
+
+</details>
+<br>
