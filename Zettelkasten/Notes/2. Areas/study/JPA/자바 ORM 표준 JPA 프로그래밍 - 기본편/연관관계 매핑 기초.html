@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>연관관계 매핑 기초.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p><a href="./%EC%9E%90%EB%B0%94%20ORM%20%ED%91%9C%EC%A4%80%20JPA%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%20-%20%EA%B8%B0%EB%B3%B8%ED%8E%B8.html">목록으로 가기</a>
+<a href="../../../../../attachments/jpa_basic/05.%20%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84%20%EB%A7%A4%ED%95%91%20%EA%B8%B0%EC%B4%88.pdf">강의자료</a></p>
+<h2 id="%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84-%EB%A7%A4%ED%95%91-%EA%B8%B0%EC%B4%88">연관관계 매핑 기초</h2>
+<h3 id="%EB%8B%A8%EB%B0%A9%ED%96%A5-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84">단방향 연관관계</h3>
+<h4 id="%EC%9A%A9%EC%96%B4-%EC%9D%B4%ED%95%B4">용어 이해</h4>
+<ul>
+<li>방향(dirction) : 단방향, 양방향</li>
+<li>다중성(multiplicity) : 다대일, 일대다, 일대일, 다대다</li>
+<li><strong>연관관계의 주인(owner)</strong> : 객체 양방향 관계는 관리 주인이 필요
+<br></li>
+</ul>
+<h4 id="%EC%98%88%EC%A0%9C-%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4">예제 시나리오</h4>
+<ul>
+<li>회원과 팀이 있음</li>
+<li>회원은 하나의 팀에만 소속됨</li>
+<li>회원과 팀은 다대일
+<br></li>
+</ul>
+<h4 id="%EA%B0%9D%EC%B2%B4%EB%A5%BC-%ED%85%8C%EC%9D%B4%EB%B8%94%EC%97%90-%EB%A7%9E%EC%B6%94%EC%96%B4-%EB%AA%A8%EB%8D%B8%EB%A7%81%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A4%91%EC%8B%AC">객체를 테이블에 맞추어 모델링(데이터 중심)</h4>
+<p><img src="../../../../../attachments/2023-03-23-05-45-52.png" alt=""></p>
+<ul>
+<li>객체에 연관관계가 없음</li>
+<li>Member 객체에 외래 키 값을 그대로 가져옴</li>
+<li>문제점
+<ul>
+<li>member를 persist 하기 위해서는 team을 조회해서 id를 가져온 뒤 member에 set 해줘야 함</li>
+<li>member의 team을 조회하기 위해서는 member의 teamId를 가져와서 다시 team을 조회해야 함</li>
+<li>테이블은 외래 키로 조인해서 연관 테이블을 찾고, 객체는 참조를 사용해서 연관된 객체를 찾는 차이가 있기 때문
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EA%B0%9D%EC%B2%B4-%EC%A7%80%ED%96%A5-%EB%AA%A8%EB%8D%B8%EB%A7%81%EB%8B%A8%EB%B0%A9%ED%96%A5-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84">객체 지향 모델링(단방향 연관관계)</h4>
+<p><img src="../../../../../attachments/2023-03-23-06-32-56.png" alt=""></p>
+<ul>
+<li>member 객체에서 team을 바로 가져올 수 있음
+<br></li>
+</ul>
+<hr>
+<h3 id="%EC%96%91%EB%B0%A9%ED%96%A5-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84%EC%99%80-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84%EC%9D%98-%EC%A3%BC%EC%9D%B8-1---%EA%B8%B0%EB%B3%B8">양방향 연관관계와 연관관계의 주인 1 - 기본</h3>
+<h4 id="%EC%96%91%EB%B0%A9%ED%96%A5-%EB%A7%A4%ED%95%91">양방향 매핑</h4>
+<p><img src="../../../../../attachments/2023-03-23-07-13-17.png" alt=""></p>
+<ul>
+<li>Team &lt;-&gt; Member(List) 양방향으로 객체 그래프 탐색 가능</li>
+<li>Member는 단방향 매핑과 동일하게 작성</li>
+<li>Team에 <code>List&lt;Member&gt; members</code> 필드를 추가
+<ul>
+<li><code>@OneToMany(mappedBy = &quot;team&quot;)</code> 애노테이션 필요
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EA%B0%9D%EC%B2%B4%EC%99%80-%ED%85%8C%EC%9D%B4%EB%B8%94%EC%9D%B4-%EA%B4%80%EA%B3%84%EB%A5%BC-%EB%A7%BA%EB%8A%94-%EC%B0%A8%EC%9D%B4">객체와 테이블이 관계를 맺는 차이</h4>
+<ul>
+<li>
+<p>객체 연관관계 : 2개</p>
+<ul>
+<li>회원 -&gt; 팀 (단방향)</li>
+<li>팀 -&gt; 회원 (단방향)</li>
+<li>객체의 양방향 연관관계는 <strong>사실상 2개의 단방향 관계</strong>
+<ul>
+<li>던방향 매핑에서 반대방향으로 조회(객체 그래프 탐색))하는 기능만 추가</li>
+</ul>
+</li>
+<li>객체를 양방향으로 참조하려면 <strong>단방향 연관관계 2개</strong>가 필요
+<br></li>
+</ul>
+</li>
+<li>
+<p>테이블 연관관계 : 1개</p>
+<ul>
+<li>회원 &lt;-&gt; 팀 (양방향)</li>
+<li><strong>외래 키 하나</strong>로 양방향 연관관계를 가짐
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EB%94%9C%EB%A0%88%EB%A7%88--%EB%91%98-%EC%A4%91-%ED%95%98%EB%82%98%EB%A1%9C-%EC%99%B8%EB%9E%98-%ED%82%A4%EB%A5%BC-%EA%B4%80%EB%A6%AC%ED%95%B4%EC%95%BC-%ED%95%9C%EB%8B%A4">딜레마 : 둘 중 하나로 외래 키를 관리해야 한다</h4>
+<p><img src="../../../../../attachments/2023-03-23-07-30-12.png" alt=""></p>
+<ul>
+<li>회원의 팀 정보가 변경될 때 (= 팀의 회원목록이 바뀔 때)</li>
+<li>DB에서 MEMBER 테이블의 외래 키(TEAM_ID)는 어떤 기준으로 UPDATE 해야 하는가?
+= Member, Team 객체 중 어디에서 외래 키를 관리해야 하는가?
+<ol>
+<li>Member의 team을 변경</li>
+<li>Team의 members를 변경</li>
+</ol>
+<ul>
+<li>사실 둘 다 가능
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84%EC%9D%98-%EC%A3%BC%EC%9D%B8owner">연관관계의 주인(Owner)</h4>
+<ul>
+<li>양방향 매핑 규칙
+<ul>
+<li>객체의 두 관계 중 하나를 연관관계의 주인으로 지정</li>
+<li>연관관계의 주인만 외래 키를 관리(등록, 수정)</li>
+<li>주인이 아닌 쪽은 읽기만 가능</li>
+<li>주인은 mappedBy 속성 지정 안함</li>
+<li>주인이 아닌 객체는 mappedBy 속성으로 주인을 지정
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EB%88%84%EA%B5%AC%EB%A5%BC-%EC%A3%BC%EC%9D%B8%EC%9C%BC%EB%A1%9C-%EA%B0%80%EC%9D%B4%EB%93%9C">누구를 주인으로? (가이드)</h4>
+<ul>
+<li>
+<p>외래 키가 있는 곳을 주인으로 정해라(= N:1 관계에서 N 쪽)</p>
+</li>
+<li>
+<p>예시</p>
+<ul>
+<li>자동차(Car.wheels) - 바퀴 관계에서 바퀴(Wheel.car)에 주인을 설정</li>
+<li>이 경우에는 Member.team이 연관관계의 주인이 됨</li>
+<li>Team.members를 주인으로 설정한다면?
+<ul>
+<li>가능(JPA 짬킹 한정)</li>
+<li>Team을 다뤘는데 MEMBER 테이블의 UPDATE 쿼리가 나가는 등의 문제의 소지가 있음(성능 이슈)
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>연관관계의 주인은 비즈니스적으로 중요한 개념은 아님
+<br></p>
+</li>
+</ul>
+<hr>
+<h3 id="%EC%96%91%EB%B0%A9%ED%96%A5-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84%EC%99%80-%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84%EC%9D%98-%EC%A3%BC%EC%9D%B8-2---%EC%A3%BC%EC%9D%98%EC%A0%90-%EC%A0%95%EB%A6%AC">양방향 연관관계와 연관관계의 주인 2 - 주의점, 정리</h3>
+<h4 id="%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84%EC%9D%98-%EC%A3%BC%EC%9D%B8%EC%97%90-%EA%B0%92%EC%9D%84-%EC%9E%85%EB%A0%A5%ED%95%98%EC%A7%80-%EC%95%8A%EC%9D%8C">연관관계의 주인에 값을 입력하지 않음</h4>
+<pre class="hljs"><code><div>Team team = new Team();
+team.setName(&quot;teamA&quot;);
+team.getMembers().add(member);
+em.persist(team);
+
+Member member = new Member();
+member.setUsername(&quot;member1&quot;);
+em.persist(member);
+
+em.flush();
+em.clear();
+
+tx.commit();
+</div></code></pre>
+<ul>
+<li>
+<p><code>team.getMembers().add()</code> 로 Member를 리스트에 추가해도 DB에는 MEMBER의 TEAM_ID에 FK가 들어가지 않음 (1)</p>
+</li>
+<li>
+<p><code>member.setTeam()</code> 으로 Member에서 Team을 참조해야 MEMBER테이블에도 정상적으로 반영됨 (2)
+∵ 연관관계의 주인은 Member이기 때문에, (1)은 DB에 영향을 주지 못함
+<br></p>
+</li>
+<li>
+<p>(1)을 하지 않더라도 JPA는 지연 로딩을 통해 연관된 Member의 목록을 조회할 수 있음</p>
+<ul>
+<li>단, <strong>flush 되지 않고 1차 캐시에서 팀을 가져올 경우</strong> DB에서 조회하지 않기 때문에 추가한 Member가 <code>getMembers()</code>에서 조회되지 않을 수 있음
+<br></li>
+</ul>
+</li>
+<li>
+<p>객체 관계를 고려하면 (1), (2) 모두 해주는 것이 맞음</p>
+<ul>
+<li>하나만 하고 까먹기 쉽기 때문에 <strong>연관관계 편의 메서드</strong>를 만들어 사용 권장</li>
+<li><code>Team.addMember(Member member)</code> 또는 <code>Member.changeTeam(Team team)</code> 등 상황에 따라 택1
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%96%91%EB%B0%A9%ED%96%A5-%EB%A7%A4%ED%95%91-%EC%8B%9C-%EB%AC%B4%ED%95%9C-%EB%A3%A8%ED%94%84-%EC%A3%BC%EC%9D%98">양방향 매핑 시 무한 루프 주의</h4>
+<ul>
+<li><code>toString()</code>, lombok, JSON 생성 라이브러리</li>
+<li>두 객체가 서로 참조할 때, <code>toString()</code>에서 참조하는 객체가 다시 <code>toString()</code>을 호출하는 경우</li>
+<li>JSON 생성 라이브러리에서는 <strong>엔티티를 반환하지 말 것</strong>
+<ul>
+<li>DTO로 변환해서 반환하는 것을 권장
+<br></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="%EC%8B%A4%EC%A0%84-%EC%98%88%EC%A0%9C-2---%EC%97%B0%EA%B4%80%EA%B4%80%EA%B3%84-%EB%A7%A4%ED%95%91-%EC%8B%9C%EC%9E%91">실전 예제 2 - 연관관계 매핑 시작</h3>
+<h4 id="%ED%85%8C%EC%9D%B4%EB%B8%94-%EA%B5%AC%EC%A1%B0">테이블 구조</h4>
+<p><img src="../../../../../attachments/2023-03-27-03-13-42.png" alt="">
+<br></p>
+<h4 id="%EA%B0%9D%EC%B2%B4-%EA%B5%AC%EC%A1%B0">객체 구조</h4>
+<p><img src="../../../../../attachments/2023-03-27-03-14-54.png" alt=""></p>
+<ul>
+<li>참조를 사용하도록 변경
+<br></li>
+</ul>
+<h4 id="%EB%A7%A4%ED%95%91">매핑</h4>
+<ul>
+<li>단방향 관계를 우선적으로 매핑, 이후 필요 시 양방향 매핑</li>
+<li>외래 키를 가진 객체에서 연관관계의 주인을 설정(<code>@JoinColumn</code>)</li>
+<li>외래 키를 필드로 가지지 않고, 객체를 필드로 가짐
+<br></li>
+</ul>
+<h4 id="%EC%84%A4%EA%B3%84">설계</h4>
+<ul>
+<li>
+<p>회원의 주문 목록을 가져올 경우</p>
+<ul>
+<li>ORDER에서 MEMBER_ID를 이용해 조회하는 것이 자연스러움</li>
+<li>Member에서  <code>List&lt;Order&gt;</code>로 주문 목록을 가져오고 있다면, 관심사를 제대로 끊어내지 못한 것일 수 있음
+<br></li>
+</ul>
+</li>
+<li>
+<p>주문은 연관된 상품 목록을 필요로 할 확률이 높음</p>
+<ul>
+<li>비즈니스적으로 의미가 클 수 있으므로 양방향 매핑
+<br></li>
+</ul>
+</li>
+<li>
+<p>Member.orders, Order.orderItems는 없어도 문제 없음</p>
+<ul>
+<li>단방향으로도 테이블 간 매핑은 완성되었기 때문</li>
+<li>개발상의 편의, 일괄 조회 등이 필요할 때 사용(JPQL 등)
+<br></li>
+</ul>
+</li>
+</ul>
+
+</body>
+</html>

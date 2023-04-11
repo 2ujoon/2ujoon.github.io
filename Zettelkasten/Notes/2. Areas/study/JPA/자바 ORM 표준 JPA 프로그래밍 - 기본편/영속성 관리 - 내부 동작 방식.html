@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>영속성 관리 - 내부 동작 방식.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p><a href="./%EC%9E%90%EB%B0%94%20ORM%20%ED%91%9C%EC%A4%80%20JPA%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%20-%20%EA%B8%B0%EB%B3%B8%ED%8E%B8.html">목록으로 가기</a>
+<a href="../../../../../attachments/jpa_basic/03.%20%EC%98%81%EC%86%8D%EC%84%B1%20%EA%B4%80%EB%A6%AC.pdf">강의자료</a></p>
+<h2 id="%EC%98%81%EC%86%8D%EC%84%B1-%EA%B4%80%EB%A6%AC---%EB%82%B4%EB%B6%80-%EB%8F%99%EC%9E%91-%EB%B0%A9%EC%8B%9D"><strong>영속성 관리 - 내부 동작 방식</strong></h2>
+<h3 id="%EC%98%81%EC%86%8D%EC%84%B1-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-1">영속성 컨텍스트 1</h3>
+<h4 id="%EC%98%81%EC%86%8D%EC%84%B1-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8"><strong>영속성 컨텍스트</strong></h4>
+<ul>
+<li>엔티티를 영구 저장하는 환경(논리적 개념)</li>
+<li>em을 통해서 영속성 컨텍스트에 접근</li>
+<li><code>em.persist(entity);</code>
+<br></li>
+</ul>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0%EC%9D%98-%EC%83%9D%EB%AA%85%EC%A3%BC%EA%B8%B0">엔티티의 생명주기</h4>
+<pre class="hljs"><code><div>Member member = new Member();
+member.setId(&quot;member1&quot;);
+member.setName(&quot;memberA&quot;);    // 비영속
+
+em.getTransaction().begin();
+em.persist(member);           // 영속
+em.detach(member);            // 준영속
+</div></code></pre>
+<ul>
+<li>비영속 (new / transient)</li>
+<li>영속 (managed)</li>
+<li>준영속 (detached)</li>
+<li>삭제 (removed)
+<br></li>
+</ul>
+<hr>
+<h3 id="%EC%98%81%EC%86%8D%EC%84%B1-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-2">영속성 컨텍스트 2</h3>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%A1%B0%ED%9A%8C-1%EC%B0%A8-%EC%BA%90%EC%8B%9C">엔티티 조회, 1차 캐시</h4>
+<ul>
+<li>
+<p>1차 캐시</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">@Id</th>
+<th style="text-align:center">Entity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">&quot;member1&quot;</td>
+<td style="text-align:center">member</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><code>em.find(Member.class, &quot;member1&quot;);</code></p>
+<ol>
+<li>1차 캐시에서 조회 -&gt; 조회 결과 존재</li>
+<li>조회 결과를 반환
+<br></li>
+</ol>
+</li>
+<li>
+<p><code>em.find(Member.class, &quot;member2&quot;);</code></p>
+<ol>
+<li>1차 캐시에서 조회 -&gt; 조회 결과 없음</li>
+<li>DB 조회</li>
+<li>DB 조회 결과를 1차 캐시에 저장</li>
+<li>조회 결과를 반환
+<br></li>
+</ol>
+</li>
+<li>
+<p>1차 캐시의 성능적 이익은 크지 않음</p>
+<ul>
+<li>em은 보통 트랜잭션 단위로 존재하고, 요청이 종료 될 때 같이 종료; 1차 캐시도 삭제</li>
+<li>하나의 트랜잭션 안에서만 이익을 볼 수 있는 구조</li>
+<li>JPA(또는 Hibernate)에서 애플리케이션 전쳉에서 공유하는 캐시는 2차 캐시라 함
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%98%81%EC%86%8D-%EC%97%94%ED%8B%B0%ED%8B%B0%EC%9D%98-%EB%8F%99%EC%9D%BC%EC%84%B1-%EB%B3%B4%EC%9E%A5">영속 엔티티의 동일성 보장</h4>
+<pre class="hljs"><code><div>Member a = em.find(Member.class, &quot;member1&quot;);
+Member b = em.find(Member.class, &quot;member1&quot;);
+
+System.out.println(a == b); // true
+</div></code></pre>
+<ul>
+<li>1차 캐시를 이용하여 같은 참조를 가진 객체처럼 비교</li>
+<li>반복 가능한 읽기(REPEATABLE READ) 등급의 트랜잭션 격리 수준을 DB가 아닌 애플리케이션에서 제공
+<br></li>
+</ul>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0-%EB%93%B1%EB%A1%9D">엔티티 등록</h4>
+<ul>
+<li>트랜잭션을 지원하는 쓰기 지연
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><code>em.persist()</code></th>
+<th style="text-align:center"><code>tx.commit()</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="../../../../../attachments/2023-03-18-00-29-40.png" alt=""></td>
+<td style="text-align:center"><img src="../../../../../attachments/2023-03-18-00-31-04.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>em.persist()</code> 때 SQL을 생성해서 쓰기 지연 SQL 저장소에 보관</li>
+<li>트랜잭션 commit 직전에 SQL을 flush(DB로 전송)하고 DB에서 commit</li>
+<li>예외의 경우가 존재함 (<code>GenerationType.SEQUENCE)</code></li>
+<li>버퍼링 가능 : Hibernate의 경우 hibernate.jdbc.batch.size 옵션에서 설정한 만큼 쿼리를 보내고 DB commit
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%88%98%EC%A0%95">엔티티 수정</h4>
+<ul>
+<li>변경 감지(dirty checking)
+<img src="../../../../../attachments/2023-03-18-00-43-08.png" alt="">
+<ul>
+<li>스냅샷 : 엔티티를 읽어온 최초 시점의 상태를 보관한 것</li>
+<li><code>em.flush()</code> 할 때(트랜잭션 커밋 시점) 엔티티와 스냅샷을 비교</li>
+<li>만약 엔티티와 스냅샷에 차이가 있다면 쓰기 지연 SQL 저장소에 UPDATE 쿼리 추가
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%EC%97%94%ED%8B%B0%ED%8B%B0-%EC%82%AD%EC%A0%9C">엔티티 삭제</h4>
+<ul>
+<li><code>em.remove(entity)</code>로 삭제</li>
+<li>같은 방식으로 쓰기 지연 SQL 저장소에 DELETE 쿼리 생성 후 flush
+<br></li>
+</ul>
+<hr>
+<h3 id="%ED%94%8C%EB%9F%AC%EC%8B%9C">플러시</h3>
+<h4 id="%EC%A0%95%EC%9D%98--%EC%98%81%EC%86%8D%EC%84%B1-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8%EC%9D%98-%EB%B3%80%EA%B2%BD-%EB%82%B4%EC%9A%A9%EC%9D%84-db%EC%97%90-%EB%B0%98%EC%98%81%ED%95%98%EB%8A%94-%EA%B2%83">정의 : 영속성 컨텍스트의 변경 내용을 DB에 반영하는 것</h4>
+<br>
+<h4 id="%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-commit-%EC%8B%9C-%ED%94%8C%EB%9F%AC%EC%8B%9C-%EB%B0%9C%EC%83%9D">트랜잭션 commit 시 플러시 발생</h4>
+<ul>
+<li>변경 감지</li>
+<li>변경 감지한 결과로 수정된 엔티티에 대한 UPDATE 쿼리를 쓰기 지연 SQL 저장소에 등록</li>
+<li>쓰기 지연 SQL 저장소의 쿼리(등록, 수정, 삭제)를 DB에 전송
+<br></li>
+</ul>
+<h4 id="%ED%94%8C%EB%9F%AC%EC%8B%9C-%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95">플러시 하는 방법</h4>
+<ul>
+<li><code>em.flush()</code>
+<ul>
+<li>직접 호출</li>
+<li>커밋 전 미리 DB에 반영, 전송되는 쿼리 확인, 테스트 용도로 강제 호출해서 사용</li>
+<li>플러시 한다고 해서 1차 캐시가 지워지는 것은 아님</li>
+</ul>
+</li>
+<li>트랜잭션 커밋 : 플러시 자동 호출</li>
+<li>JPQL 쿼리 실행
+<ul>
+<li>플러시 자동 호출</li>
+<li>JPQL은 즉시 DB에서 실행되기 때문에 실행 전 영속성 컨텍스트의 상태를 DB에 동기화하기 위함</li>
+<li>ex) <code>em.persist(memberC)</code> 호출 후 JPQL로 전체 회원을 조회한다면, DB에서 INSERT가 실행되어야 memberC의 정보도 조회할 수 있음
+<br></li>
+</ul>
+</li>
+</ul>
+<h4 id="%ED%94%8C%EB%9F%AC%EC%8B%9C-%EB%AA%A8%EB%93%9C-%EC%98%B5%EC%85%98--emsetflushmodeflushmodetype-flushmodetype">플러시 모드 옵션 : <code>em.setFlushMode(FlushModeType flushModeType)</code></h4>
+<ul>
+<li>FlushModeType.AUTO : 커밋이나 쿼리를 실행할 때 플러시(default)</li>
+<li>FlushModeType.COMMIT : 커밋할 때만 플러시
+<br></li>
+</ul>
+<h4 id="%EC%A3%BC%EC%9D%98"><strong>!주의</strong></h4>
+<ul>
+<li>플러시는 <em><strong>영속성 컨텍스트를 비우지 않음</strong></em></li>
+<li>영속성 컨텍스트의 <strong>변경내용을 DB에 동기화</strong></li>
+<li>트랜잭션이라는 작업 단위가 중요하므로, 커밋 직전에만 동기화하면 됨
+<br></li>
+</ul>
+<hr>
+<h3 id="%EC%A4%80%EC%98%81%EC%86%8D-%EC%83%81%ED%83%9C">준영속 상태</h3>
+<h4 id="%EC%A4%80%EC%98%81%EC%86%8D-%EC%83%81%ED%83%9C%EB%A1%9C-%EB%A7%8C%EB%93%9C%EB%8A%94-%EB%B0%A9%EB%B2%95">준영속 상태로 만드는 방법</h4>
+<ul>
+<li><code>em.detach(entity)</code> : 특정 엔티티를 준영속 상태로 전환</li>
+<li><code>em.clear()</code> : 영속성 컨텍스트를 초기화</li>
+<li><code>em.close()</code> : 영속성 컨텍스트 종료</li>
+<li>테스트 환경에서 사용, 단순한 로직에서는 사실상 필요 없음
+<br></li>
+</ul>
+<hr>
+<h3 id="%EC%A0%95%EB%A6%AC">정리</h3>
+<h4 id="%EA%B1%8D-%EC%A0%95%EB%A6%AC%EC%98%80%EC%9D%8C">걍 정리였음</h4>
+<br>
+
+</body>
+</html>

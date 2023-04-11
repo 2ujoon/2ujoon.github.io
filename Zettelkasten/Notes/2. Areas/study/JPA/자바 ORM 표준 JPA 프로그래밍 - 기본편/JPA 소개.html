@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JPA 소개.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p><a href="./%EC%9E%90%EB%B0%94%20ORM%20%ED%91%9C%EC%A4%80%20JPA%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%20-%20%EA%B8%B0%EB%B3%B8%ED%8E%B8.html">목록으로 가기</a>
+<a href="../../../../../attachments/jpa_basic/01.%20JPA%20%EC%86%8C%EA%B0%9C.pdf">강의자료</a></p>
+<h2 id="jpa-%EC%86%8C%EA%B0%9C"><strong>JPA 소개</strong></h2>
+<h3 id="sql-%EC%A4%91%EC%8B%AC%EC%A0%81%EC%9D%B8-%EA%B0%9C%EB%B0%9C%EC%9D%98-%EB%AC%B8%EC%A0%9C%EC%A0%90">SQL 중심적인 개발의 문제점</h3>
+<ul>
+<li>
+<p>RDB : 현 DB의 헤게모니</p>
+<ul>
+<li>RDB에 정보를 저장할 때 객체가 가진 정보를 SQL로 변환하여 RDB에 저장</li>
+<li>개발자가 객체와 DB entity를 매핑시킴</li>
+<li>객체를 RDB에 저장함에 있어 SQL 의존적 개발을 피하기 어려움
+<br></li>
+</ul>
+</li>
+<li>
+<p>객체와 RDB의 차이</p>
+<ol>
+<li>
+<p>상속
+<img src="../../../../../attachments/2023-03-13-14-40-43.png" alt=""></p>
+<ul>
+<li>객체의 상속 관계를 RBD는 슈퍼타입 - 서브타입 관계로 풀어냄</li>
+<li>insert : DB의 두 테이블에 각각 insert</li>
+<li>select : join 해서 조회 후 각각의 객체를 생성하게 될 수도🤬
+<br></li>
+</ul>
+</li>
+<li>
+<p>연관관계</p>
+<ul>
+<li>
+<p>객체는 참조, 테이블은 FK를 사용</p>
+</li>
+<li>
+<p>객체를 DB 테이블에 맞춰 모델링한다면, FK로 사용되는 값을 변수로 가지고 있어야 함
+-&gt; 객체를 다룰 때는 부적절함</p>
+<pre class="hljs"><code><div>class Member {
+   String id;
+   Long teamId;  // TEAM_ID FK컬럼
+   String username;
+}
+class Team {
+   Long id;
+}
+INSERT INTO MEMBER (MEMBER_ID, TEAM_ID, USERNAME) VALUES...
+</div></code></pre>
+  <br>
+</li>
+<li>
+<p>참조 형식으로 모델링한다면, 쿼리 시 파라미터 매핑 등에서 굉장히 번거로워질 수도 있음</p>
+<pre class="hljs"><code><div>class Member {
+   String id;
+   Team team;  // 참조를 통한 연관관계
+   String username;
+}
+class Team {
+   Long id;
+}
+</div></code></pre>
+ <br>
+</li>
+<li>
+<p>엔티티 신뢰 문제</p>
+<ul>
+<li>객체는 자유롭게 내/외부의 객체 등으로 탐색할 수 있어야 함</li>
+<li>처음 실행하는 SQL에 따라 탐색 범위가 결정됨<pre class="hljs"><code><div>SELECT M.*, T.*
+  FROM MEMBER M
+  JOIN TEAM T
+    ON M.TEAM_ID = T.TEAM_ID;
+
+member.getTeam();  // ok
+member.getOrder(); // NPE
+</div></code></pre>
+</li>
+<li>다음 계층의 데이터를 믿을 수 없으면 직접 들어가서 확인해 봐야 함</li>
+<li>그렇다고 모든 객체를 미리 로딩할 수는 없음
+∵ 불필요한 데이터를 조회하며 쿼리 성능을 크게 떨어뜨림</li>
+<li>상황에 따른 조회 메서드를 여러 벌 만들게 됨
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>데이터 타입</p>
+</li>
+<li>
+<p>데이터 식별 방법</p>
+<pre class="hljs"><code><div>Long memberId = 1;
+Member member1 = dao.getMember(memberId);
+Member member2 = dao.getMember(memberId);
+member1 == member2  // false
+</div></code></pre>
+</li>
+</ol>
+  <br>
+</li>
+<li>
+<p>객체답게 모델링 할수록 매핑 작업이 늘어남</p>
+</li>
+<li>
+<p>객체를 JAVA 컬렉션에 저장하듯이 DB에 저장하면 해결할 수 있음 =&gt; JPA
+<br></p>
+</li>
+</ul>
+<hr>
+<h3 id="jpa-%EC%86%8C%EA%B0%9C">JPA 소개</h3>
+<ul>
+<li>
+<p>JAVA의 ORM(Object-Relational Mapping) 기술 표준</p>
+<ul>
+<li>객체는 객체대로, RDB는 RDB 대로 설계 후 ORM으로 중간에서 매핑
+<br></li>
+</ul>
+</li>
+<li>
+<p>애플리케이션과 JDBC 사이에서 동작</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>동작</td>
+<td><img src="../../../../../attachments/2023-03-13-15-58-18.png" alt=""></td>
+</tr>
+<tr>
+<td>저장</td>
+<td><img src="../../../../../attachments/2023-03-13-15-58-39.png" alt=""></td>
+</tr>
+<tr>
+<td>조회</td>
+<td><img src="../../../../../attachments/2023-03-13-15-58-57.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<br>
+<ul>
+<li>
+<p>SQL 중심의 개발에서 객체 중심으로 개발 가능</p>
+<ul>
+<li>벤더 독립성</li>
+<li>객체 RDB의 패러다임 불일치 해소
+<ul>
+<li>상속, 연관관계, 객체 그래프 탐색, 비교 등
+∵ 개발자가 jpa 메서드를 사용하면, 그에 맞게 JPA가 SQL을 작성하기 때문
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>CRUD</p>
+<ul>
+<li>저장 : em.<strong>persist</strong>(member);</li>
+<li>조회 : Member member = em.<strong>find</strong>(memberId);</li>
+<li>수정 : member.<strong>setName</strong>(&quot;memberA&quot;);</li>
+<li>삭제 : em.<strong>remove</strong>(member);
+<br></li>
+</ul>
+</li>
+<li>
+<p>유지보수에 용이</p>
+<ul>
+<li>컬럼이 변경되더라도 객체의 필드만 수정하면 되고, SQL은 따로 처리가 필요하지 않음
+<br></li>
+</ul>
+</li>
+<li>
+<p>신뢰할 수 있는 데이터 계층</p>
+<ul>
+<li><strong>지연 로딩</strong>을 이용한 자유로운 객체 그래프 탐색이 가능
+<br></li>
+</ul>
+</li>
+<li>
+<p>동일 트랜잭션 내에서 조회한 엔티티는 같음을 보장 (≒ Java 컬렉션)</p>
+</li>
+<li>
+<p>성능 최적화</p>
+<ul>
+<li>
+<p>1차 캐시 동일성 보장</p>
+<ul>
+<li>같은 트랜잭션 내에서 같은 객체 반환(캐싱)</li>
+<li>1번째 조회는 쿼리를 날리고, 다음부터는 메모리에서 가져옴
+<br></li>
+</ul>
+</li>
+<li>
+<p>트랜잭션을 지원하는 쓰기 지연(transactional write-behind)</p>
+<ul>
+<li><strong>트랜잭션 커밋 시점</strong>까지 INSERT SQL을 모아둠</li>
+<li>JDBC Batch SQL 기능을 사용해 <strong>한 번에 전송</strong></li>
+<li>UPDATE, DELETE의 경우, 트랜잭션 커밋 시 SQL을 실행하고 커밋</li>
+<li>이 때, 트랜잭션 커밋 전까지 DB에 <strong>Row Lock이 걸리지 않음</strong>
+<br></li>
+</ul>
+</li>
+<li>
+<p>지연 로딩(Lazy)과 즉시 로딩(Eager)
+<img src="../../../../../attachments/- .png" alt=""></p>
+<ul>
+<li>지연 로딩 : 객체가 <strong>실제 사용될 때</strong> 로딩</li>
+<li>즉시 로딩 : JOIN SQL로 연관된 객체까지 한 번에 <strong>미리 조회</strong></li>
+<li>연관된 객체의 사용빈도를 고려하여 선택
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</body>
+</html>
